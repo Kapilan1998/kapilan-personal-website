@@ -90,7 +90,7 @@ const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="py-16 md:py-24 lg:py-32 relative" ref={ref}>
+    <section id="contact" className="pt-8 pb-16 md:pt-12 md:pb-24 lg:pt-16 lg:pb-32 relative" ref={ref}>
       <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent" />
       
       <div className="container mx-auto px-4 md:px-8 relative z-10">
