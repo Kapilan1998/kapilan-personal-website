@@ -1,7 +1,6 @@
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { Mail, MapPin, Send, Phone, ExternalLink } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { Mail, MapPin, Send, Phone, ExternalLink, X } from 'lucide-react';
 
 const socialLinks = [
   {
@@ -45,96 +44,85 @@ const socialLinks = [
 const Contact = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
-  const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  });
+
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [touched, setTouched] = useState({ name: false, email: false, message: false });
+  const [errors, setErrors] = useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState({
-    name: '',
-    email: '',
-    message: '',
-  });
 
-  const validateForm = () => {
-    const newErrors = { name: '', email: '', message: '' };
-    let isValid = true;
+  // Popup state
+  const [showPopup, setShowPopup] = useState(false);
 
-    // Name validation: letters only
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required.';
-      isValid = false;
-    } else if (!/^[a-zA-Z]+$/.test(formData.name)) {
-      newErrors.name = 'Please enter a valid name (letters only).';
-      isValid = false;
+  // Validate single field
+  const validateField = (field: string, value: string) => {
+    if (field === 'name') {
+      if (!value.trim()) return 'Name is required.';
+      if (!/^[a-zA-Z]+$/.test(value)) return 'Letters only.';
     }
-
-    // Email validation
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required.';
-      isValid = false;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address.';
-      isValid = false;
+    if (field === 'email') {
+      if (!value.trim()) return 'Email is required.';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Invalid email.';
     }
-
-    // Message validation: cannot be empty
-    if (!formData.message.trim()) {
-      newErrors.message = 'Message cannot be empty.';
-      isValid = false;
+    if (field === 'message') {
+      if (!value.trim()) return 'Message cannot be empty.';
+      if (value.length > 500) return 'Message cannot exceed 500 characters.';
     }
+    return '';
+  };
 
-    setErrors(newErrors);
-    return isValid;
+  const handleBlur = (field: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    setErrors((prev) => ({ ...prev, [field]: validateField(field, formData[field]) }));
+  };
+
+  const handleChange = (field: string, value: string) => {
+    // Limit message to 500 characters
+    if (field === 'message' && value.length > 500) return;
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (touched[field]) {
+      setErrors((prev) => ({ ...prev, [field]: validateField(field, value) }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) {
-      setIsSubmitting(false);
-      return;
-    }
+    setTouched({ name: true, email: true, message: true });
+    const newErrors = {
+      name: validateField('name', formData.name),
+      email: validateField('email', formData.email),
+      message: validateField('message', formData.message),
+    };
+    setErrors(newErrors);
+    if (Object.values(newErrors).some((err) => err)) return;
+
     setIsSubmitting(true);
-    
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    
-    toast({
-      title: 'Message Sent!',
-      description: "Thank you for reaching out. I'll get back to you soon.",
-    });
-    
+    await new Promise((r) => setTimeout(r, 1000));
+
+    // Show popup in center
+    setShowPopup(true);
+    const timer = setTimeout(() => setShowPopup(false), 3000);
+
+    // Reset form
     setFormData({ name: '', email: '', message: '' });
+    setTouched({ name: false, email: false, message: false });
+    setErrors({ name: '', email: '', message: '' });
     setIsSubmitting(false);
+
+    return () => clearTimeout(timer);
   };
 
   const contactInfo = [
-    {
-      icon: Mail,
-      label: 'Email',
-      value: 'sriranjankapilan@gmail.com',
-      href: 'mailto:sriranjankapilan@gmail.com',
-    },
-    {
-      icon: Phone,
-      label: 'Phone',
-      value: '+94 774740186',
-      href: 'tel:+94774740186',
-    },
-    {
-      icon: MapPin,
-      label: 'Location',
-      value: 'Jaffna, Sri Lanka',
-      href: null,
-    },
+    { icon: Mail, label: 'Email', value: 'sriranjankapilan@gmail.com', href: 'mailto:sriranjankapilan@gmail.com' },
+    { icon: Phone, label: 'Phone', value: '+94 774740186', href: 'tel:+94774740186' },
+    { icon: MapPin, label: 'Location', value: 'Jaffna, Sri Lanka', href: null },
   ];
 
   return (
     <section id="contact" className="pt-8 pb-16 md:pt-12 md:pb-24 lg:pt-16 lg:pb-32 relative" ref={ref}>
       <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent" />
-      
       <div className="container mx-auto px-4 md:px-8 relative z-10">
+
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -157,54 +145,49 @@ const Contact = () => {
             transition={{ delay: 0.2, duration: 0.6 }}
           >
             <form onSubmit={handleSubmit} className="glass p-6 md:p-8 rounded-2xl space-y-5 md:space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium mb-2">
-                  Your Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                  placeholder="Smith"
-                />
-                {errors.name && <p className="text-red-500 text-xs mt-2">{errors.name}</p>}
-              </div>
-              
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">
-                  Your Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                  placeholder="smith@example.com"
-                />
-                {errors.email && <p className="text-red-500 text-xs mt-2">{errors.email}</p>}
-              </div>
-              
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2">
-                  Your Message
-                </label>
-                <textarea
-                  id="message"
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  required
-                  rows={4}
-                  className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
-                  placeholder="Tell me about your project or opportunity..."
-                />
-                {errors.message && <p className="text-red-500 text-xs mt-2">{errors.message}</p>}
-              </div>
-              
+              {['name', 'email', 'message'].map((field) => (
+                <div key={field} className="relative">
+                  <label htmlFor={field} className="block text-sm font-medium mb-2">
+                    {field === 'name' ? 'Your Name' : field === 'email' ? 'Your Email' : 'Your Message'}
+                  </label>
+
+                  {field === 'message' ? (
+                    <textarea
+                      id={field}
+                      value={formData[field]}
+                      onChange={(e) => handleChange(field, e.target.value)}
+                      onBlur={() => handleBlur(field)}
+                      rows={4}
+                      placeholder="Please describe your inquiry"
+                      className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
+                    />
+                  ) : (
+                    <input
+                      id={field}
+                      type={field === 'email' ? 'email' : 'text'}
+                      value={formData[field]}
+                      onChange={(e) => handleChange(field, e.target.value)}
+                      onBlur={() => handleBlur(field)}
+                      placeholder={field === 'name' ? 'Smith' : 'smith@example.com'}
+                      className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                    />
+                  )}
+
+                  {/* Character count for message */}
+                  {field === 'message' && (
+                    <span className="absolute bottom-2 right-3 text-xs text-muted-foreground">
+                      {formData.message.length} / 500
+                    </span>
+                  )}
+
+                  {touched[field] && errors[field] ? (
+                    <p className="text-red-500 text-xs mt-1">{errors[field]}</p>
+                  ) : touched[field] && !errors[field] ? (
+                    <p className="text-green-500 text-xs mt-1">Looks good!</p>
+                  ) : null}
+                </div>
+              ))}
+
               <motion.button
                 type="submit"
                 disabled={isSubmitting}
@@ -212,14 +195,9 @@ const Contact = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                {isSubmitting ? (
-                  'Sending...'
-                ) : (
-                  <>
-                    Send Message
-                    <Send className="w-5 h-5" />
-                  </>
-                )}
+                {isSubmitting ? 'Sending...' : <>
+                  Send Message <Send className="w-5 h-5" />
+                </>}
               </motion.button>
             </form>
           </motion.div>
@@ -231,12 +209,13 @@ const Contact = () => {
             transition={{ delay: 0.3, duration: 0.6 }}
             className="space-y-6 md:space-y-8"
           >
+            {/* Contact Info Card */}
             <div className="glass p-6 md:p-8 rounded-2xl">
               <h3 className="text-lg md:text-xl font-bold mb-5 md:mb-6">Contact Information</h3>
               <div className="space-y-4">
                 {contactInfo.map((item, index) => (
-                  <motion.div 
-                    key={item.label} 
+                  <motion.div
+                    key={item.label}
                     className="flex items-center gap-4"
                     initial={{ opacity: 0, x: 20 }}
                     animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
@@ -248,10 +227,7 @@ const Contact = () => {
                     <div>
                       <p className="text-xs md:text-sm text-muted-foreground">{item.label}</p>
                       {item.href ? (
-                        <a
-                          href={item.href}
-                          className="font-medium text-sm md:text-base hover:text-primary transition-colors"
-                        >
+                        <a href={item.href} className="font-medium text-sm md:text-base hover:text-primary transition-colors">
                           {item.value}
                         </a>
                       ) : (
@@ -263,6 +239,7 @@ const Contact = () => {
               </div>
             </div>
 
+            {/* Social Links Card */}
             <div className="glass p-6 md:p-8 rounded-2xl">
               <h3 className="text-lg md:text-xl font-bold mb-5 md:mb-6">Follow Me</h3>
               <div className="grid grid-cols-2 gap-3 md:gap-4">
@@ -279,9 +256,7 @@ const Contact = () => {
                     animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ delay: 0.5 + index * 0.1 }}
                   >
-                    <span className="text-muted-foreground group-hover:text-primary transition-colors">
-                      {link.icon}
-                    </span>
+                    <span className="text-muted-foreground group-hover:text-primary transition-colors">{link.icon}</span>
                     <span className="font-medium text-sm">{link.name}</span>
                     <ExternalLink className="w-3 h-3 text-muted-foreground ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
                   </motion.a>
@@ -291,6 +266,47 @@ const Contact = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Centered Gradient Popup */}
+      <AnimatePresence>
+  {showPopup && (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      transition={{ duration: 0.6 }}
+      className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm"
+    >
+      <div className="relative px-8 py-6 rounded-2xl shadow-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-center max-w-md mx-4">
+        <button
+          className="absolute top-3 right-3 text-purple-300 hover:text-white transition-colors z-10"
+          onClick={() => setShowPopup(false)}
+        >
+          <X className="w-5 h-5" />
+        </button>
+        <div className="flex flex-col items-center">
+          <div className="w-12 h-12 rounded-full bg-white/30 flex items-center justify-center mb-4 shadow-lg">
+            <Send className="w-6 h-6 text-purple-300" />
+          </div>
+          <h3 className="text-2xl font-bold mb-2 text-purple-900">Message Sent!</h3>
+          <p className="text-lg text-purple-700 font-medium">
+            Thank you for reaching out. I'll get back to you soon.
+          </p>
+        </div>
+        
+        {/* Timing progress bar */}
+        <div className="mt-6 h-1.5 w-full bg-white/30 rounded-full overflow-hidden">
+          <motion.div
+            initial={{ width: "100%" }}
+            animate={{ width: "0%" }}
+            transition={{ duration: 3, ease: "linear" }}
+            className="h-full bg-gradient-to-r from-purple-400 to-purple-300"
+          />
+        </div>
+      </div>
+    </motion.div>
+  )}
+</AnimatePresence>
     </section>
   );
 };
