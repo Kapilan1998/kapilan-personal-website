@@ -49,41 +49,42 @@ const Projects = () => {
   useLayoutEffect(() => {
     if (!projectsRef.current) return;
 
-    const cards = projectsRef.current.querySelectorAll('.project-card');
-    
-    cards.forEach((card, index) => {
-      gsap.fromTo(
-        card,
-        { 
-          opacity: 0, 
-          y: 60,
-          rotateY: -15,
-          scale: 0.9
-        },
-        {
+    const ctx = gsap.context(() => {
+      const cards = projectsRef.current!.querySelectorAll<HTMLElement>('.project-card');
+
+      // Set initial state
+      gsap.set(cards, {
+        opacity: 0,
+        y: 100,
+        scale: 0.85,
+      });
+
+      cards.forEach((card, index) => {
+        gsap.to(card, {
           opacity: 1,
           y: 0,
-          rotateY: 0,
           scale: 1,
           duration: 0.8,
-          delay: index * 0.15,
+          delay: index * 0.12,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: card,
-            start: 'top 85%',
+            start: 'top 90%',
+            end: 'top 60%',
             toggleActions: 'play none none none',
           },
-        }
-      );
-    });
+        });
+      });
 
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
+      // Refresh after layout settles
+      setTimeout(() => ScrollTrigger.refresh(), 100);
+    }, projectsRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section id="projects" className="py-24 md:py-32 relative" ref={ref}>
+    <section id="projects" className="pt-24 pb-12 md:pt-32 md:pb-16 relative" ref={ref}>
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
       
