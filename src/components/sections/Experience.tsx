@@ -14,6 +14,8 @@ const experiences = [
     period: 'Present',
     duration: '~1 year',
     type: 'Full-time',
+    dotColor: 'bg-emerald-500',
+    badgeColor: 'bg-emerald-500/10 text-emerald-500',
     description: [
       'Leading DevOps initiatives including CI/CD pipeline development with Jenkins',
       'Managing cloud infrastructure on Hetzner Cloud with Docker containerization',
@@ -31,6 +33,8 @@ const experiences = [
     period: '2022 - 2023',
     duration: '~1.5 years',
     type: 'Full-time',
+    dotColor: 'bg-blue-500',
+    badgeColor: 'bg-blue-500/10 text-blue-500',
     description: [
       'Developed robust backend services using Spring Boot framework',
       'Implemented microservices architecture for scalable applications',
@@ -39,6 +43,24 @@ const experiences = [
       'Worked with databases including PostgreSQL and MySQL',
     ],
     technologies: ['Spring Boot', 'Java', 'PostgreSQL', 'MySQL', 'REST APIs', 'Microservices', 'Git'],
+  },
+  {
+    title: 'Intern Software Engineer (Backend)',
+    company: 'CodeLantic (Pvt) Ltd',
+    location: 'Sri Lanka',
+    period: '2021 - 2022',
+    duration: '~6 months',
+    type: 'Internship',
+    dotColor: 'bg-amber-500',
+    badgeColor: 'bg-amber-500/10 text-amber-500',
+    description: [
+      'Learned and applied Spring Boot framework for backend development',
+      'Assisted in building RESTful APIs for web applications',
+      'Gained hands-on experience with MongoDB and database operations',
+      'Participated in code reviews and agile development processes',
+      'Collaborated with senior developers on feature implementations',
+    ],
+    technologies: ['Spring Boot', 'Java', 'MongoDB', 'REST APIs', 'Git', 'Agile'],
   },
 ];
 
@@ -50,34 +72,38 @@ const Experience = () => {
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
 
-    const cards = sectionRef.current.querySelectorAll('.experience-card');
-    
-    cards.forEach((card, index) => {
-      gsap.fromTo(
-        card,
-        { 
-          opacity: 0, 
-          x: index % 2 === 0 ? -80 : 80,
-          scale: 0.9
-        },
-        {
+    const ctx = gsap.context(() => {
+      const cards = sectionRef.current!.querySelectorAll<HTMLElement>('.experience-card');
+
+      // Set initial state
+      gsap.set(cards, {
+        opacity: 0,
+        y: 80,
+        scale: 0.85,
+      });
+
+      cards.forEach((card, index) => {
+        gsap.to(card, {
           opacity: 1,
-          x: 0,
+          y: 0,
           scale: 1,
-          duration: 1,
+          duration: 0.9,
+          delay: index * 0.1,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: card,
-            start: 'top 85%',
+            start: 'top 90%',
+            end: 'top 60%',
             toggleActions: 'play none none none',
           },
-        }
-      );
-    });
+        });
+      });
 
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
+      // Refresh after layout settles
+      setTimeout(() => ScrollTrigger.refresh(), 100);
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -104,7 +130,7 @@ const Experience = () => {
 
         <div className="max-w-4xl mx-auto relative">
           {/* Timeline line */}
-          <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-border md:-translate-x-1/2 hidden md:block" />
+          <div className="absolute left-0 md:left-1/2 top-8 bottom-0 w-px bg-border md:-translate-x-1/2 hidden md:block" />
 
           {experiences.map((exp, index) => (
             <div
@@ -113,20 +139,20 @@ const Experience = () => {
                 index % 2 === 0 ? 'md:pr-8 md:text-right md:ml-0 md:mr-auto md:w-1/2' : 'md:pl-8 md:ml-auto md:w-1/2'
               }`}
             >
-              {/* Timeline dot */}
+              {/* Timeline dot with unique color */}
               <motion.div
-                className="absolute top-0 left-0 md:left-auto md:right-0 w-4 h-4 bg-primary rounded-full hidden md:block"
+                className={`absolute top-0 left-0 md:left-auto md:right-0 w-5 h-5 ${exp.dotColor} rounded-full hidden md:block shadow-lg`}
                 style={{
-                  [index % 2 === 0 ? 'right' : 'left']: '-8px',
+                  [index % 2 === 0 ? 'right' : 'left']: '-10px',
                 }}
                 initial={{ scale: 0 }}
                 animate={isInView ? { scale: 1 } : { scale: 0 }}
-                transition={{ delay: 0.4 + index * 0.2 }}
+                transition={{ delay: 0.4 + index * 0.2, type: 'spring', stiffness: 200 }}
               />
 
               <div className="glass p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-300 group">
                 <div className={`flex flex-wrap items-center gap-3 mb-4 ${index % 2 === 0 ? 'md:justify-end' : ''}`}>
-                  <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
+                  <span className={`px-3 py-1 ${exp.badgeColor} rounded-full text-sm font-medium`}>
                     {exp.type}
                   </span>
                   <span className="text-sm text-muted-foreground flex items-center gap-1">
