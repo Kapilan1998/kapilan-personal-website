@@ -1,8 +1,9 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, Server, Container, Cloud, Database } from 'lucide-react';
+import { ExternalLink, Github, Server, Container, Cloud, Database, ChevronLeft, ChevronRight } from 'lucide-react';
 
-const projects = [
+// Extend the projects array with more example projects
+const allProjects = [
   {
     title: 'CI/CD Pipeline Automation',
     description: 'Designed and implemented a comprehensive CI/CD pipeline using Jenkins, Docker, and Ansible for automated builds, testing, and deployments.',
@@ -35,11 +36,67 @@ const projects = [
     category: 'DevOps',
     color: 'accent',
   },
+  {
+    title: 'E-commerce Backend API',
+    description: 'Built a robust e-commerce backend with payment integration, inventory management, and order processing system.',
+    icon: Server,
+    technologies: ['Node.js', 'Express', 'MongoDB', 'Stripe API'],
+    category: 'Backend',
+    color: 'primary',
+  },
+  {
+    title: 'Kubernetes Cluster Management',
+    description: 'Deployed and managed Kubernetes clusters for container orchestration with auto-scaling and load balancing.',
+    icon: Container,
+    technologies: ['Kubernetes', 'Helm', 'AWS EKS', 'Prometheus'],
+    category: 'DevOps',
+    color: 'accent',
+  },
+  {
+    title: 'Real-time Chat Application',
+    description: 'Developed a real-time chat application with WebSocket connections, user authentication, and message persistence.',
+    icon: Database,
+    technologies: ['Socket.io', 'React', 'Node.js', 'Redis'],
+    category: 'Backend',
+    color: 'primary',
+  },
+  {
+    title: 'AWS Serverless Architecture',
+    description: 'Implemented serverless architecture using AWS Lambda, API Gateway, and DynamoDB for scalable applications.',
+    icon: Cloud,
+    technologies: ['AWS Lambda', 'API Gateway', 'DynamoDB', 'CloudFormation'],
+    category: 'Cloud',
+    color: 'accent',
+  },
+  {
+    title: 'Data Analytics Pipeline',
+    description: 'Created a data pipeline for processing and analyzing large datasets using Apache Spark and Airflow.',
+    icon: Database,
+    technologies: ['Apache Spark', 'Airflow', 'Python', 'PostgreSQL'],
+    category: 'Backend',
+    color: 'primary',
+  },
+  {
+    title: 'Mobile App Backend',
+    description: 'Developed RESTful APIs for a mobile application with push notifications and real-time updates.',
+    icon: Server,
+    technologies: ['FastAPI', 'PostgreSQL', 'Firebase', 'Docker'],
+    category: 'Backend',
+    color: 'accent',
+  },
 ];
 
 const Projects = () => {
   const ref = useRef<HTMLElement>(null);
   const [isInView, setIsInView] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const projectsPerPage = 4;
+
+  // Calculate pagination
+  const totalPages = Math.ceil(allProjects.length / projectsPerPage);
+  const indexOfLastProject = currentPage * projectsPerPage;
+  const indexOfFirstProject = indexOfLastProject - projectsPerPage;
+  const currentProjects = allProjects.slice(indexOfFirstProject, indexOfLastProject);
 
   // Custom IntersectionObserver for better mobile support
   useEffect(() => {
@@ -53,8 +110,8 @@ const Projects = () => {
         });
       },
       {
-        threshold: 0.1, // Trigger when 10% is visible
-        rootMargin: '0px 0px -50px 0px', // Adjust for better mobile
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px',
       }
     );
 
@@ -68,6 +125,24 @@ const Projects = () => {
       }
     };
   }, []);
+
+  // Handle page change
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Handle direct page click
+  const handlePageClick = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <section id="projects" className="pt-24 pb-12 md:pt-32 md:pb-16 relative" ref={ref}>
@@ -93,10 +168,11 @@ const Projects = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          {projects.map((project, index) => (
+        {/* Projects Grid */}
+        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto mb-12">
+          {currentProjects.map((project, index) => (
             <motion.div
-              key={project.title}
+              key={`${project.title}-${currentPage}`}
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { 
                 opacity: 1, 
@@ -107,7 +183,6 @@ const Projects = () => {
                   ease: "easeOut"
                 }
               } : {}}
-              // Add viewport animation for mobile as fallback
               whileInView={{ 
                 opacity: 1, 
                 y: 0,
@@ -224,6 +299,91 @@ const Projects = () => {
           ))}
         </div>
 
+        {/* Pagination Controls */}
+        {allProjects.length > projectsPerPage && (
+          <motion.div 
+            className="flex flex-col items-center justify-center gap-4 mt-12"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            {/* Page Info */}
+            <div className="text-sm text-muted-foreground mb-2">
+              Showing {indexOfFirstProject + 1}-{Math.min(indexOfLastProject, allProjects.length)} of {allProjects.length} projects
+            </div>
+            
+            {/* Pagination Buttons */}
+            <div className="flex items-center gap-2">
+              {/* Previous Button */}
+              <motion.button
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                  currentPage === 1 
+                    ? 'bg-secondary text-muted-foreground cursor-not-allowed' 
+                    : 'bg-primary/10 text-primary hover:bg-primary/20'
+                }`}
+                whileHover={{ scale: currentPage === 1 ? 1 : 1.05 }}
+                whileTap={{ scale: currentPage === 1 ? 1 : 0.95 }}
+              >
+                <ChevronLeft className="w-4 h-4" />
+                Previous
+              </motion.button>
+
+              {/* Page Numbers */}
+              <div className="flex items-center gap-1 mx-4">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <motion.button
+                    key={page}
+                    onClick={() => handlePageClick(page)}
+                    className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors ${
+                      currentPage === page
+                        ? 'bg-primary text-white'
+                        : 'bg-secondary text-muted-foreground hover:bg-primary/10 hover:text-primary'
+                    }`}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {page}
+                  </motion.button>
+                ))}
+              </div>
+
+              {/* Next Button */}
+              <motion.button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                  currentPage === totalPages 
+                    ? 'bg-secondary text-muted-foreground cursor-not-allowed' 
+                    : 'bg-primary/10 text-primary hover:bg-primary/20'
+                }`}
+                whileHover={{ scale: currentPage === totalPages ? 1 : 1.05 }}
+                whileTap={{ scale: currentPage === totalPages ? 1 : 0.95 }}
+              >
+                Next
+                <ChevronRight className="w-4 h-4" />
+              </motion.button>
+            </div>
+
+            {/* Page Indicator Dots (mobile friendly) */}
+            <div className="flex items-center gap-2 mt-2 md:hidden">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={`dot-${page}`}
+                  onClick={() => handlePageClick(page)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    currentPage === page
+                      ? 'bg-primary w-4'
+                      : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                  }`}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* GitHub Link */}
         <motion.div
           className="text-center mt-12"
           initial={{ opacity: 0 }}
@@ -233,7 +393,7 @@ const Projects = () => {
           viewport={{ once: true }}
         >
           <p className="text-muted-foreground mb-4">
-            More projects coming soon...
+            Want to see more? Check out my complete portfolio on GitHub.
           </p>
           <motion.a
             href="https://github.com"
