@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useRef, useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { ExternalLink, Github, Server, Container, Cloud, Database } from 'lucide-react';
 
 const projects = [
@@ -38,12 +38,36 @@ const projects = [
 ];
 
 const Projects = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { 
-    once: true, 
-    margin: '-50px',
-    amount: 0.2
-  });
+  const ref = useRef<HTMLElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  // Custom IntersectionObserver for better mobile support
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsInView(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.1, // Trigger when 10% is visible
+        rootMargin: '0px 0px -50px 0px', // Adjust for better mobile
+      }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
 
   return (
     <section id="projects" className="pt-24 pb-12 md:pt-32 md:pb-16 relative" ref={ref}>
@@ -73,16 +97,26 @@ const Projects = () => {
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { 
                 opacity: 1, 
                 y: 0,
                 transition: { 
                   delay: index * 0.15,
-                  duration: 0.5,
+                  duration: 0.6,
                   ease: "easeOut"
                 }
               } : {}}
+              // Add viewport animation for mobile as fallback
+              whileInView={{ 
+                opacity: 1, 
+                y: 0,
+                transition: { 
+                  delay: index * 0.1,
+                  duration: 0.5 
+                }
+              }}
+              viewport={{ once: true, margin: "-50px" }}
               className="project-card group glass p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-300 relative overflow-hidden"
             >
               {/* Hover gradient */}
@@ -127,15 +161,25 @@ const Projects = () => {
                 </p>
 
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {project.technologies.map((tech) => (
+                  {project.technologies.map((tech, techIndex) => (
                     <motion.span
                       key={tech}
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={isInView ? { 
                         opacity: 1, 
                         scale: 1,
-                        transition: { delay: index * 0.15 + 0.3 }
+                        transition: { 
+                          delay: index * 0.15 + techIndex * 0.05 + 0.3 
+                        }
                       } : {}}
+                      whileInView={{ 
+                        opacity: 1, 
+                        scale: 1,
+                        transition: { 
+                          delay: techIndex * 0.05 
+                        }
+                      }}
+                      viewport={{ once: true }}
                       className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs font-medium"
                     >
                       {tech}
@@ -153,6 +197,8 @@ const Projects = () => {
                       opacity: 1,
                       transition: { delay: index * 0.15 + 0.4 }
                     } : {}}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
                   >
                     <Github className="w-4 h-4" />
                     View Code
@@ -166,6 +212,8 @@ const Projects = () => {
                       opacity: 1,
                       transition: { delay: index * 0.15 + 0.5 }
                     } : {}}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
                   >
                     <ExternalLink className="w-4 h-4" />
                     Live Demo
@@ -181,6 +229,8 @@ const Projects = () => {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ delay: 0.8 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
         >
           <p className="text-muted-foreground mb-4">
             More projects coming soon...
