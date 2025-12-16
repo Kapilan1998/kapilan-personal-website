@@ -99,7 +99,7 @@ const Hero = () => {
           {/* Profile Photo */}
           <motion.div variants={itemVariants} className="mb-6">
             <motion.div
-              className="w-36 h-36 md:w-44 md:h-44 lg:w-52 lg:h-52 mx-auto rounded-full overflow-hidden border-4 border-primary/50 glow-primary"
+              className="w-44 h-44 md:w-52 md:h-52 lg:w-60 lg:h-60 mx-auto rounded-full overflow-hidden border-4 border-primary/50 glow-primary"
               whileHover={{ scale: 1.05 }}
             >
               <img
@@ -191,7 +191,7 @@ const Hero = () => {
           {/* Social Links */}
           <motion.div
             variants={itemVariants}
-            className="flex items-center justify-center gap-4 mb-8"
+            className="flex items-center justify-center gap-4"
           >
             {socialLinks.map((social, index) => (
               <motion.a
@@ -214,28 +214,6 @@ const Hero = () => {
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5, duration: 0.6 }}
-      >
-        <motion.span 
-          className="text-xs md:text-sm text-muted-foreground font-medium"
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-        >
-          Scroll Down
-        </motion.span>
-        <motion.div
-          className="w-5 h-8 md:w-6 md:h-10 border-2 border-muted-foreground/30 rounded-full flex justify-center p-1.5 md:p-2"
-          animate={{ y: [0, 5, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5 }}
-        >
-          <motion.div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-primary rounded-full" />
-        </motion.div>
-      </motion.div>
     </section>
   );
 };
