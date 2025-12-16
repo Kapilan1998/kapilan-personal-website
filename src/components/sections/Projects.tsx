@@ -1,10 +1,6 @@
-import { useRef, useLayoutEffect } from 'react';
+import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ExternalLink, Github, Server, Container, Cloud, Database } from 'lucide-react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
   {
@@ -43,45 +39,11 @@ const projects = [
 
 const Projects = () => {
   const ref = useRef(null);
-  const projectsRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-
-  useLayoutEffect(() => {
-    if (!projectsRef.current) return;
-
-    const ctx = gsap.context(() => {
-      const cards = projectsRef.current!.querySelectorAll<HTMLElement>('.project-card');
-
-      // Set initial state
-      gsap.set(cards, {
-        opacity: 0,
-        y: 100,
-        scale: 0.85,
-      });
-
-      cards.forEach((card, index) => {
-        gsap.to(card, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          delay: index * 0.12,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 90%',
-            end: 'top 60%',
-            toggleActions: 'play none none none',
-          },
-        });
-      });
-
-      // Refresh after layout settles
-      setTimeout(() => ScrollTrigger.refresh(), 100);
-    }, projectsRef);
-
-    return () => ctx.revert();
-  }, []);
+  const isInView = useInView(ref, { 
+    once: true, 
+    margin: '-50px',
+    amount: 0.2
+  });
 
   return (
     <section id="projects" className="pt-24 pb-12 md:pt-32 md:pb-16 relative" ref={ref}>
@@ -107,10 +69,20 @@ const Projects = () => {
           </p>
         </motion.div>
 
-        <div ref={projectsRef} className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          {projects.map((project) => (
-            <div
+        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          {projects.map((project, index) => (
+            <motion.div
               key={project.title}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { 
+                opacity: 1, 
+                y: 0,
+                transition: { 
+                  delay: index * 0.15,
+                  duration: 0.5,
+                  ease: "easeOut"
+                }
+              } : {}}
               className="project-card group glass p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-300 relative overflow-hidden"
             >
               {/* Hover gradient */}
@@ -126,6 +98,14 @@ const Projects = () => {
                     }`}
                     whileHover={{ rotate: 360, scale: 1.1 }}
                     transition={{ duration: 0.5 }}
+                    whileInView={{ 
+                      rotate: [0, 10, -10, 0],
+                      transition: { 
+                        delay: 0.3,
+                        duration: 0.8 
+                      }
+                    }}
+                    viewport={{ once: true }}
                   >
                     <project.icon className={`w-7 h-7 ${
                       project.color === 'primary' ? 'text-primary' : 'text-accent'
@@ -148,12 +128,18 @@ const Projects = () => {
 
                 <div className="flex flex-wrap gap-2 mb-6">
                   {project.technologies.map((tech) => (
-                    <span
+                    <motion.span
                       key={tech}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={isInView ? { 
+                        opacity: 1, 
+                        scale: 1,
+                        transition: { delay: index * 0.15 + 0.3 }
+                      } : {}}
                       className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs font-medium"
                     >
                       {tech}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
 
@@ -162,6 +148,11 @@ const Projects = () => {
                     href="#"
                     className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                     whileHover={{ x: 5 }}
+                    initial={{ opacity: 0 }}
+                    animate={isInView ? { 
+                      opacity: 1,
+                      transition: { delay: index * 0.15 + 0.4 }
+                    } : {}}
                   >
                     <Github className="w-4 h-4" />
                     View Code
@@ -170,13 +161,18 @@ const Projects = () => {
                     href="#"
                     className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
                     whileHover={{ x: 5 }}
+                    initial={{ opacity: 0 }}
+                    animate={isInView ? { 
+                      opacity: 1,
+                      transition: { delay: index * 0.15 + 0.5 }
+                    } : {}}
                   >
                     <ExternalLink className="w-4 h-4" />
                     Live Demo
                   </motion.a>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
@@ -184,7 +180,7 @@ const Projects = () => {
           className="text-center mt-12"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.8 }}
         >
           <p className="text-muted-foreground mb-4">
             More projects coming soon...
