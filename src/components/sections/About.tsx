@@ -91,7 +91,7 @@ const About = () => {
   };
 
   return (
-    <section id="about" className="py-16 md:py-24 lg:py-32 relative" ref={ref}>
+    <section id="about" className="pt-8 pb-16 md:pt-12 md:pb-24 lg:pt-16 lg:pb-32 relative" ref={ref}>
       <div className="absolute top-0 left-1/4 w-64 md:w-96 h-64 md:h-96 bg-primary/5 rounded-full blur-3xl" />
       
       <div className="container mx-auto px-4 md:px-8">
@@ -120,20 +120,6 @@ const About = () => {
 
           <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <motion.div variants={itemVariants} className="space-y-6">
-              {/* Profile Image for About Section */}
-              <motion.div 
-                className="flex justify-center lg:hidden mb-6"
-                variants={floatVariants}
-                animate="animate"
-              >
-                <div className="w-40 h-40 rounded-2xl overflow-hidden border-4 border-primary/30 glow-primary">
-                  <img
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face"
-                    alt="Profile"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </motion.div>
 
               <motion.div 
                 className="glass p-6 md:p-8 rounded-2xl"
