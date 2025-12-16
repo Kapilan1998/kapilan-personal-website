@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Terminal, Heart, Mail, Phone, MapPin, ArrowUp, Linkedin, Github, Facebook } from 'lucide-react';
+import { Terminal, Mail, Phone, MapPin, Linkedin, Github, Facebook } from 'lucide-react';
 
 const socialLinks = [
   { 
@@ -45,8 +45,6 @@ const quickLinks = [
 ];
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -84,8 +82,11 @@ const Footer = () => {
               <span className="text-foreground">.portfolio</span>
             </a>
             <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-              Crafting scalable backend solutions and cloud-native architectures 
+              Crafting scalable backend solutions and cloud-native architectures
               with passion and precision.
+            </p>
+            <p className="text-muted-foreground text-sm mb-5">
+              © 2025 <span className="font-semibold text-foreground">Bahubali</span>. All rights reserved.
             </p>
             {/* Social Links */}
             <div className="flex items-center gap-2">
@@ -190,31 +191,18 @@ const Footer = () => {
             >
               Get In Touch
             </motion.button>
+
+            <button
+              onClick={scrollToTop}
+              className="mt-4 inline-flex text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              Back to top
+            </button>
           </motion.div>
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-8" />
-
-        {/* Bottom Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-muted-foreground text-sm flex items-center gap-1 flex-wrap justify-center">
-            © {currentYear} <span className="font-semibold text-foreground">Bahubali</span>. All rights reserved. Built with
-            <Heart className="w-4 h-4 text-destructive fill-current mx-1" />
-            using React & Framer Motion
-          </p>
-
-          {/* Scroll to top button */}
-          <motion.button
-            onClick={scrollToTop}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg glass text-muted-foreground hover:text-primary transition-colors group"
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <span className="text-sm">Back to top</span>
-            <ArrowUp className="w-4 h-4 group-hover:-translate-y-1 transition-transform" />
-          </motion.button>
-        </div>
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
       </div>
     </footer>
   );
