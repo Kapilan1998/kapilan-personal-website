@@ -1,10 +1,7 @@
 import { motion, useInView } from 'framer-motion';
-import { useRef, useLayoutEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Code2, Server, Cloud, Shield } from 'lucide-react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const highlights = [
   {
@@ -32,35 +29,75 @@ const highlights = [
 const About = () => {
   const ref = useRef(null);
   const highlightsRef = useRef<HTMLDivElement>(null);
+  const [isGsapReady, setIsGsapReady] = useState(false);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
 
-  useLayoutEffect(() => {
-    if (!highlightsRef.current) return;
-    
+  // Load GSAP ScrollTrigger only on client side and after component mounts
+  useEffect(() => {
+    // Ensure we're in browser
+    if (typeof window === 'undefined') return;
+
+    // Dynamically import ScrollTrigger
+    import('gsap/ScrollTrigger').then((ScrollTriggerModule) => {
+      const ScrollTrigger = ScrollTriggerModule.default;
+      gsap.registerPlugin(ScrollTrigger);
+      setIsGsapReady(true);
+    });
+
+    return () => {
+      // Cleanup GSAP instances
+      gsap.killTweensOf('.highlight-card');
+      if (typeof window !== 'undefined') {
+        const triggers = gsap.context ? gsap.context() : null;
+        if (triggers) triggers.revert();
+      }
+    };
+  }, []);
+
+  // Run GSAP animation when component is in view AND GSAP is ready
+  useEffect(() => {
+    if (!isInView || !isGsapReady || !highlightsRef.current) return;
+
     const cards = highlightsRef.current.querySelectorAll('.highlight-card');
     
+    // Use a simpler animation without ScrollTrigger dependency
     gsap.fromTo(
       cards,
-      { opacity: 0, y: 60, rotateX: -15 },
+      { 
+        opacity: 0, 
+        y: 60,
+      },
       {
         opacity: 1,
         y: 0,
-        rotateX: 0,
         duration: 0.8,
         stagger: 0.15,
         ease: 'power3.out',
-        scrollTrigger: {
-          trigger: highlightsRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
+        onComplete: () => {
+          // Ensure all content is visible
+          cards.forEach(card => {
+            gsap.set(card, { clearProps: 'all' });
+          });
+        }
       }
     );
 
+    // Fallback: If GSAP fails, ensure content is visible
+    const fallbackTimer = setTimeout(() => {
+      cards.forEach(card => {
+        (card as HTMLElement).style.opacity = '1';
+        (card as HTMLElement).style.transform = 'none';
+      });
+    }, 1000);
+
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      clearTimeout(fallbackTimer);
+      // Cleanup
+      cards.forEach(card => {
+        gsap.killTweensOf(card);
+      });
     };
-  }, []);
+  }, [isInView, isGsapReady]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -79,19 +116,16 @@ const About = () => {
     },
   };
 
-  const floatVariants = {
-    animate: {
-      y: [0, -10, 0],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        ease: 'easeInOut',
-      },
-    },
-  };
-
   return (
-    <section id="about" className="pt-8 pb-16 md:pt-12 md:pb-24 lg:pt-16 lg:pb-32 relative" ref={ref}>
+    <section 
+      id="about" 
+      className="pt-8 pb-16 md:pt-12 md:pb-24 lg:pt-16 lg:pb-32 relative" 
+      ref={ref}
+      style={{ 
+        contentVisibility: 'auto',
+        containIntrinsicSize: '1px 800px'
+      }}
+    >
       <div className="absolute top-0 left-1/4 w-64 md:w-96 h-64 md:h-96 bg-primary/5 rounded-full blur-3xl" />
       
       <div className="container mx-auto px-4 md:px-8">
@@ -120,10 +154,9 @@ const About = () => {
 
           <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <motion.div variants={itemVariants} className="space-y-6">
-
               <motion.div 
                 className="glass p-6 md:p-8 rounded-2xl"
-                whileHover={{ scale: 1.02, borderColor: 'hsl(var(--primary) / 0.5)' }}
+                whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
                 <h3 className="text-xl md:text-2xl font-bold mb-4">My Journey</h3>
@@ -140,10 +173,7 @@ const About = () => {
                 </p>
               </motion.div>
 
-              <motion.div 
-                className="flex flex-wrap gap-2 md:gap-3"
-                variants={containerVariants}
-              >
+              <motion.div className="flex flex-wrap gap-2 md:gap-3">
                 {['Problem Solver', 'Team Player', 'Quick Learner', 'Detail Oriented'].map((trait, index) => (
                   <motion.span
                     key={trait}
@@ -171,14 +201,14 @@ const About = () => {
                 <div
                   key={item.title}
                   className="highlight-card glass p-4 md:p-6 rounded-2xl group hover:border-primary/50 transition-all duration-300 cursor-pointer"
+                  style={{ 
+                    opacity: isInView && isGsapReady ? 1 : 0,
+                    transform: isInView && isGsapReady ? 'none' : 'translateY(60px)'
+                  }}
                 >
-                  <motion.div 
-                    className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3 md:mb-4 group-hover:bg-primary/20 transition-colors"
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.5 }}
-                  >
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3 md:mb-4 group-hover:bg-primary/20 transition-colors">
                     <item.icon className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-                  </motion.div>
+                  </div>
                   <h4 className="font-semibold mb-1 md:mb-2 text-sm md:text-base group-hover:text-primary transition-colors">{item.title}</h4>
                   <p className="text-xs md:text-sm text-muted-foreground">{item.description}</p>
                 </div>
