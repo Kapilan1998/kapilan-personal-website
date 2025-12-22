@@ -14,8 +14,6 @@ const experiences = [
     period: 'Present',
     duration: '~1 year',
     type: 'Full-time',
-    dotColor: 'bg-emerald-500',
-    badgeColor: 'bg-emerald-500/10 text-emerald-500',
     description: [
       'Leading DevOps initiatives including CI/CD pipeline development with Jenkins',
       'Managing cloud infrastructure on Hetzner Cloud with Docker containerization',
@@ -33,8 +31,6 @@ const experiences = [
     period: '2022 - 2023',
     duration: '~1.5 years',
     type: 'Full-time',
-    dotColor: 'bg-blue-500',
-    badgeColor: 'bg-blue-500/10 text-blue-500',
     description: [
       'Developed robust backend services using Spring Boot framework',
       'Implemented microservices architecture for scalable applications',
@@ -51,8 +47,6 @@ const experiences = [
     period: '2021 - 2022',
     duration: '~6 months',
     type: 'Internship',
-    dotColor: 'bg-amber-500',
-    badgeColor: 'bg-amber-500/10 text-amber-500',
     description: [
       'Learned and applied Spring Boot framework for backend development',
       'Assisted in building RESTful APIs for web applications',
@@ -72,44 +66,70 @@ const Experience = () => {
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
 
-    const ctx = gsap.context(() => {
-      const cards = sectionRef.current!.querySelectorAll<HTMLElement>('.experience-card');
+    const el = sectionRef.current;
 
-      // Set initial state
-      gsap.set(cards, {
-        opacity: 0,
-        y: 80,
-        scale: 0.85,
-      });
+    const onLoad = () => ScrollTrigger.refresh();
+    const raf = requestAnimationFrame(() => ScrollTrigger.refresh());
+    window.addEventListener('load', onLoad, { once: true });
+
+    const ctx = gsap.context(() => {
+      const cards = Array.from(el.querySelectorAll<HTMLElement>('.experience-card'));
+
+      // IMPORTANT: keep cards visible by default.
+      // We animate only on ScrollTrigger enter so there is never a "blank section" on first visit.
+      gsap.set(cards, { opacity: 1, y: 0, scale: 1 });
 
       cards.forEach((card, index) => {
-        gsap.to(card, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.9,
-          delay: index * 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 90%',
-            end: 'top 60%',
-            toggleActions: 'play none none none',
+        ScrollTrigger.create({
+          trigger: card,
+          start: 'top 90%',
+          onEnter: () => {
+            gsap.fromTo(
+              card,
+              { opacity: 0, y: 60, scale: 0.95 },
+              {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.85,
+                delay: index * 0.08,
+                ease: 'power3.out',
+                overwrite: 'auto',
+              }
+            );
+          },
+          onEnterBack: () => {
+            gsap.fromTo(
+              card,
+              { opacity: 0, y: 40, scale: 0.98 },
+              {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.6,
+                ease: 'power3.out',
+                overwrite: 'auto',
+              }
+            );
           },
         });
       });
-
-      // Refresh after layout settles
-      setTimeout(() => ScrollTrigger.refresh(), 100);
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('load', onLoad);
+      ctx.revert();
+    };
   }, []);
+
+  // Alternating dot colors (theme tokens)
+  const getDotColor = (index: number) => (index % 2 === 0 ? 'bg-primary' : 'bg-accent');
+  const getBadgeColor = (index: number) =>
+    index % 2 === 0 ? 'bg-primary/10 text-primary' : 'bg-accent/10 text-accent';
 
   return (
     <section id="experience" className="py-24 md:py-32 relative" ref={ref}>
-      <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-      
       <div className="container mx-auto px-4 md:px-8" ref={sectionRef}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -129,21 +149,32 @@ const Experience = () => {
         </motion.div>
 
         <div className="max-w-4xl mx-auto relative">
-          {/* Timeline line */}
-          <div className="absolute left-0 md:left-1/2 top-8 bottom-0 w-px bg-border md:-translate-x-1/2 hidden md:block" />
+          {/* Timeline vertical line - desktop only, positioned to not overlap content */}
+          <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary/50 via-border to-primary/50 -translate-x-1/2 hidden md:block" />
 
           {experiences.map((exp, index) => (
             <div
-              key={exp.company}
-              className={`experience-card relative mb-12 md:mb-16 ${
-                index % 2 === 0 ? 'md:pr-8 md:text-right md:ml-0 md:mr-auto md:w-1/2' : 'md:pl-8 md:ml-auto md:w-1/2'
+              key={exp.company + index}
+              className={`experience-card relative mb-12 md:mb-16 pl-8 md:pl-0 ${
+                index % 2 === 0 
+                  ? 'md:pr-12 md:text-right md:ml-0 md:mr-auto md:w-[calc(50%-20px)]' 
+                  : 'md:pl-12 md:ml-auto md:w-[calc(50%-20px)]'
               }`}
             >
-              {/* Timeline dot with unique color */}
+              {/* Mobile timeline line */}
+              <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-primary/50 via-border to-primary/50 md:hidden" />
+              
+              {/* Timeline dot - mobile */}
+              <div
+                className={`absolute top-6 left-0 w-4 h-4 ${getDotColor(index)} rounded-full md:hidden shadow-lg -translate-x-1/2`}
+              />
+
+              {/* Timeline dot - desktop */}
               <motion.div
-                className={`absolute top-0 left-0 md:left-auto md:right-0 w-5 h-5 ${exp.dotColor} rounded-full hidden md:block shadow-lg`}
+                className={`absolute top-6 w-5 h-5 ${getDotColor(index)} rounded-full hidden md:block shadow-lg z-10`}
                 style={{
-                  [index % 2 === 0 ? 'right' : 'left']: '-10px',
+                  left: index % 2 === 0 ? 'auto' : '-30px',
+                  right: index % 2 === 0 ? '-30px' : 'auto',
                 }}
                 initial={{ scale: 0 }}
                 animate={isInView ? { scale: 1 } : { scale: 0 }}
@@ -152,7 +183,7 @@ const Experience = () => {
 
               <div className="glass p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-300 group">
                 <div className={`flex flex-wrap items-center gap-3 mb-4 ${index % 2 === 0 ? 'md:justify-end' : ''}`}>
-                  <span className={`px-3 py-1 ${exp.badgeColor} rounded-full text-sm font-medium`}>
+                  <span className={`px-3 py-1 ${getBadgeColor(index)} rounded-full text-sm font-medium`}>
                     {exp.type}
                   </span>
                   <span className="text-sm text-muted-foreground flex items-center gap-1">
@@ -164,7 +195,7 @@ const Experience = () => {
                 <h3 className="text-xl md:text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
                   {exp.title}
                 </h3>
-                
+
                 <div className={`flex flex-wrap items-center gap-4 text-muted-foreground mb-4 ${index % 2 === 0 ? 'md:justify-end' : ''}`}>
                   <span className="flex items-center gap-1">
                     <Briefcase className="w-4 h-4" />
