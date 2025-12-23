@@ -26,11 +26,11 @@ const technologies = [
   { name: 'Kubernetes', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg', url: 'https://kubernetes.io', category: 'DevOps' },
   { name: 'Prometheus', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg', url: 'https://prometheus.io', category: 'DevOps' },
   { name: 'Grafana', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg', url: 'https://grafana.com', category: 'DevOps' },
-  { name: 'Checkmk', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/checkmk/checkmk-original.svg', url: 'https://github.com/Checkmk/checkmk', category: 'DevOps' },
- 
+  { name: 'Checkmk', icon: 'https://imgs.search.brave.com/OJ8FLisFkhImBr2KW39jT9Chqva02DERa05MMavhoWM/rs:fit:0:180:1:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy9j/L2NmL0NoZWNrTUtf/bG9nby5zdmc', url: 'https://checkmk.com/', category: 'DevOps' },
+
   // Cloud
   { name: 'AWS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg', url: 'https://aws.amazon.com', category: 'Cloud' },
-   { name: 'Hetzner Cloud', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/hetzner/hetzner-original.svg', url: 'https://www.hetzner.com/cloud', category: 'Cloud' },
+  { name: 'Hetzner Cloud', icon: 'https://imgs.search.brave.com/bGQdphu1oGnGNT1PD0AL3PzfjUW0zCkRRNqMnswPWss/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pY29u/bG9nb3ZlY3Rvci5j/b20vdXBsb2Fkcy9p/bWFnZXMvMjAyNC8x/MS9sZy02NzNmMjFj/YTk2YTU1LUhldHpu/ZXIud2VicA', url: 'https://www.hetzner.com/cloud', category: 'Cloud' },
   // Databases
   { name: 'PostgreSQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg', url: 'https://www.postgresql.org', category: 'Databases' },
   { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg', url: 'https://www.mysql.com', category: 'Databases' },
@@ -44,7 +44,7 @@ const technologies = [
   // Frontend
   { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', url: 'https://react.dev', category: 'Frontend' },
   { name: 'Bootstrap', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg', url: 'https://getbootstrap.com', category: 'Frontend' },
-{ name: 'Tailwind CSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg', url: 'https://tailwindcss.com', category: 'Frontend' }
+  { name: 'Tailwind CSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg', url: 'https://tailwindcss.com', category: 'Frontend' }
 ];
 
 const categoryConfig: Record<string, { title: string; gradient: string; iconColor: string }> = {
@@ -57,7 +57,7 @@ const categoryConfig: Record<string, { title: string; gradient: string; iconColo
   Frontend: { title: 'Front-End', gradient: 'from-cyan-500/20 to-purple-500/20', iconColor: 'text-cyan-400' },
 };
 
-const categories = ['Languages', 'Backend', 'DevOps', 'Cloud', 'Databases', 'Tools', 'Frontend'];
+const categories = ['Languages', 'Backend', 'Frontend', 'Cloud', 'Databases', 'Tools', 'DevOps'];
 
 // Floating particles component for magical effect
 const FloatingParticles = () => {
@@ -99,11 +99,11 @@ const Skills = () => {
     // GSAP scroll animations for category cards
     cardsRef.current.forEach((card, index) => {
       if (!card) return;
-      
+
       gsap.fromTo(
         card,
-        { 
-          opacity: 0, 
+        {
+          opacity: 0,
           y: 60,
           rotateX: 15,
           scale: 0.9
@@ -135,10 +135,10 @@ const Skills = () => {
       {/* Background effects */}
       <div className="absolute bottom-0 right-1/4 w-64 md:w-96 h-64 md:h-96 bg-accent/5 rounded-full blur-3xl" />
       <div className="absolute top-1/4 left-0 w-48 md:w-72 h-48 md:h-72 bg-primary/5 rounded-full blur-3xl" />
-      
+
       {/* Floating particles */}
       <FloatingParticles />
-      
+
       <div className="container mx-auto px-4 md:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -146,9 +146,9 @@ const Skills = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12 md:mb-16"
         >
-          <motion.span 
+          <motion.span
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm font-mono text-primary mb-4"
-            animate={{ 
+            animate={{
               boxShadow: ['0 0 20px hsl(var(--primary)/0.3)', '0 0 40px hsl(var(--primary)/0.5)', '0 0 20px hsl(var(--primary)/0.3)']
             }}
             transition={{ duration: 2, repeat: Infinity }}
@@ -160,7 +160,7 @@ const Skills = () => {
             Tools & <span className="gradient-text">Technologies</span>
           </h2>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-            A comprehensive toolkit spanning backend development, DevOps practices, 
+            A comprehensive toolkit spanning backend development, DevOps practices,
             and cloud technologies.
           </p>
         </motion.div>
@@ -179,16 +179,16 @@ const Skills = () => {
                 className="space-y-4"
                 style={{ perspective: '1000px' }}
               >
-                <motion.h3 
+                <motion.h3
                   className="text-lg md:text-xl font-bold flex items-center gap-2"
                   whileHover={{ x: 5 }}
                 >
                   <span className={config.iconColor}>●</span>
-                  {config.title} <span className="text-primary">()</span>
+                  {config.title} 
                 </motion.h3>
-                <motion.div 
-                  className={`glass rounded-2xl p-4 md:p-6 bg-gradient-to-br ${config.gradient} relative overflow-hidden group`}
-                  whileHover={{ 
+                <motion.div
+                  className={`glass rounded-2xl p-4 md:p-6 bg-gradient-to-b ${config.gradient} relative overflow-hidden group`}
+                  whileHover={{
                     scale: 1.02,
                     boxShadow: '0 20px 40px -20px hsl(var(--primary)/0.3)'
                   }}
@@ -210,7 +210,7 @@ const Skills = () => {
                       ease: 'linear',
                     }}
                   />
-                  
+
                   <div className="grid grid-cols-4 sm:grid-cols-5 gap-3 md:gap-4 relative z-10">
                     {categoryTechs.map((tech, index) => (
                       <motion.a
@@ -219,8 +219,8 @@ const Skills = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex flex-col items-center gap-2 group/item cursor-pointer p-2 md:p-3 rounded-xl hover:bg-background/40 transition-all duration-300 relative"
-                        whileHover={{ 
-                          scale: 1.15, 
+                        whileHover={{
+                          scale: 1.15,
                           y: -8,
                           zIndex: 10,
                         }}
@@ -228,13 +228,13 @@ const Skills = () => {
                       >
                         <motion.div
                           className="w-10 h-10 md:w-14 md:h-14 relative"
-                          whileHover={{ 
+                          whileHover={{
                             rotate: [0, -15, 15, -10, 10, 0],
                             transition: { duration: 0.6 }
                           }}
                         >
-                          <img 
-                            src={tech.icon} 
+                          <img
+                            src={tech.icon}
                             alt={tech.name}
                             className="w-full h-full object-contain filter drop-shadow-lg"
                           />
@@ -261,7 +261,7 @@ const Skills = () => {
                         <span className="font-medium text-xs md:text-sm text-center text-foreground/80 group-hover/item:text-primary transition-colors whitespace-nowrap">
                           {tech.name}
                         </span>
-                        
+
                         {/* External link indicator on hover */}
                         <motion.div
                           className="absolute top-0 right-0 opacity-0 group-hover/item:opacity-100 transition-opacity"
