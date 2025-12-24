@@ -12,6 +12,9 @@ const experiences = [
     type: "Full-time",
     dotColor: "bg-emerald-500",
     badgeColor: "bg-emerald-500/10 text-emerald-500",
+    borderColor: "border-purple-500/50", // Added: purple border for green dot
+    textColor: "group-hover:text-purple-500", // Added: purple text for green dot
+    glowColor: "group-hover:border-purple-500/50 group-hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]", // Purple glow
     description: [
       "Leading DevOps initiatives including CI/CD pipeline development with Jenkins",
       "Managing cloud infrastructure on Hetzner Cloud with Docker containerization",
@@ -38,8 +41,11 @@ const experiences = [
     period: "2022 - 2023",
     duration: "~1.5 years",
     type: "Full-time",
-    dotColor: "bg-blue-500",
-    badgeColor: "bg-blue-500/10 text-blue-500",
+    dotColor: "bg-violet-500",
+    badgeColor: "bg-violet-500/10 text-violet-500",
+    borderColor: "border-emerald-500/50", // Added: green border for purple dot
+    textColor: "group-hover:text-emerald-500", // Added: green text for purple dot
+    glowColor: "group-hover:border-emerald-500/50 group-hover:shadow-[0_0_30px_rgba(16,185,129,0.3)]", // Green glow
     description: [
       "Developed robust backend services using Spring Boot framework",
       "Implemented microservices architecture for scalable applications",
@@ -64,8 +70,11 @@ const experiences = [
     period: "2021 - 2022",
     duration: "~6 months",
     type: "Internship",
-    dotColor: "bg-violet-400",
-    badgeColor: "bg-violet-400/10 text-amber-500",
+    dotColor: "bg-emerald-500",
+    badgeColor: "bg-emerald-500/10 text-emerald-500",
+    borderColor: "border-purple-500/50", // Added: purple border for green dot
+    textColor: "group-hover:text-purple-500", // Added: purple text for green dot
+    glowColor: "group-hover:border-purple-500/50 group-hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]", // Purple glow
     description: [
       "Learned and applied Spring Boot framework for backend development",
       "Assisted in building RESTful APIs for web applications",
@@ -94,9 +103,6 @@ const Experience = () => {
       className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 relative"
       ref={ref}
     >
-      {/* Removed the top horizontal line */}
-      {/* <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent" /> */}
-
       <div className="container mx-auto px-4 sm:px-6 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -149,7 +155,8 @@ const Experience = () => {
                   }}
                 />
 
-                <div className="glass p-4 sm:p-5 md:p-6 lg:p-8 rounded-xl sm:rounded-2xl hover:border-primary/20 transition-all duration-300 group mb-8 sm:mb-10 md:mb-12 lg:mb-16">
+                {/* Updated card with alternating hover effects */}
+                <div className={`glass p-4 sm:p-5 md:p-6 lg:p-8 rounded-xl sm:rounded-2xl border border-transparent hover:border-primary/20 transition-all duration-300 group mb-8 sm:mb-10 md:mb-12 lg:mb-16 ${exp.borderColor} ${exp.glowColor}`}>
                   <div
                     className={`flex flex-wrap items-center gap-2 sm:gap-3 mb-3 sm:mb-4 ${
                       index % 2 === 0 ? "md:justify-end" : ""
@@ -166,7 +173,8 @@ const Experience = () => {
                     </span>
                   </div>
 
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 group-hover:text-primary transition-colors duration-300">
+                  {/* Updated title with alternating hover color */}
+                  <h3 className={`text-lg sm:text-xl md:text-2xl font-bold mb-2 transition-colors duration-300 ${exp.textColor}`}>
                     {exp.title}
                   </h3>
 
@@ -195,10 +203,12 @@ const Experience = () => {
                         key={i}
                         className="text-muted-foreground text-xs sm:text-sm flex items-start gap-2"
                       >
-                        <span className="text-primary mt-1 sm:mt-1.5 flex-shrink-0">
+                        <span className={`mt-1 sm:mt-1.5 flex-shrink-0 transition-colors duration-300 ${exp.textColor.replace('group-hover:', 'group-hover/li:')}`}>
                           ▸
                         </span>
-                        <span>{item}</span>
+                        <span className={`transition-colors duration-300 ${exp.textColor.replace('group-hover:', 'group-hover/li:')}`}>
+                          {item}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -211,7 +221,7 @@ const Experience = () => {
                     {exp.technologies.map((tech) => (
                       <span
                         key={tech}
-                        className="px-2 py-0.5 sm:px-3 sm:py-1 bg-secondary text-secondary-foreground rounded-full text-xs font-medium"
+                        className="px-2 py-0.5 sm:px-3 sm:py-1 bg-secondary text-secondary-foreground rounded-full text-xs font-medium group-hover/tech:bg-primary/10 group-hover/tech:text-primary transition-colors duration-300"
                       >
                         {tech}
                       </span>
