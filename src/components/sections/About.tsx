@@ -123,7 +123,7 @@ const About = () => {
       ref={ref}
       style={{ 
         contentVisibility: 'auto',
-        containIntrinsicSize: '1px 800px'
+        containIntrinsicSize: '1px 700px'
       }}
     >
       <div className="absolute top-0 left-1/4 w-64 md:w-96 h-64 md:h-96 bg-primary/5 rounded-full blur-3xl" />
@@ -173,24 +173,6 @@ const About = () => {
                 </p>
               </motion.div>
 
-              <motion.div className="flex flex-wrap gap-2 md:gap-3">
-                {['Problem Solver', 'Team Player', 'Quick Learner', 'Detail Oriented'].map((trait, index) => (
-                  <motion.span
-                    key={trait}
-                    className="px-3 md:px-4 py-2 glass rounded-full text-xs md:text-sm font-medium cursor-default"
-                    whileHover={{ 
-                      scale: 1.1, 
-                      backgroundColor: 'hsl(var(--primary) / 0.2)',
-                      color: 'hsl(var(--primary))'
-                    }}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                    transition={{ delay: 0.5 + index * 0.1 }}
-                  >
-                    {trait}
-                  </motion.span>
-                ))}
-              </motion.div>
             </motion.div>
 
             <div 
