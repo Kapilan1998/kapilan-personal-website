@@ -27,7 +27,8 @@ const technologies = [
   { name: 'Prometheus', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg', url: 'https://prometheus.io', category: 'DevOps' },
   { name: 'Grafana', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg', url: 'https://grafana.com', category: 'DevOps' },
   { name: 'Checkmk', icon: 'https://imgs.search.brave.com/OJ8FLisFkhImBr2KW39jT9Chqva02DERa05MMavhoWM/rs:fit:0:180:1:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy9j/L2NmL0NoZWNrTUtf/bG9nby5zdmc', url: 'https://checkmk.com/', category: 'DevOps' },
-  
+  { name: 'Proxmox VE', icon: 'https://www.proxmox.com/images/proxmox/Proxmox_logo_standard_hex_400px.png', url: 'https://proxmox.com/en/', category: 'DevOps' },
+  { name: 'Dokploy', icon: 'dokploy', url: 'https://dokploy.com/', category: 'DevOps' },
 
   // Cloud
   { name: 'AWS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg', url: 'https://aws.amazon.com', category: 'Cloud' },
@@ -295,14 +296,14 @@ const Skills = () => {
               .filter(category => ['Languages', 'Backend', 'Frontend', 'Cloud'].includes(category))
               .map((category, index) => renderCategoryCard(category, index))}
           </div>
-          
+
           {/* Second row: Databases and Tools side by side */}
           <div className="lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             {orderedCategories
               .filter(category => ['Databases', 'Tools'].includes(category))
               .map((category, index) => renderCategoryCard(category, index + 4))}
           </div>
-          
+
           {/* Third row: DevOps & Infrastructure (full width) */}
           {orderedCategories
             .filter(category => category === 'DevOps')
