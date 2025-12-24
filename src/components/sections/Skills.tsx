@@ -27,6 +27,7 @@ const technologies = [
   { name: 'Prometheus', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg', url: 'https://prometheus.io', category: 'DevOps' },
   { name: 'Grafana', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg', url: 'https://grafana.com', category: 'DevOps' },
   { name: 'Checkmk', icon: 'https://imgs.search.brave.com/OJ8FLisFkhImBr2KW39jT9Chqva02DERa05MMavhoWM/rs:fit:0:180:1:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy9j/L2NmL0NoZWNrTUtf/bG9nby5zdmc', url: 'https://checkmk.com/', category: 'DevOps' },
+  
 
   // Cloud
   { name: 'AWS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg', url: 'https://aws.amazon.com', category: 'Cloud' },
@@ -57,7 +58,8 @@ const categoryConfig: Record<string, { title: string; gradient: string; iconColo
   Frontend: { title: 'Front-End', gradient: 'from-cyan-500/20 to-purple-500/20', iconColor: 'text-cyan-400' },
 };
 
-const categories = ['Languages', 'Backend', 'Frontend', 'Cloud', 'Databases', 'Tools', 'DevOps'];
+// Define categories in the specific order you want
+const orderedCategories = ['Languages', 'Backend', 'Frontend', 'Cloud', 'Databases', 'Tools', 'DevOps'];
 
 // Floating particles component for magical effect
 const FloatingParticles = () => {
@@ -130,6 +132,126 @@ const Skills = () => {
     };
   }, [isInView]);
 
+  // Function to render a category card
+  const renderCategoryCard = (category: string, categoryIndex: number) => {
+    const categoryTechs = technologies.filter((tech) => tech.category === category);
+    if (categoryTechs.length === 0) return null;
+    const config = categoryConfig[category];
+
+    // Calculate grid columns based on category and screen size
+    const getGridCols = () => {
+      if (category === 'DevOps') {
+        return 'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6';
+      }
+      return 'grid-cols-3 sm:grid-cols-4 md:grid-cols-5';
+    };
+
+    return (
+      <div
+        key={category}
+        ref={(el) => (cardsRef.current[categoryIndex] = el)}
+        className={`space-y-4 ${category === 'DevOps' ? 'lg:col-span-2' : ''}`}
+        style={{ perspective: '1000px' }}
+      >
+        <motion.h3
+          className="text-lg md:text-xl font-bold flex items-center gap-2 justify-center lg:justify-start"
+          whileHover={{ x: 5 }}
+        >
+          <span className={config.iconColor}>●</span>
+          {config.title}
+        </motion.h3>
+        <motion.div
+          className={`glass rounded-2xl p-4 md:p-6 bg-gradient-to-b ${config.gradient} relative overflow-hidden group flex flex-col items-center justify-center`}
+          whileHover={{
+            scale: 1.02,
+            boxShadow: '0 20px 40px -20px hsl(var(--primary)/0.3)'
+          }}
+          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        >
+          {/* Animated border gradient */}
+          <motion.div
+            className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            style={{
+              background: 'linear-gradient(90deg, transparent, hsl(var(--primary)/0.3), transparent)',
+              backgroundSize: '200% 100%',
+            }}
+            animate={{
+              backgroundPosition: ['0% 0%', '200% 0%'],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: 'linear',
+            }}
+          />
+
+          <div className={`grid ${getGridCols()} gap-3 md:gap-4 relative z-10 w-full`}>
+            {categoryTechs.map((tech, index) => (
+              <motion.a
+                key={tech.name}
+                href={tech.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center gap-2 group/item cursor-pointer p-2 md:p-3 rounded-xl hover:bg-background/40 transition-all duration-300 relative text-center"
+                whileHover={{
+                  scale: 1.15,
+                  y: -8,
+                  zIndex: 10,
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <motion.div
+                  className="w-10 h-10 md:w-14 md:h-14 relative flex items-center justify-center"
+                  whileHover={{
+                    rotate: [0, -15, 15, -10, 10, 0],
+                    transition: { duration: 0.6 }
+                  }}
+                >
+                  <img
+                    src={tech.icon}
+                    alt={tech.name}
+                    className="w-full h-full object-contain filter drop-shadow-lg"
+                  />
+                  {/* Glow effect on hover */}
+                  <motion.div
+                    className="absolute inset-0 bg-primary/40 rounded-full blur-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 -z-10"
+                    animate={{
+                      scale: [1, 1.2, 1],
+                    }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                    }}
+                  />
+                  {/* Sparkle effect */}
+                  <motion.div
+                    className="absolute -top-1 -right-1 opacity-0 group-hover/item:opacity-100"
+                    initial={{ scale: 0 }}
+                    whileHover={{ scale: 1 }}
+                  >
+                    <Sparkles className="w-3 h-3 text-primary" />
+                  </motion.div>
+                </motion.div>
+                <span className="font-medium text-xs md:text-sm text-center text-foreground/80 group-hover/item:text-primary transition-colors whitespace-nowrap px-1">
+                  {tech.name}
+                </span>
+
+                {/* External link indicator on hover */}
+                <motion.div
+                  className="absolute top-0 right-0 opacity-0 group-hover/item:opacity-100 transition-opacity"
+                  initial={{ scale: 0.5 }}
+                  whileHover={{ scale: 1 }}
+                >
+                  <ExternalLink className="w-3 h-3 text-primary" />
+                </motion.div>
+              </motion.a>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    );
+  };
+
   return (
     <section id="skills" className="py-16 md:py-24 lg:py-32 relative overflow-hidden" ref={ref}>
       {/* Background effects */}
@@ -165,118 +287,26 @@ const Skills = () => {
           </p>
         </motion.div>
 
-        {/* Technology Grid by Category - 2 column layout on larger screens */}
+        {/* Technology Grid by Category */}
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-          {categories.map((category, categoryIndex) => {
-            const categoryTechs = technologies.filter((tech) => tech.category === category);
-            if (categoryTechs.length === 0) return null;
-            const config = categoryConfig[category];
-
-            return (
-              <div
-                key={category}
-                ref={(el) => (cardsRef.current[categoryIndex] = el)}
-                className="space-y-4"
-                style={{ perspective: '1000px' }}
-              >
-                <motion.h3
-                  className="text-lg md:text-xl font-bold flex items-center gap-2"
-                  whileHover={{ x: 5 }}
-                >
-                  <span className={config.iconColor}>●</span>
-                  {config.title} 
-                </motion.h3>
-                <motion.div
-                  className={`glass rounded-2xl p-4 md:p-6 bg-gradient-to-b ${config.gradient} relative overflow-hidden group`}
-                  whileHover={{
-                    scale: 1.02,
-                    boxShadow: '0 20px 40px -20px hsl(var(--primary)/0.3)'
-                  }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                >
-                  {/* Animated border gradient */}
-                  <motion.div
-                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{
-                      background: 'linear-gradient(90deg, transparent, hsl(var(--primary)/0.3), transparent)',
-                      backgroundSize: '200% 100%',
-                    }}
-                    animate={{
-                      backgroundPosition: ['0% 0%', '200% 0%'],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: 'linear',
-                    }}
-                  />
-
-                  <div className="grid grid-cols-4 sm:grid-cols-5 gap-3 md:gap-4 relative z-10">
-                    {categoryTechs.map((tech, index) => (
-                      <motion.a
-                        key={tech.name}
-                        href={tech.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex flex-col items-center gap-2 group/item cursor-pointer p-2 md:p-3 rounded-xl hover:bg-background/40 transition-all duration-300 relative"
-                        whileHover={{
-                          scale: 1.15,
-                          y: -8,
-                          zIndex: 10,
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <motion.div
-                          className="w-10 h-10 md:w-14 md:h-14 relative"
-                          whileHover={{
-                            rotate: [0, -15, 15, -10, 10, 0],
-                            transition: { duration: 0.6 }
-                          }}
-                        >
-                          <img
-                            src={tech.icon}
-                            alt={tech.name}
-                            className="w-full h-full object-contain filter drop-shadow-lg"
-                          />
-                          {/* Glow effect on hover */}
-                          <motion.div
-                            className="absolute inset-0 bg-primary/40 rounded-full blur-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 -z-10"
-                            animate={{
-                              scale: [1, 1.2, 1],
-                            }}
-                            transition={{
-                              duration: 1.5,
-                              repeat: Infinity,
-                            }}
-                          />
-                          {/* Sparkle effect */}
-                          <motion.div
-                            className="absolute -top-1 -right-1 opacity-0 group-hover/item:opacity-100"
-                            initial={{ scale: 0 }}
-                            whileHover={{ scale: 1 }}
-                          >
-                            <Sparkles className="w-3 h-3 text-primary" />
-                          </motion.div>
-                        </motion.div>
-                        <span className="font-medium text-xs md:text-sm text-center text-foreground/80 group-hover/item:text-primary transition-colors whitespace-nowrap">
-                          {tech.name}
-                        </span>
-
-                        {/* External link indicator on hover */}
-                        <motion.div
-                          className="absolute top-0 right-0 opacity-0 group-hover/item:opacity-100 transition-opacity"
-                          initial={{ scale: 0.5 }}
-                          whileHover={{ scale: 1 }}
-                        >
-                          <ExternalLink className="w-3 h-3 text-primary" />
-                        </motion.div>
-                      </motion.a>
-                    ))}
-                  </div>
-                </motion.div>
-              </div>
-            );
-          })}
+          {/* First row: Languages, Backend, Frontend, Cloud in 2x2 grid */}
+          <div className="lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+            {orderedCategories
+              .filter(category => ['Languages', 'Backend', 'Frontend', 'Cloud'].includes(category))
+              .map((category, index) => renderCategoryCard(category, index))}
+          </div>
+          
+          {/* Second row: Databases and Tools side by side */}
+          <div className="lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+            {orderedCategories
+              .filter(category => ['Databases', 'Tools'].includes(category))
+              .map((category, index) => renderCategoryCard(category, index + 4))}
+          </div>
+          
+          {/* Third row: DevOps & Infrastructure (full width) */}
+          {orderedCategories
+            .filter(category => category === 'DevOps')
+            .map((category, index) => renderCategoryCard(category, index + 6))}
         </div>
       </div>
     </section>
