@@ -5,10 +5,10 @@ import { useState, useEffect } from 'react';
 
 const roles = [
   'Software Engineer',
-  'Backend Developer',
+  'Spring Boot Microservices Developer',
   'DevOps Engineer',
-  'Cloud Solutions Architect',
-  'Infrastructure Manager',
+  'Linux System Administrator',
+  'Infrastructure Automation Engineer',
 ];
 
 const socialLinks = [
@@ -56,7 +56,7 @@ const Hero = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentRole((prev) => (prev + 1) % roles.length);
-    }, 3000);
+    }, 2500);
     return () => clearInterval(interval);
   }, []);
 
@@ -84,7 +84,7 @@ const Hero = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden noise-bg pt-16 md:pt-8">
       <FloatingGeometry />
 
-      {/* Gradient overlays */}
+      {/* gradient overlays */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
       <div className="absolute top-1/4 -left-1/4 w-1/2 h-1/2 bg-primary/10 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-accent/10 rounded-full blur-3xl" />
@@ -96,7 +96,7 @@ const Hero = () => {
           animate="visible"
           className="max-w-4xl mx-auto text-center"
         >
-          {/* Profile Photo */}
+          {/* profile photo */}
           <motion.div variants={itemVariants} className="mb-6">
             <motion.div
               className="w-44 h-44 md:w-52 md:h-52 lg:w-60 lg:h-60 mx-auto rounded-full overflow-hidden border-4 border-primary/50 glow-primary"
@@ -133,35 +133,96 @@ const Hero = () => {
             variants={itemVariants}
             className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 leading-tight"
           >
-            Building{' '}
-            <span className="gradient-text">Reliable</span>
+            Backend &{' '}
+            <span className="gradient-text">DevOps</span>
             <br />
-            & Scalable Solutions
+            Engineer
           </motion.h1>
 
           <motion.p
             variants={itemVariants}
-            className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-4 text-balance px-4"
+            className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-4 text-balance px-4 relative"
           >
-            Software Engineer with <span className="text-primary font-semibold">2.5+ years</span> of experience
-            in backend development, DevOps, and cloud technologies.
+            Software Engineer with <span className="text-primary font-semibold">3 years</span> of experience in
+            <span className="relative inline-block mx-1">
+              backend development with Spring Boot ,
+              <svg
+                className="absolute -bottom-1 left-0 w-full h-2 text-primary overflow-visible"
+                viewBox="0 0 100 8"
+                preserveAspectRatio="none"
+              >
+                <motion.path
+                  d="M0,4 Q25,1 50,4 T100,4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  fill="none"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1, delay: 1.5, ease: "easeInOut" }}
+                />
+              </svg>
+            </span>
+
+            <span className="relative inline-block mx-1">
+              DevOps
+              <svg
+                className="absolute -bottom-1 left-0 w-full h-2 text-accent overflow-visible"
+                viewBox="0 0 100 8"
+                preserveAspectRatio="none"
+              >
+                <motion.path
+                  d="M0,4 Q25,7 50,4 T100,4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  fill="none"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1, delay: 2, ease: "easeInOut" }}
+                />
+              </svg>
+            </span>
+            , and
+            <span className="relative inline-block mx-1">
+              cloud technologies
+              <svg
+                className="absolute -bottom-1 left-0 w-full h-2 text-primary overflow-visible"
+                viewBox="0 0 100 8"
+                preserveAspectRatio="none"
+              >
+                <motion.path
+                  d="M0,4 Q25,1 50,4 T100,4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  fill="none"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1, delay: 2.5, ease: "easeInOut" }}
+                />
+              </svg>
+            </span>
+            .
           </motion.p>
 
+          {/* contact details */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-wrap items-center justify-center gap-4 mb-6 text-sm text-muted-foreground"
+            className="flex flex-wrap items-center justify-center gap-4 mb-6 text-lg md:text-xl text-muted-foreground"
           >
-            <div className="flex items-center gap-1">
-              <MapPin className="w-4 h-4 text-primary" />
-              <span>Jaffna, Sri Lanka</span>
+            <div className="flex items-center gap-2">
+              <MapPin className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+              <span>Jaffna, Srilanka</span>
             </div>
-            <div className="flex items-center gap-1">
-              <Phone className="w-4 h-4 text-primary" />
+            <div className="flex items-center gap-2">
+              <Phone className="w-5 h-5 md:w-6 md:h-6 text-primary" />
               <span>+94 774740186</span>
             </div>
           </motion.div>
 
-          {/* Buttons */}
+
+          {/* buttons */}
           <motion.div
             variants={itemVariants}
             className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 mb-6 px-4"
@@ -186,10 +247,9 @@ const Hero = () => {
               }}
               whileTap={{ scale: 0.95 }}
             >
-              {/* Gradient overlay on hover */}
+              {/* gradient overlay on hover */}
               <span className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/0 to-accent/0 group-hover:from-primary/5 group-hover:via-primary/3 group-hover:to-accent/5 transition-all duration-500 -z-10"></span>
 
-              {/* Content */}
               <span className="flex items-center justify-center gap-2">
                 <Download className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
                 <span className="text-foreground group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
@@ -200,7 +260,7 @@ const Hero = () => {
 
           </motion.div>
 
-          {/* Social Links */}
+          {/* social media attachents */}
           <motion.div
             variants={itemVariants}
             className="flex items-center justify-center gap-4"
