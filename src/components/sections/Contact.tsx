@@ -1,8 +1,11 @@
 import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useRef, useState, useMemo, useCallback, useEffect, lazy, Suspense } from 'react';
 import { Mail, MapPin, Send, Phone, ExternalLink, X } from 'lucide-react';
 
-const socialLinks = [
+// lazy load ReCAPTCHA
+const ReCAPTCHA = lazy(() => import('react-google-recaptcha'));
+
+const socialLinksData = [
   {
     name: 'GitHub',
     href: 'https://github.com/Kapilan1998',
@@ -44,78 +47,200 @@ const socialLinks = [
 const Contact = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const popupTimeoutRef = useRef<NodeJS.Timeout>();
 
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [touched, setTouched] = useState({ name: false, email: false, message: false });
   const [errors, setErrors] = useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Popup state
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [popupType, setPopupType] = useState<'success' | 'error'>('success');
+  const [popupMessage, setPopupMessage] = useState('');
 
-  // Validate single field
-  const validateField = (field: string, value: string) => {
+  // environment variables
+    // get access key from https://web3forms.com
+  const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB_ACCESS_TOKEN;
+  // get reCAPTCHA site key from https://www.google.com/recaptcha/admin/create
+  const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+
+  // memoized static data
+  const contactInfo = useMemo(() => [
+    { icon: Mail, label: 'Email', value: 'sriranjankapilan@gmail.com', href: 'mailto:sriranjankapilan@gmail.com' },
+    { icon: Phone, label: 'Phone', value: '+94 774740186', href: 'tel:+94774740186' },
+    { icon: MapPin, label: 'Location', value: 'Jaffna, Sri Lanka', href: null },
+  ], []);
+
+  const socialLinks = useMemo(() => socialLinksData, []);
+
+  // validation function
+  const validateField = useCallback((field: string, value: string) => {
     if (field === 'name') {
       if (!value.trim()) return 'Name is required.';
-      if (!/^[a-zA-Z]+$/.test(value)) return 'Letters only.';
+      if (!/^[a-zA-Z\s]+$/.test(value)) return 'Name should contain only letters and spaces.';
     }
     if (field === 'email') {
       if (!value.trim()) return 'Email is required.';
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Invalid email.';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Please enter a valid email address.';
     }
     if (field === 'message') {
       if (!value.trim()) return 'Message cannot be empty.';
       if (value.length > 500) return 'Message cannot exceed 500 characters.';
     }
     return '';
-  };
+  }, []);
 
-  const handleBlur = (field: string) => {
-    setTouched((prev) => ({ ...prev, [field]: true }));
-    setErrors((prev) => ({ ...prev, [field]: validateField(field, formData[field]) }));
-  };
-
-  const handleChange = (field: string, value: string) => {
-    // Limit message to 500 characters
-    if (field === 'message' && value.length > 500) return;
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    if (touched[field]) {
-      setErrors((prev) => ({ ...prev, [field]: validateField(field, value) }));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setTouched({ name: true, email: true, message: true });
-    const newErrors = {
+  // form validation helper
+  const validateForm = useCallback(() => {
+    return {
       name: validateField('name', formData.name),
       email: validateField('email', formData.email),
       message: validateField('message', formData.message),
     };
+  }, [formData, validateField]);
+
+  // event handlers
+  const handleBlur = useCallback((field: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    setErrors((prev) => ({ 
+      ...prev, 
+      [field]: validateField(field, formData[field as keyof typeof formData]) 
+    }));
+  }, [formData, validateField]);
+
+  const handleChange = useCallback((field: string, value: string) => {
+    if (field === 'message' && value.length > 500) return;
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (touched[field as keyof typeof touched]) {
+      setErrors((prev) => ({ ...prev, [field]: validateField(field, value) }));
+    }
+  }, [touched, validateField]);
+
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // check reCAPTCHA
+    if (!recaptchaToken) {
+      setPopupType('error');
+      setPopupMessage('Please complete the reCAPTCHA verification.');
+      setShowPopup(true);
+      
+      if (popupTimeoutRef.current) {
+        clearTimeout(popupTimeoutRef.current);
+      }
+      popupTimeoutRef.current = setTimeout(() => setShowPopup(false), 3000);
+      return;
+    }
+    
+    // mark all fields as touched
+    setTouched({ name: true, email: true, message: true });
+    
+    // validate all fields
+    const newErrors = validateForm();
     setErrors(newErrors);
-    if (Object.values(newErrors).some((err) => err)) return;
+    
+    // check if any errors
+    if (Object.values(newErrors).some((err) => err)) {
+      setPopupType('error');
+      setPopupMessage('Please fix the errors in the form before submitting.');
+      setShowPopup(true);
+      
+      if (popupTimeoutRef.current) {
+        clearTimeout(popupTimeoutRef.current);
+      }
+      popupTimeoutRef.current = setTimeout(() => setShowPopup(false), 3000);
+      return;
+    }
 
     setIsSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1000));
 
-    // Show popup in center
-    setShowPopup(true);
-    const timer = setTimeout(() => setShowPopup(false), 3000);
+    try {
+      // prepare data for Web3Forms
+      const formPayload = {
+        access_key: WEB3FORMS_ACCESS_KEY,
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        subject: `New Contact Form Message from ${formData.name}`,
+        from_name: 'Portfolio Contact Form',
+        botcheck: '',
+        'g-recaptcha-response': recaptchaToken,
+      };
 
-    // Reset form
-    setFormData({ name: '', email: '', message: '' });
-    setTouched({ name: false, email: false, message: false });
-    setErrors({ name: '', email: '', message: '' });
-    setIsSubmitting(false);
+      // send data to Web3Forms
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formPayload)
+      });
 
-    return () => clearTimeout(timer);
-  };
+      const result = await response.json();
 
-  const contactInfo = [
-    { icon: Mail, label: 'Email', value: 'sriranjankapilan@gmail.com', href: 'mailto:sriranjankapilan@gmail.com' },
-    { icon: Phone, label: 'Phone', value: '+94 774740186', href: 'tel:+94774740186' },
-    { icon: MapPin, label: 'Location', value: 'Jaffna, Sri Lanka', href: null },
-  ];
+      if (result.success) {
+        // successful submission
+        setPopupType('success');
+        setPopupMessage('Thank you for your message! I will get back to you soon.');
+        
+        // reset form fields after successful submission
+        setFormData({ name: '', email: '', message: '' });
+        setTouched({ name: false, email: false, message: false });
+        setErrors({ name: '', email: '', message: '' });
+        setRecaptchaToken(null);
+      } else {
+        // error from Web3Forms
+        setPopupType('error');
+        
+        // hhnandle different error cases when form submit
+        if (result.message?.includes('access_key')) {
+          setPopupMessage('Form configuration error. Please contact the website administrator.');
+        } else if (result.message?.includes('rate limit')) {
+          setPopupMessage('Too many submission attempts. Please try again in a few minutes.');
+        } else if (result.message?.includes('quota')) {
+          setPopupMessage('Form submission quota exceeded. Please try again tomorrow.');
+        } else if (result.message?.includes('spam')) {
+          setPopupMessage('Submission flagged as spam. Please ensure your message is valid.');
+        } else if (result.message?.includes('captcha') || result.message?.includes('reCAPTCHA')) {
+          setPopupMessage('reCAPTCHA verification failed. Please try again.');
+        } else {
+          setPopupMessage(result.message || 'Failed to send message. Please try again.');
+        }
+      }
+    } catch (error) {
+      // network or other error
+      console.error('Form submission error:', error);
+      setPopupType('error');
+      
+      if (error instanceof TypeError && error.message === 'Failed to fetch') {
+        setPopupMessage('Network error. Please check your internet connection and try again.');
+      } else {
+        setPopupMessage('An unexpected error occurred. Please try again later.');
+      }
+    } finally {
+      // show popup
+      setShowPopup(true);
+      setIsSubmitting(false);
+      
+      // auto-hide popup after 5 seconds
+      if (popupTimeoutRef.current) {
+        clearTimeout(popupTimeoutRef.current);
+      }
+      popupTimeoutRef.current = setTimeout(() => {
+        setShowPopup(false);
+      }, 5000);
+    }
+  }, [formData, recaptchaToken, validateForm, WEB3FORMS_ACCESS_KEY]);
+
+  // cleanup effect for timeouts
+  useEffect(() => {
+    return () => {
+      if (popupTimeoutRef.current) {
+        clearTimeout(popupTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <section id="contact" className="pt-8 pb-16 md:pt-12 md:pb-24 lg:pt-16 lg:pb-32 relative" ref={ref}>
@@ -129,10 +254,10 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12 md:mb-16"
         >
-          <span className="inline-block px-4 py-2 rounded-full glass text-sm font-mono text-primary mb-4">
+          <span className="inline-block px-4 py-2 rounded-full glass text-sm font-mono text-primary mb-3 sm:mb-4">
             Get In Touch
           </span>
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 md:mb-5">
             Let's <span className="gradient-text">Connect</span>
           </h2>
         </motion.div>
@@ -145,6 +270,9 @@ const Contact = () => {
             transition={{ delay: 0.2, duration: 0.6 }}
           >
             <form onSubmit={handleSubmit} className="glass p-6 md:p-8 rounded-2xl space-y-5 md:space-y-6">
+              {/* Hidden input for Web3Forms bot protection */}
+              <input type="hidden" name="botcheck" value="" />
+              
               {['name', 'email', 'message'].map((field) => (
                 <div key={field} className="relative">
                   <label htmlFor={field} className="block text-sm font-medium mb-2">
@@ -154,7 +282,8 @@ const Contact = () => {
                   {field === 'message' ? (
                     <textarea
                       id={field}
-                      value={formData[field]}
+                      name={field}
+                      value={formData[field as keyof typeof formData]}
                       onChange={(e) => handleChange(field, e.target.value)}
                       onBlur={() => handleBlur(field)}
                       rows={4}
@@ -164,11 +293,12 @@ const Contact = () => {
                   ) : (
                     <input
                       id={field}
+                      name={field}
                       type={field === 'email' ? 'email' : 'text'}
-                      value={formData[field]}
+                      value={formData[field as keyof typeof formData]}
                       onChange={(e) => handleChange(field, e.target.value)}
                       onBlur={() => handleBlur(field)}
-                      placeholder={field === 'name' ? 'Smith' : 'smith@example.com'}
+                      placeholder={field === 'name' ? 'Enter your name' : 'Enter your email'}
                       className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                     />
                   )}
@@ -180,13 +310,26 @@ const Contact = () => {
                     </span>
                   )}
 
-                  {touched[field] && errors[field] ? (
-                    <p className="text-red-500 text-xs mt-1">{errors[field]}</p>
-                  ) : touched[field] && !errors[field] ? (
+                  {touched[field as keyof typeof touched] && errors[field as keyof typeof errors] ? (
+                    <p className="text-red-500 text-xs mt-1">{errors[field as keyof typeof errors]}</p>
+                  ) : touched[field as keyof typeof touched] && !errors[field as keyof typeof errors] ? (
                     <p className="text-green-500 text-xs mt-1">Looks good!</p>
                   ) : null}
                 </div>
               ))}
+
+              {/* Lazy loaded ReCAPTCHA */}
+              <div className="py-2">
+                <Suspense fallback={<div className="h-20 bg-secondary/50 animate-pulse rounded-lg" />}>
+                  <ReCAPTCHA
+                    sitekey={RECAPTCHA_SITE_KEY}
+                    onChange={(token) => setRecaptchaToken(token)}
+                    onExpired={() => setRecaptchaToken(null)}
+                    theme="dark"
+                    size="normal"
+                  />
+                </Suspense>
+              </div>
 
               <motion.button
                 type="submit"
@@ -267,46 +410,62 @@ const Contact = () => {
         </div>
       </div>
 
-      {/* Centered Gradient Popup */}
+      {/* Centered Popup with Purple Text */}
       <AnimatePresence>
-  {showPopup && (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.8 }}
-      transition={{ duration: 0.6 }}
-      className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm"
-    >
-      <div className="relative px-8 py-6 rounded-2xl shadow-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-center max-w-md mx-4">
-        <button
-          className="absolute top-3 right-3 text-purple-300 hover:text-white transition-colors z-10"
-          onClick={() => setShowPopup(false)}
-        >
-          <X className="w-5 h-5" />
-        </button>
-        <div className="flex flex-col items-center">
-          <div className="w-12 h-12 rounded-full bg-white/30 flex items-center justify-center mb-4 shadow-lg">
-            <Send className="w-6 h-6 text-purple-300" />
-          </div>
-          <h3 className="text-2xl font-bold mb-2 text-purple-900">Message Sent!</h3>
-          <p className="text-lg text-purple-700 font-medium">
-            Thank you for reaching out. I'll get back to you soon.
-          </p>
-        </div>
-        
-        {/* Timing progress bar */}
-        <div className="mt-6 h-1.5 w-full bg-white/30 rounded-full overflow-hidden">
+        {showPopup && (
           <motion.div
-            initial={{ width: "100%" }}
-            animate={{ width: "0%" }}
-            transition={{ duration: 3, ease: "linear" }}
-            className="h-full bg-gradient-to-r from-purple-400 to-purple-300"
-          />
-        </div>
-      </div>
-    </motion.div>
-  )}
-</AnimatePresence>
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm"
+          >
+            <div className={`relative px-8 py-6 rounded-2xl shadow-2xl text-center max-w-md mx-4 ${
+              popupType === 'success' 
+                ? 'bg-gradient-to-r from-emerald-400 via-emerald-500 to-teal-500' 
+                : 'bg-gradient-to-r from-red-400 via-red-500 to-orange-500'
+            }`}>
+              <button
+                className="absolute top-3 right-3 text-purple-100 hover:text-white transition-colors z-10"
+                onClick={() => setShowPopup(false)}
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <div className="flex flex-col items-center">
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 shadow-lg ${
+                  popupType === 'success' ? 'bg-white/40' : 'bg-white/40'
+                }`}>
+                  {popupType === 'success' ? (
+                    <Send className="w-6 h-6 text-purple-100" />
+                  ) : (
+                    <X className="w-6 h-6 text-purple-100" />
+                  )}
+                </div>
+                <h3 className="text-2xl font-bold mb-2 text-purple-50 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">
+                  {popupType === 'success' ? 'Message Sent!' : 'Error!'}
+                </h3>
+                <p className="text-lg text-purple-100 font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
+                  {popupMessage}
+                </p>
+              </div>
+              
+              {/* Timing progress bar */}
+              <div className="mt-6 h-1.5 w-full bg-white/40 rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: "100%" }}
+                  animate={{ width: "0%" }}
+                  transition={{ duration: 5, ease: "linear" }}
+                  className={`h-full ${
+                    popupType === 'success' 
+                      ? 'bg-gradient-to-r from-purple-200 via-purple-300 to-purple-400' 
+                      : 'bg-gradient-to-r from-red-200 via-red-300 to-red-400'
+                  }`}
+                />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
