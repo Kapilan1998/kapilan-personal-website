@@ -235,7 +235,7 @@ const Skills = () => {
   };
 
   return (
-    <section id="skills" className="py-12 md:py-24 lg:py-32 relative overflow-hidden" ref={ref}>
+    <section id="skills" className="py-16 md:py-16 lg:py-8 relative overflow-hidden" ref={ref}>
       <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/4 left-0 w-48 h-48 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
