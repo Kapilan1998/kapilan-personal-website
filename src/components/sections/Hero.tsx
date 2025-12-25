@@ -97,7 +97,7 @@ const Hero = () => {
           className="max-w-4xl mx-auto text-center"
         >
           {/* profile photo */}
-          <motion.div variants={itemVariants} className="mb-6">
+          <motion.div variants={itemVariants} className="mb-6 md:mt-16 mt-12">
             <motion.div
               className="w-44 h-44 md:w-52 md:h-52 lg:w-60 lg:h-60 mx-auto rounded-full overflow-hidden border-4 border-primary/50 glow-primary"
               whileHover={{ scale: 1.05 }}
