@@ -11,17 +11,17 @@ const experiences = [
     type: "Full-time",
     dotColor: "bg-emerald-500",
     badgeColor: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
-    // Simple border hover without colored glow
-    borderColor: "group-hover:border-primary/30",
     // Text color change based on dot - green dot → purple text
     textColor: "group-hover:text-purple-500",
     description: [
-      "Leading DevOps initiatives including CI/CD pipeline development with Jenkins",
-      "Managing cloud infrastructure on Hetzner Cloud with Docker containerization",
-      "Implementing system monitoring solutions using Checkmk",
-      "Linux server administration, domain configuration, and security hardening with Cloudflare",
-      "Automating deployment processes with Ansible and Dokploy PaaS",
-      "Backend development support with Spring Boot applications",
+      "Developed Spring Boot APIs with Java 21 for secure data storage using RSA encryption to Hetzner Cloud S3",
+      "Currently focusing on DevOps: Linux administration, Docker containerization, Jenkins CI/CD pipelines",
+      "Automated infrastructure management using Ansible for Proxmox VMs/LXC containers and Hetzner Cloud servers",
+      "Deployed applications from local development to production using Dokploy platform as a service",
+      "Configured and managed domains/subdomains with Nginx, Cloudflare and HAProxy via pfSense",
+      "Implemented monitoring solutions with Checkmk for VM/server health monitoring and email alerting",
+      "Deployed Matomo analytics for user tracking for websites",
+      "Configured mailbox servers",
     ],
     technologies: [
       "Docker",
@@ -32,6 +32,9 @@ const experiences = [
       "Cloudflare",
       "Checkmk",
       "Hetzner Cloud",
+      "Proxmox",
+      "PostgreSQL",
+      "Spring Boot",
     ],
   },
   {
@@ -42,25 +45,27 @@ const experiences = [
     type: "Full-time",
     dotColor: "bg-violet-500",
     badgeColor: "bg-violet-500/10 text-violet-500 border-violet-500/20",
-    // Simple border hover without colored glow
-    borderColor: "group-hover:border-primary/30",
     // Text color change based on dot - purple dot → green text
     textColor: "group-hover:text-emerald-500",
     description: [
-      "Developed robust backend services using Spring Boot framework",
-      "Implemented microservices architecture for scalable applications",
-      "Collaborated with cross-functional teams on complex projects",
-      "Enhanced problem-solving and collaborative engineering skills",
-      "Worked with databases including PostgreSQL and MySQL",
+      "Developed Spring Boot microservices using Java 17, implemented REST APIs with inter service communication via Feign Client and API Gateway",
+      "Implemented database connectivity with MySQL and MongoDB for different service requirements",
+      "Built secure APIs with Spring Security and file handling features (Excel/PDF reports, bulk ZIP downloads) and designed PDF reports using Jaspersoft Studio",
+      "Implemented file upload/download functionality to AWS S3 for multimedia content management",
+      "Wrote comprehensive unit tests using JUnit5 and participated in code reviews and agile processes",
+      "Designed database entities based on ER diagrams",
+      "Ensured code quality and followed best practices in microservices development",
     ],
     technologies: [
       "Spring Boot",
       "Java",
-      "PostgreSQL",
       "MySQL",
+      "MongoDB",
       "REST APIs",
       "Microservices",
-      "Git",
+      "AWS S3",
+      "JUnit5",
+      "Jaspersoft",
     ],
   },
   {
@@ -71,22 +76,25 @@ const experiences = [
     type: "Internship",
     dotColor: "bg-emerald-500",
     badgeColor: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
-    // Simple border hover without colored glow
-    borderColor: "group-hover:border-primary/30",
     // Text color change based on dot - green dot → purple text
     textColor: "group-hover:text-purple-500",
     description: [
-      "Learned and applied Spring Boot framework for backend development",
-      "Assisted in building RESTful APIs for web applications",
-      "Gained hands-on experience with MongoDB and database operations",
-      "Participated in code reviews and agile development processes",
-      "Collaborated with senior developers on feature implementations",
+      "Developed REST APIs using Spring Boot and Java 8 for fintech domain application",
+      "Wrote unit test cases with JUnit5 and implemented database migrations using Flyway",
+      "Collaborated with senior developers on feature implementation and code reviews",
+      "Created Selenium automation scripts for web application testing and validation",
+      "Ensured code quality compliance through SonarQube analysis and best practices",
+      "Participated in agile development processes and sprint planning sessions",
+      "Gained hands-on experience with modern backend development workflows and tools",
     ],
     technologies: [
       "Spring Boot",
-      "Java",
-      "MongoDB",
+      "Java 8",
       "REST APIs",
+      "JUnit5",
+      "Flyway",
+      "Selenium",
+      "SonarQube",
       "Git",
       "Agile",
     ],
@@ -117,8 +125,7 @@ const Experience = () => {
             Work <span className="gradient-text">Experience</span>
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-2 sm:px-4">
-            A timeline of my professional journey in software development and
-            DevOps.
+            A timeline of my professional journey in software development and DevOps.
           </p>
         </motion.div>
 
@@ -133,11 +140,10 @@ const Experience = () => {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
-                className={`relative ${
-                  index % 2 === 0
+                className={`relative ${index % 2 === 0
                     ? "md:pr-6 md:text-right md:ml-0 md:mr-auto md:w-1/2"
                     : "md:pl-6 md:ml-auto md:w-1/2"
-                }`}
+                  }`}
               >
                 {/* Timeline dot with unique color - hidden on mobile, visible on desktop */}
                 <motion.div
@@ -155,13 +161,12 @@ const Experience = () => {
                   }}
                 />
 
-                {/* Card with simple border hover effect - removed all colored glow */}
-                <div className={`glass p-4 sm:p-5 md:p-6 rounded-xl transition-all duration-300 group border border-border/50 ${exp.borderColor} hover:shadow-lg hover:scale-[1.01]`}>
-                  
+                {/* Card with consistent gray border */}
+                <div className={`glass p-4 sm:p-5 md:p-6 rounded-xl transition-all duration-300 group border-2 border-gray-300 dark:border-gray-700 hover:shadow-lg hover:scale-[1.01] hover:border-gray-400 dark:hover:border-gray-500`}>
+
                   <div
-                    className={`flex flex-wrap items-center gap-2 sm:gap-3 mb-3 ${
-                      index % 2 === 0 ? "md:justify-end" : ""
-                    }`}
+                    className={`flex flex-wrap items-center gap-2 sm:gap-3 mb-3 ${index % 2 === 0 ? "md:justify-end" : ""
+                      }`}
                   >
                     <span
                       className={`px-2.5 py-0.5 sm:px-3 sm:py-1 ${exp.badgeColor} rounded-full text-xs sm:text-sm font-medium border`}
@@ -176,13 +181,12 @@ const Experience = () => {
 
                   {/* Title with color change based on dot */}
                   <h3 className={`text-lg sm:text-xl md:text-2xl font-bold mb-2 text-foreground transition-colors duration-300 ${exp.textColor}`}>
-                    {exp.title} 
+                    {exp.title}
                   </h3>
 
                   <div
-                    className={`flex flex-col xs:flex-row xs:flex-wrap items-start xs:items-center gap-1.5 sm:gap-2 md:gap-3 mb-3 ${
-                      index % 2 === 0 ? "md:justify-end" : ""
-                    }`}
+                    className={`flex flex-col xs:flex-row xs:flex-wrap items-start xs:items-center gap-1.5 sm:gap-2 md:gap-3 mb-3 ${index % 2 === 0 ? "md:justify-end" : ""
+                      }`}
                   >
                     <span className={`flex items-center gap-1 text-xs sm:text-sm transition-colors duration-300 ${exp.textColor}`}>
                       <Briefcase className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
@@ -195,9 +199,8 @@ const Experience = () => {
                   </div>
 
                   <ul
-                    className={`space-y-1.5 sm:space-y-2 mb-4 ${
-                      index % 2 === 0 ? "md:text-left" : ""
-                    }`}
+                    className={`space-y-1.5 sm:space-y-2 mb-4 ${index % 2 === 0 ? "md:text-left" : ""
+                      }`}
                   >
                     {exp.description.map((item, i) => (
                       <li
@@ -216,9 +219,8 @@ const Experience = () => {
 
                   {/* Improved technology tags with better visibility */}
                   <div
-                    className={`flex flex-wrap gap-1.5 sm:gap-2 ${
-                      index % 2 === 0 ? "md:justify-end" : ""
-                    }`}
+                    className={`flex flex-wrap gap-1.5 sm:gap-2 ${index % 2 === 0 ? "md:justify-end" : ""
+                      }`}
                   >
                     {exp.technologies.map((tech, techIndex) => (
                       <motion.span
