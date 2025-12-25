@@ -1,5 +1,5 @@
 import { motion, useInView } from 'framer-motion';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { ExternalLink, Sparkles } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -29,7 +29,6 @@ const technologies = [
   { name: 'Checkmk', icon: 'checkmk.png', url: 'https://checkmk.com/', category: 'DevOps' },
   { name: 'Proxmox VE', icon: 'proxmox.png', url: 'https://proxmox.com/en/', category: 'DevOps' },
   { name: 'Dokploy', icon: 'dokploy.png', url: 'https://dokploy.com/', category: 'DevOps' },
-
   // Cloud
   { name: 'AWS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg', url: 'https://aws.amazon.com', category: 'Cloud' },
   { name: 'Hetzner Cloud', icon: 'hetzner.png', url: 'https://www.hetzner.com/cloud', category: 'Cloud' },
@@ -59,14 +58,24 @@ const categoryConfig: Record<string, { title: string; gradient: string; iconColo
   Frontend: { title: 'Front-End', gradient: 'from-cyan-500/20 to-purple-500/20', iconColor: 'text-cyan-400' },
 };
 
-// Define categories in the specific order you want
 const orderedCategories = ['Languages', 'Backend', 'Frontend', 'Cloud', 'Databases', 'Tools', 'DevOps'];
 
-// Floating particles component for magical effect
 const FloatingParticles = () => {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    // Check if window is available and screen is large enough
+    const checkSize = () => setIsDesktop(window.innerWidth >= 1024);
+    checkSize();
+    window.addEventListener('resize', checkSize);
+    return () => window.removeEventListener('resize', checkSize);
+  }, []);
+
+  if (!isDesktop) return null;
+
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(20)].map((_, i) => (
+      {[...Array(15)].map((_, i) => (
         <motion.div
           key={i}
           className="absolute w-1 h-1 bg-primary/30 rounded-full"
@@ -99,7 +108,6 @@ const Skills = () => {
   useEffect(() => {
     if (!ref.current) return;
 
-    // GSAP scroll animations for category cards
     cardsRef.current.forEach((card, index) => {
       if (!card) return;
 
@@ -107,39 +115,38 @@ const Skills = () => {
         card,
         {
           opacity: 0,
-          y: 60,
-          rotateX: 15,
-          scale: 0.9
+          y: 40,
+          rotateX: 10,
+          scale: 0.95
         },
         {
           opacity: 1,
           y: 0,
           rotateX: 0,
           scale: 1,
-          duration: 0.8,
-          ease: 'power3.out',
+          duration: 0.6,
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: card,
-            start: 'top 85%',
+            start: 'top 90%',
             toggleActions: 'play none none reverse',
           },
-          delay: index * 0.1,
+          delay: index * 0.05,
         }
       );
     });
 
+    // Clean up triggers on unmount
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, [isInView]);
 
-  // Function to render a category card
   const renderCategoryCard = (category: string, categoryIndex: number) => {
     const categoryTechs = technologies.filter((tech) => tech.category === category);
     if (categoryTechs.length === 0) return null;
     const config = categoryConfig[category];
 
-    // Calculate grid columns based on category and screen size
     const getGridCols = () => {
       if (category === 'DevOps') {
         return 'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6';
@@ -152,7 +159,7 @@ const Skills = () => {
         key={category}
         ref={(el) => (cardsRef.current[categoryIndex] = el)}
         className={`space-y-4 ${category === 'DevOps' ? 'lg:col-span-2' : ''}`}
-        style={{ perspective: '1000px' }}
+        style={{ perspective: '1200px' }}
       >
         <motion.h3
           className="text-lg md:text-xl font-bold flex items-center gap-2 justify-center lg:justify-start"
@@ -162,93 +169,63 @@ const Skills = () => {
           {config.title}
         </motion.h3>
         <motion.div
-          className={`glass rounded-2xl p-4 md:p-6 bg-gradient-to-b ${config.gradient} relative overflow-hidden group flex flex-col items-center justify-center`}
+          className={`glass rounded-2xl p-4 md:p-6 bg-gradient-to-b ${config.gradient} relative overflow-hidden group flex flex-col items-center justify-center will-change-transform`}
+          style={{ transformStyle: 'preserve-3d' }}
           whileHover={{
-            scale: 1.02,
-            boxShadow: '0 20px 40px -20px hsl(var(--primary)/0.3)'
+            scale: 1.01,
+            boxShadow: '0 15px 30px -15px hsl(var(--primary)/0.2)'
           }}
-          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 25 }}
         >
-          {/* Animated border gradient */}
-          <motion.div
-            className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-            style={{
-              background: 'linear-gradient(90deg, transparent, hsl(var(--primary)/0.3), transparent)',
-              backgroundSize: '200% 100%',
-            }}
-            animate={{
-              backgroundPosition: ['0% 0%', '200% 0%'],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: 'linear',
-            }}
-          />
+          {/* Subtle animated border - Disabled on mobile for performance */}
+          <div className="hidden lg:block">
+            <motion.div
+              className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+              style={{
+                background: 'linear-gradient(90deg, transparent, hsl(var(--primary)/0.2), transparent)',
+                backgroundSize: '200% 100%',
+              }}
+              animate={{ backgroundPosition: ['0% 0%', '200% 0%'] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+            />
+          </div>
 
           <div className={`grid ${getGridCols()} gap-3 md:gap-4 relative z-10 w-full`}>
-            {categoryTechs.map((tech, index) => (
+            {categoryTechs.map((tech) => (
               <motion.a
                 key={tech.name}
                 href={tech.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center justify-center gap-2 group/item cursor-pointer p-2 md:p-3 rounded-xl hover:bg-background/40 transition-all duration-300 relative text-center"
-                whileHover={{
-                  scale: 1.15,
-                  y: -8,
-                  zIndex: 10,
-                }}
+                whileHover={{ scale: 1.1, y: -5, zIndex: 10 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <motion.div
                   className="w-10 h-10 md:w-14 md:h-14 relative flex items-center justify-center"
-                  whileHover={{
-                    rotate: [0, -15, 15, -10, 10, 0],
-                    transition: { duration: 0.6 }
-                  }}
+                  style={{ transform: 'translateZ(0)' }} // Force GPU layer
                 >
                   <img
                     src={tech.icon}
                     alt={tech.name}
-                    className={`w-full h-full object-contain filter drop-shadow-lg ${tech.name === 'Checkmk' ? 'scale-[3.5]' :
+                    loading="lazy"
+                    className={`w-full h-full object-contain filter drop-shadow-md ${
+                      tech.name === 'Checkmk' ? 'scale-[3.5]' :
                       tech.name === 'Hetzner Cloud' ? 'scale-[1.8]' :
-                        tech.name === 'Dokploy' ? 'scale-[2.5]' :
-                          ''
-                      }`}
+                      tech.name === 'Dokploy' ? 'scale-[2.5]' : ''
+                    }`}
                   />
-                  {/* Glow effect on hover */}
-                  <motion.div
-                    className="absolute inset-0 bg-primary/40 rounded-full blur-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 -z-10"
-                    animate={{
-                      scale: [1, 1.2, 1],
-                    }}
-                    transition={{
-                      duration: 1.5,
-                      repeat: Infinity,
-                    }}
-                  />
-                  {/* Sparkle effect */}
-                  <motion.div
-                    className="absolute -top-1 -right-1 opacity-0 group-hover/item:opacity-100"
-                    initial={{ scale: 0 }}
-                    whileHover={{ scale: 1 }}
-                  >
-                    <Sparkles className="w-3 h-3 text-primary" />
-                  </motion.div>
+                  {/* Glow effect - only on large screens */}
+                  <div className="hidden lg:block absolute inset-0 bg-primary/20 rounded-full blur-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 -z-10" />
                 </motion.div>
-                <span className="font-medium text-xs md:text-sm text-center text-foreground/80 group-hover/item:text-primary transition-colors whitespace-nowrap px-1">
+                
+                <span className="font-medium text-[10px] sm:text-xs md:text-sm text-center text-foreground/80 group-hover/item:text-primary transition-colors whitespace-nowrap px-1">
                   {tech.name}
                 </span>
 
-                {/* External link indicator on hover */}
-                <motion.div
-                  className="absolute top-0 right-0 opacity-0 group-hover/item:opacity-100 transition-opacity"
-                  initial={{ scale: 0.5 }}
-                  whileHover={{ scale: 1 }}
-                >
+                <div className="absolute top-0 right-0 opacity-0 group-hover/item:opacity-100 transition-opacity hidden sm:block">
                   <ExternalLink className="w-3 h-3 text-primary" />
-                </motion.div>
+                </div>
               </motion.a>
             ))}
           </div>
@@ -258,57 +235,44 @@ const Skills = () => {
   };
 
   return (
-    <section id="skills" className="py-16 md:py-24 lg:py-32 relative overflow-hidden" ref={ref}>
-      {/* Background effects */}
-      <div className="absolute bottom-0 right-1/4 w-64 md:w-96 h-64 md:h-96 bg-accent/5 rounded-full blur-3xl" />
-      <div className="absolute top-1/4 left-0 w-48 md:w-72 h-48 md:h-72 bg-primary/5 rounded-full blur-3xl" />
+    <section id="skills" className="py-12 md:py-24 lg:py-32 relative overflow-hidden" ref={ref}>
+      <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 left-0 w-48 h-48 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Floating particles */}
       <FloatingParticles />
 
       <div className="container mx-auto px-4 md:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12 md:mb-16"
+          transition={{ duration: 0.5 }}
+          className="text-center mb-10 md:mb-16"
         >
-          <motion.span
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm font-mono text-primary mb-4"
-            animate={{
-              boxShadow: ['0 0 20px hsl(var(--primary)/0.3)', '0 0 40px hsl(var(--primary)/0.5)', '0 0 20px hsl(var(--primary)/0.3)']
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm font-mono text-primary mb-4">
             <Sparkles className="w-4 h-4" />
             Technical Skills
-          </motion.span>
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
+          </div>
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4">
             Tools & <span className="gradient-text">Technologies</span>
           </h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-            A comprehensive toolkit spanning backend development, DevOps practices,
-            and cloud technologies.
+          <p className="text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
+            A comprehensive toolkit spanning backend development, DevOps practices, and cloud technologies.
           </p>
         </motion.div>
 
-        {/* Technology Grid by Category */}
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-          {/* First row: Languages, Backend, Frontend, Cloud in 2x2 grid */}
           <div className="lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             {orderedCategories
               .filter(category => ['Languages', 'Backend', 'Frontend', 'Cloud'].includes(category))
               .map((category, index) => renderCategoryCard(category, index))}
           </div>
 
-          {/* Second row: Databases and Tools side by side */}
           <div className="lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             {orderedCategories
               .filter(category => ['Databases', 'Tools'].includes(category))
               .map((category, index) => renderCategoryCard(category, index + 4))}
           </div>
 
-          {/* Third row: DevOps & Infrastructure (full width) */}
           {orderedCategories
             .filter(category => category === 'DevOps')
             .map((category, index) => renderCategoryCard(category, index + 6))}
