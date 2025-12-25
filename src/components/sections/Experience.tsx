@@ -6,17 +6,14 @@ const experiences = [
   {
     title: "Software Engineer",
     company: "HomeIt System",
-    location: "Sri Lanka",
-    period: "Present",
-    duration: "~1 year",
+    location: "Jaffna, Sri Lanka",
+    period: "Jan 2025 - Present",
     type: "Full-time",
     dotColor: "bg-emerald-500",
-    badgeColor: "bg-emerald-500/10 text-emerald-500",
-    // Purple border for green dot
-    borderClass: "border border-emerald-500/20 group-hover:border-purple-500/50",
-    // Purple glow for green dot
-    glowClass: "group-hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]",
-    // Purple text for green dot
+    badgeColor: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
+    // Simple border hover without colored glow
+    borderColor: "group-hover:border-primary/30",
+    // Text color change based on dot - green dot → purple text
     textColor: "group-hover:text-purple-500",
     description: [
       "Leading DevOps initiatives including CI/CD pipeline development with Jenkins",
@@ -40,17 +37,14 @@ const experiences = [
   {
     title: "Associate Software Engineer (Backend)",
     company: "CodeLantic (Pvt) Ltd",
-    location: "Sri Lanka",
-    period: "2022 - 2023",
-    duration: "~1.5 years",
+    location: "Colombo, Sri Lanka",
+    period: "Oct 2023 - Jan 2025",
     type: "Full-time",
     dotColor: "bg-violet-500",
-    badgeColor: "bg-violet-500/10 text-violet-500",
-    // Green border for purple dot
-    borderClass: "border border-violet-500/20 group-hover:border-emerald-500/50",
-    // Green glow for purple dot
-    glowClass: "group-hover:shadow-[0_0_30px_rgba(16,185,129,0.3)]",
-    // Green text for purple dot
+    badgeColor: "bg-violet-500/10 text-violet-500 border-violet-500/20",
+    // Simple border hover without colored glow
+    borderColor: "group-hover:border-primary/30",
+    // Text color change based on dot - purple dot → green text
     textColor: "group-hover:text-emerald-500",
     description: [
       "Developed robust backend services using Spring Boot framework",
@@ -72,17 +66,14 @@ const experiences = [
   {
     title: "Intern Software Engineer (Backend)",
     company: "CodeLantic (Pvt) Ltd",
-    location: "Sri Lanka",
-    period: "2021 - 2022",
-    duration: "~6 months",
+    location: "Colombo, Sri Lanka",
+    period: "Mar 2023 - Sep 2023",
     type: "Internship",
     dotColor: "bg-emerald-500",
-    badgeColor: "bg-emerald-500/10 text-emerald-500",
-    // Purple border for green dot
-    borderClass: "border border-emerald-500/20 group-hover:border-purple-500/50",
-    // Purple glow for green dot
-    glowClass: "group-hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]",
-    // Purple text for green dot
+    badgeColor: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
+    // Simple border hover without colored glow
+    borderColor: "group-hover:border-primary/30",
+    // Text color change based on dot - green dot → purple text
     textColor: "group-hover:text-purple-500",
     description: [
       "Learned and applied Spring Boot framework for backend development",
@@ -164,26 +155,8 @@ const Experience = () => {
                   }}
                 />
 
-                {/* Card with proper border and glow animation */}
-                <div className={`glass p-4 sm:p-5 md:p-6 rounded-xl transition-all duration-500 group ${exp.borderClass} ${exp.glowClass} hover:scale-[1.02]`}>
-                  
-                  {/* Animated gradient border overlay */}
-                  <motion.div 
-                    className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"
-                    style={{
-                      background: exp.dotColor.includes('emerald') 
-                        ? 'linear-gradient(90deg, transparent, rgba(168,85,247,0.3), transparent)' // Purple gradient for green dots
-                        : 'linear-gradient(90deg, transparent, rgba(16,185,129,0.3), transparent)' // Green gradient for purple dots
-                    }}
-                    animate={{
-                      backgroundPosition: ['200% 0%', '-200% 0%'],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                  />
+                {/* Card with simple border hover effect - removed all colored glow */}
+                <div className={`glass p-4 sm:p-5 md:p-6 rounded-xl transition-all duration-300 group border border-border/50 ${exp.borderColor} hover:shadow-lg hover:scale-[1.01]`}>
                   
                   <div
                     className={`flex flex-wrap items-center gap-2 sm:gap-3 mb-3 ${
@@ -191,7 +164,7 @@ const Experience = () => {
                     }`}
                   >
                     <span
-                      className={`px-2.5 py-0.5 sm:px-3 sm:py-1 ${exp.badgeColor} rounded-full text-xs sm:text-sm font-medium border border-current/20`}
+                      className={`px-2.5 py-0.5 sm:px-3 sm:py-1 ${exp.badgeColor} rounded-full text-xs sm:text-sm font-medium border`}
                     >
                       {exp.type}
                     </span>
@@ -201,21 +174,21 @@ const Experience = () => {
                     </span>
                   </div>
 
-                  {/* Title with hover color change */}
-                  <h3 className={`text-lg sm:text-xl md:text-2xl font-bold mb-2 transition-colors duration-500 ${exp.textColor}`}>
-                    {exp.title}
+                  {/* Title with color change based on dot */}
+                  <h3 className={`text-lg sm:text-xl md:text-2xl font-bold mb-2 text-foreground transition-colors duration-300 ${exp.textColor}`}>
+                    {exp.title} 
                   </h3>
 
                   <div
-                    className={`flex flex-col xs:flex-row xs:flex-wrap items-start xs:items-center gap-1.5 sm:gap-2 md:gap-3 text-muted-foreground mb-3 ${
+                    className={`flex flex-col xs:flex-row xs:flex-wrap items-start xs:items-center gap-1.5 sm:gap-2 md:gap-3 mb-3 ${
                       index % 2 === 0 ? "md:justify-end" : ""
                     }`}
                   >
-                    <span className="flex items-center gap-1 text-xs sm:text-sm">
+                    <span className={`flex items-center gap-1 text-xs sm:text-sm transition-colors duration-300 ${exp.textColor}`}>
                       <Briefcase className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                       <span className="truncate">{exp.company}</span>
                     </span>
-                    <span className="flex items-center gap-1 text-xs sm:text-sm">
+                    <span className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground">
                       <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                       {exp.location}
                     </span>
@@ -231,29 +204,33 @@ const Experience = () => {
                         key={i}
                         className="text-muted-foreground text-xs sm:text-sm flex items-start gap-2 group/li"
                       >
-                        <span className={`mt-1 sm:mt-1.5 flex-shrink-0 transition-colors duration-500 ${exp.textColor.replace('group-hover:', 'group-hover/li:')}`}>
+                        <span className={`mt-1 sm:mt-1.5 flex-shrink-0 text-primary transition-colors duration-300 ${exp.textColor.replace('group-hover:', 'group-hover/li:')}`}>
                           ▸
                         </span>
-                        <span className={`transition-colors duration-500 ${exp.textColor.replace('group-hover:', 'group-hover/li:')}`}>
+                        <span className={`text-foreground/90 transition-colors duration-300 ${exp.textColor.replace('group-hover:', 'group-hover/li:')}`}>
                           {item}
                         </span>
                       </li>
                     ))}
                   </ul>
 
-                  {/* Technology tags with better visibility */}
+                  {/* Improved technology tags with better visibility */}
                   <div
                     className={`flex flex-wrap gap-1.5 sm:gap-2 ${
                       index % 2 === 0 ? "md:justify-end" : ""
                     }`}
                   >
-                    {exp.technologies.map((tech) => (
-                      <span
+                    {exp.technologies.map((tech, techIndex) => (
+                      <motion.span
                         key={tech}
-                        className="px-2 py-0.5 sm:px-2.5 sm:py-1 bg-secondary/80 dark:bg-secondary text-secondary-foreground dark:text-secondary-foreground rounded-full text-xs font-medium border border-border dark:border-secondary-foreground/20 group-hover/tech:bg-primary/10 group-hover/tech:text-primary group-hover/tech:border-primary/30 transition-all duration-300"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.3, delay: techIndex * 0.05 }}
+                        className="px-2.5 py-1 sm:px-3 sm:py-1.5 bg-white dark:bg-secondary text-gray-800 dark:text-secondary-foreground rounded-full text-xs sm:text-sm font-medium border-2 border-gray-300 dark:border-secondary-foreground/30 group-hover/tech:border-primary/50 group-hover/tech:bg-primary/10 group-hover/tech:text-primary dark:group-hover/tech:text-primary transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
                       >
                         {tech}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
                 </div>
