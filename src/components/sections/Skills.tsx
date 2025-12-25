@@ -11,7 +11,7 @@ const technologies = [
   { name: 'Java', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg', url: 'https://www.java.com', category: 'Languages' },
   { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', url: 'https://www.python.org', category: 'Languages' },
   { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript', category: 'Languages' },
-  { name: 'Php', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg', url: 'https://developer.mozilla.org/en-US/docs/Glossary/PHP', category: 'Languages' },
+  { name: 'Php', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg', url: 'https://www.php.net/docs.php', category: 'Languages' },
   // Backend
   { name: 'Spring Boot', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg', url: 'https://spring.io/projects/spring-boot', category: 'Backend' },
   { name: 'Flask', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg', url: 'https://flask.palletsprojects.com/', category: 'Backend' },
@@ -26,13 +26,13 @@ const technologies = [
   { name: 'Kubernetes', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg', url: 'https://kubernetes.io', category: 'DevOps' },
   { name: 'Prometheus', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg', url: 'https://prometheus.io', category: 'DevOps' },
   { name: 'Grafana', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg', url: 'https://grafana.com', category: 'DevOps' },
-  { name: 'Checkmk', icon: 'https://imgs.search.brave.com/OJ8FLisFkhImBr2KW39jT9Chqva02DERa05MMavhoWM/rs:fit:0:180:1:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy9j/L2NmL0NoZWNrTUtf/bG9nby5zdmc', url: 'https://checkmk.com/', category: 'DevOps' },
-  { name: 'Proxmox VE', icon: 'https://imgs.search.brave.com/1e2ORtBCsTme8MQMdJrymhpubMQ70ATSryZVPtPcFwg/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9jZG4u/anNkZWxpdnIubmV0/L2doL2hvbWFyci1s/YWJzL2Rhc2hib2Fy/ZC1pY29ucy9zdmcv/cHJveG1veC5zdmc', url: 'https://proxmox.com/en/', category: 'DevOps' },
-  { name: 'Dokploy', icon: 'https://imgs.search.brave.com/98PBIi3HKn_6gw_dDJWzt9EcjgkonWDgIvRRXlYxopQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9uaW5l/bGFicy5ibG9nL3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDI0LzEy/L2xvZ28tZG9rcGxv/eS53ZWJw', url: 'https://dokploy.com/', category: 'DevOps' },
+  { name: 'Checkmk', icon: 'checkmk.png', url: 'https://checkmk.com/', category: 'DevOps' },
+  { name: 'Proxmox VE', icon: 'proxmox.png', url: 'https://proxmox.com/en/', category: 'DevOps' },
+  { name: 'Dokploy', icon: 'dokploy.png', url: 'https://dokploy.com/', category: 'DevOps' },
 
   // Cloud
   { name: 'AWS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg', url: 'https://aws.amazon.com', category: 'Cloud' },
-  { name: 'Hetzner Cloud', icon: 'https://imgs.search.brave.com/bGQdphu1oGnGNT1PD0AL3PzfjUW0zCkRRNqMnswPWss/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pY29u/bG9nb3ZlY3Rvci5j/b20vdXBsb2Fkcy9p/bWFnZXMvMjAyNC8x/MS9sZy02NzNmMjFj/YTk2YTU1LUhldHpu/ZXIud2VicA', url: 'https://www.hetzner.com/cloud', category: 'Cloud' },
+  { name: 'Hetzner Cloud', icon: 'hetzner.png', url: 'https://www.hetzner.com/cloud', category: 'Cloud' },
   // Databases
   { name: 'PostgreSQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg', url: 'https://www.postgresql.org', category: 'Databases' },
   { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg', url: 'https://www.mysql.com', category: 'Databases' },
@@ -209,10 +209,14 @@ const Skills = () => {
                   }}
                 >
                   <img
-  src={tech.icon}
-  alt={tech.name}
-  className={`w-full h-full object-contain filter drop-shadow-lg ${tech.name === 'Checkmk' || tech.name === 'Hetzner Cloud' || tech.name === 'Dokploy' ? 'scale-[2.0]' : ''}`}
-/>
+                    src={tech.icon}
+                    alt={tech.name}
+                    className={`w-full h-full object-contain filter drop-shadow-lg ${tech.name === 'Checkmk' ? 'scale-[3.5]' :
+                      tech.name === 'Hetzner Cloud' ? 'scale-[1.8]' :
+                        tech.name === 'Dokploy' ? 'scale-[2.5]' :
+                          ''
+                      }`}
+                  />
                   {/* Glow effect on hover */}
                   <motion.div
                     className="absolute inset-0 bg-primary/40 rounded-full blur-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 -z-10"
