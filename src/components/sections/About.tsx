@@ -119,7 +119,7 @@ const About = () => {
   return (
     <section 
       id="about" 
-      className="pt-8 pb-16 md:pt-12 md:pb-24 lg:pt-16 lg:pb-32 relative" 
+      className="pt-8 pb-12 md:pt-12 md:pb-16 lg:pt-12 lg:pb-16 relative" 
       ref={ref}
       style={{ 
         contentVisibility: 'auto',
