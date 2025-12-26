@@ -2,9 +2,10 @@ import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { useRef, useState, useMemo, useCallback, useEffect, lazy, Suspense } from 'react';
 import { Mail, MapPin, Send, Phone, ExternalLink, X } from 'lucide-react';
 
-// lazy load ReCAPTCHA
-const ReCAPTCHA = lazy(() => import('react-google-recaptcha'));
+// Lazy load hCaptcha
+const HCaptcha = lazy(() => import('@hcaptcha/react-hcaptcha'));
 
+// Memoized social links data
 const socialLinksData = [
   {
     name: 'GitHub',
@@ -48,23 +49,22 @@ const Contact = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
   const popupTimeoutRef = useRef<NodeJS.Timeout>();
+  const hcaptchaRef = useRef<any>(null);
 
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [touched, setTouched] = useState({ name: false, email: false, message: false });
   const [errors, setErrors] = useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [hcaptchaToken, setHcaptchaToken] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const [popupType, setPopupType] = useState<'success' | 'error'>('success');
   const [popupMessage, setPopupMessage] = useState('');
 
-  // environment variables
-    // get access key from https://web3forms.com
+  // Environment variables
   const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB_ACCESS_TOKEN;
-  // get reCAPTCHA site key from https://www.google.com/recaptcha/admin/create
-  const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  const HCAPTCHA_SITE_KEY = import.meta.env.VITE_HCAPTCHA_SITE_KEY;
 
-  // memoized static data
+  // Memoized static data
   const contactInfo = useMemo(() => [
     { icon: Mail, label: 'Email', value: 'sriranjankapilan@gmail.com', href: 'mailto:sriranjankapilan@gmail.com' },
     { icon: Phone, label: 'Phone', value: '+94 774740186', href: 'tel:+94774740186' },
@@ -73,7 +73,7 @@ const Contact = () => {
 
   const socialLinks = useMemo(() => socialLinksData, []);
 
-  // validation function
+  // Validation function
   const validateField = useCallback((field: string, value: string) => {
     if (field === 'name') {
       if (!value.trim()) return 'Name is required.';
@@ -90,7 +90,7 @@ const Contact = () => {
     return '';
   }, []);
 
-  // form validation helper
+  // Form validation helper
   const validateForm = useCallback(() => {
     return {
       name: validateField('name', formData.name),
@@ -99,7 +99,7 @@ const Contact = () => {
     };
   }, [formData, validateField]);
 
-  // event handlers
+  // Event handlers
   const handleBlur = useCallback((field: string) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
     setErrors((prev) => ({ 
@@ -116,13 +116,21 @@ const Contact = () => {
     }
   }, [touched, validateField]);
 
+  const handleHcaptchaVerify = useCallback((token: string) => {
+    setHcaptchaToken(token);
+  }, []);
+
+  const handleHcaptchaExpire = useCallback(() => {
+    setHcaptchaToken(null);
+  }, []);
+
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // check reCAPTCHA
-    if (!recaptchaToken) {
+    // Check hCaptcha
+    if (!hcaptchaToken) {
       setPopupType('error');
-      setPopupMessage('Please complete the reCAPTCHA verification.');
+      setPopupMessage('Please complete the security verification.');
       setShowPopup(true);
       
       if (popupTimeoutRef.current) {
@@ -132,14 +140,14 @@ const Contact = () => {
       return;
     }
     
-    // mark all fields as touched
+    // Mark all fields as touched
     setTouched({ name: true, email: true, message: true });
     
-    // validate all fields
+    // Validate all fields
     const newErrors = validateForm();
     setErrors(newErrors);
     
-    // check if any errors
+    // Check if there are any errors
     if (Object.values(newErrors).some((err) => err)) {
       setPopupType('error');
       setPopupMessage('Please fix the errors in the form before submitting.');
@@ -155,7 +163,7 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      // prepare data for Web3Forms
+      // Prepare data for Web3Forms
       const formPayload = {
         access_key: WEB3FORMS_ACCESS_KEY,
         name: formData.name,
@@ -164,10 +172,10 @@ const Contact = () => {
         subject: `New Contact Form Message from ${formData.name}`,
         from_name: 'Portfolio Contact Form',
         botcheck: '',
-        'g-recaptcha-response': recaptchaToken,
+        'h-captcha-response': hcaptchaToken,
       };
 
-      // send data to Web3Forms
+      // Send data to Web3Forms
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
@@ -180,20 +188,25 @@ const Contact = () => {
       const result = await response.json();
 
       if (result.success) {
-        // successful submission
+        // Successful submission
         setPopupType('success');
         setPopupMessage('Thank you for your message! I will get back to you soon.');
         
-        // reset form fields after successful submission
+        // Reset form fields after successful submission
         setFormData({ name: '', email: '', message: '' });
         setTouched({ name: false, email: false, message: false });
         setErrors({ name: '', email: '', message: '' });
-        setRecaptchaToken(null);
+        setHcaptchaToken(null);
+        
+        // Reset hCaptcha
+        if (hcaptchaRef.current) {
+          hcaptchaRef.current.resetCaptcha();
+        }
       } else {
-        // error from Web3Forms
+        // Error from Web3Forms
         setPopupType('error');
         
-        // hhnandle different error cases when form submit
+        // Handle different error cases
         if (result.message?.includes('access_key')) {
           setPopupMessage('Form configuration error. Please contact the website administrator.');
         } else if (result.message?.includes('rate limit')) {
@@ -202,14 +215,20 @@ const Contact = () => {
           setPopupMessage('Form submission quota exceeded. Please try again tomorrow.');
         } else if (result.message?.includes('spam')) {
           setPopupMessage('Submission flagged as spam. Please ensure your message is valid.');
-        } else if (result.message?.includes('captcha') || result.message?.includes('reCAPTCHA')) {
-          setPopupMessage('reCAPTCHA verification failed. Please try again.');
+        } else if (result.message?.includes('captcha') || result.message?.includes('hCaptcha')) {
+          setPopupMessage('Security verification failed. Please complete the hCaptcha again.');
         } else {
           setPopupMessage(result.message || 'Failed to send message. Please try again.');
         }
+        
+        // Reset hCaptcha on error
+        setHcaptchaToken(null);
+        if (hcaptchaRef.current) {
+          hcaptchaRef.current.resetCaptcha();
+        }
       }
     } catch (error) {
-      // network or other error
+      // Network or other error
       console.error('Form submission error:', error);
       setPopupType('error');
       
@@ -218,12 +237,18 @@ const Contact = () => {
       } else {
         setPopupMessage('An unexpected error occurred. Please try again later.');
       }
+      
+      // Reset hCaptcha on error
+      setHcaptchaToken(null);
+      if (hcaptchaRef.current) {
+        hcaptchaRef.current.resetCaptcha();
+      }
     } finally {
-      // show popup
+      // Show popup
       setShowPopup(true);
       setIsSubmitting(false);
       
-      // auto-hide popup after 5 seconds
+      // Auto-hide popup after 5 seconds
       if (popupTimeoutRef.current) {
         clearTimeout(popupTimeoutRef.current);
       }
@@ -231,9 +256,9 @@ const Contact = () => {
         setShowPopup(false);
       }, 5000);
     }
-  }, [formData, recaptchaToken, validateForm, WEB3FORMS_ACCESS_KEY]);
+  }, [formData, hcaptchaToken, validateForm, WEB3FORMS_ACCESS_KEY]);
 
-  // cleanup effect for timeouts
+  // Cleanup effect for timeouts
   useEffect(() => {
     return () => {
       if (popupTimeoutRef.current) {
@@ -318,29 +343,44 @@ const Contact = () => {
                 </div>
               ))}
 
-              {/* Lazy loaded ReCAPTCHA */}
-              <div className="py-2">
-                <Suspense fallback={<div className="h-20 bg-secondary/50 animate-pulse rounded-lg" />}>
-                  <ReCAPTCHA
-                    sitekey={RECAPTCHA_SITE_KEY}
-                    onChange={(token) => setRecaptchaToken(token)}
-                    onExpired={() => setRecaptchaToken(null)}
+              {/* hCaptcha */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                transition={{ delay: 0.4 }}
+                className="py-2"
+              >
+                <Suspense fallback={
+                  <div className="h-20 bg-secondary/50 animate-pulse rounded-lg flex items-center justify-center">
+                    <span className="text-sm text-muted-foreground">Loading security verification...</span>
+                  </div>
+                }>
+                  <HCaptcha
+                    ref={hcaptchaRef}
+                    sitekey={HCAPTCHA_SITE_KEY}
+                    onVerify={handleHcaptchaVerify}
+                    onExpire={handleHcaptchaExpire}
                     theme="dark"
                     size="normal"
                   />
                 </Suspense>
-              </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  This helps prevent automated spam submissions.
+                </p>
+              </motion.div>
 
               <motion.button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !hcaptchaToken}
                 className="w-full py-3 md:py-4 bg-primary text-primary-foreground rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                {isSubmitting ? 'Sending...' : <>
-                  Send Message <Send className="w-5 h-5" />
-                </>}
+                {isSubmitting ? 'Sending...' : (
+                  <>
+                    Send Message <Send className="w-5 h-5" />
+                  </>
+                )}
               </motion.button>
             </form>
           </motion.div>
@@ -419,12 +459,16 @@ const Contact = () => {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm"
+            onClick={() => setShowPopup(false)}
           >
-            <div className={`relative px-8 py-6 rounded-2xl shadow-2xl text-center max-w-md mx-4 ${
-              popupType === 'success' 
-                ? 'bg-gradient-to-r from-emerald-400 via-emerald-500 to-teal-500' 
-                : 'bg-gradient-to-r from-red-400 via-red-500 to-orange-500'
-            }`}>
+            <div 
+              className={`relative px-8 py-6 rounded-2xl shadow-2xl text-center max-w-md mx-4 ${
+                popupType === 'success' 
+                  ? 'bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700' 
+                  : 'bg-gradient-to-r from-red-500 via-red-600 to-red-700'
+              }`}
+              onClick={(e) => e.stopPropagation()}
+            >
               <button
                 className="absolute top-3 right-3 text-purple-100 hover:text-white transition-colors z-10"
                 onClick={() => setShowPopup(false)}
@@ -433,32 +477,32 @@ const Contact = () => {
               </button>
               <div className="flex flex-col items-center">
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 shadow-lg ${
-                  popupType === 'success' ? 'bg-white/40' : 'bg-white/40'
+                  popupType === 'success' ? 'bg-emerald-400/30' : 'bg-red-400/30'
                 }`}>
                   {popupType === 'success' ? (
-                    <Send className="w-6 h-6 text-purple-100" />
+                    <Send className="w-6 h-6 text-purple-200" />
                   ) : (
-                    <X className="w-6 h-6 text-purple-100" />
+                    <X className="w-6 h-6 text-purple-200" />
                   )}
                 </div>
-                <h3 className="text-2xl font-bold mb-2 text-purple-50 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">
+                <h3 className="text-2xl font-bold mb-2 text-purple-100 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">
                   {popupType === 'success' ? 'Message Sent!' : 'Error!'}
                 </h3>
-                <p className="text-lg text-purple-100 font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
+                <p className="text-lg text-purple-200 font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
                   {popupMessage}
                 </p>
               </div>
               
               {/* Timing progress bar */}
-              <div className="mt-6 h-1.5 w-full bg-white/40 rounded-full overflow-hidden">
+              <div className="mt-6 h-1.5 w-full bg-white/30 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: "100%" }}
                   animate={{ width: "0%" }}
                   transition={{ duration: 5, ease: "linear" }}
                   className={`h-full ${
                     popupType === 'success' 
-                      ? 'bg-gradient-to-r from-purple-200 via-purple-300 to-purple-400' 
-                      : 'bg-gradient-to-r from-red-200 via-red-300 to-red-400'
+                      ? 'bg-gradient-to-r from-purple-300 via-purple-200 to-purple-100' 
+                      : 'bg-gradient-to-r from-red-300 via-red-200 to-red-100'
                   }`}
                 />
               </div>
