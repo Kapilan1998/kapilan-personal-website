@@ -1,6 +1,5 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
-import { ExternalLink, Sparkles } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -173,7 +172,9 @@ const Skills = () => {
           style={{ transformStyle: 'preserve-3d' }}
           whileHover={{
             scale: 1.01,
-            boxShadow: '0 15px 30px -15px hsl(var(--primary)/0.2)'
+            boxShadow: '0 15px 30px -15px hsl(var(--primary)/0.2)',
+            rotateX: 2, // small rotation on X-axis for card
+            rotateY: 2, // small rotation on Y-axis for card
           }}
           transition={{ type: 'spring', stiffness: 200, damping: 25 }}
         >
@@ -198,12 +199,22 @@ const Skills = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center justify-center gap-2 group/item cursor-pointer p-2 md:p-3 rounded-xl hover:bg-background/40 transition-all duration-300 relative text-center"
-                whileHover={{ scale: 1.1, y: -5, zIndex: 10 }}
+                whileHover={{ 
+                  scale: 1.1, 
+                  y: -5, 
+                  zIndex: 10,
+                  rotateY: 8, // small rotation on Y-axis for tech items
+                  rotateX: 5, // small rotation on X-axis for tech items
+                }}
                 whileTap={{ scale: 0.95 }}
               >
                 <motion.div
                   className="w-10 h-10 md:w-14 md:h-14 relative flex items-center justify-center"
-                  style={{ transform: 'translateZ(0)' }} // Force GPU layer
+                  style={{ transform: 'translateZ(0)' }} 
+                  whileHover={{
+                    rotateZ: [0, -3, 3, -3, 0], 
+                  }}
+                  transition={{ duration: 0.5 }}
                 >
                   <img
                     src={tech.icon}
@@ -219,12 +230,19 @@ const Skills = () => {
                   <div className="hidden lg:block absolute inset-0 bg-primary/20 rounded-full blur-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 -z-10" />
                 </motion.div>
                 
-                <span className="font-medium text-[10px] sm:text-xs md:text-sm text-center text-foreground/80 group-hover/item:text-primary transition-colors whitespace-nowrap px-1">
+                <motion.span 
+                  className="font-medium text-[10px] sm:text-xs md:text-sm text-center text-foreground/80 group-hover/item:text-primary transition-colors whitespace-nowrap px-1"
+                  whileHover={{ scale: 1.05 }}
+                >
                   {tech.name}
-                </span>
+                </motion.span>
 
                 <div className="absolute top-0 right-0 opacity-0 group-hover/item:opacity-100 transition-opacity hidden sm:block">
-                  <ExternalLink className="w-3 h-3 text-primary" />
+                  <motion.div
+                    whileHover={{ rotate: 90 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                  </motion.div>
                 </div>
               </motion.a>
             ))}
@@ -249,7 +267,6 @@ const Skills = () => {
           className="text-center mb-10 md:mb-16"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm font-mono text-primary mb-4">
-            <Sparkles className="w-4 h-4" />
             Technical Skills
           </div>
           <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4">
