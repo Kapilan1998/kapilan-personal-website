@@ -44,7 +44,7 @@ const Highlights = ({ isInView }: HighlightsProps) => {
       {highlights.map((item, index) => (
         <motion.div
           key={item.title}
-          className="highlight-card border border-gray-300/40 glass p-5 md:p-6 rounded-2xl group hover:border-primary/50 transition-all duration-300 cursor-pointer h-full flex flex-col relative overflow-hidden"
+          className="highlight-card border border-gray-500/40 glass p-5 md:p-6 rounded-2xl group hover:border-primary/50 transition-all duration-300 cursor-pointer h-full flex flex-col relative overflow-hidden"
           initial={{ opacity: 0, y: 60 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{

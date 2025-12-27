@@ -4,7 +4,7 @@ import { ExternalLink } from 'lucide-react';
 const Journey = () => {
     return (
         <motion.div
-            className="glass border border-gray-300/40 p-6 md:p-8 rounded-2xl h-full"
+            className="highlight-card border border-gray-300/40 p-6 md:p-8 rounded-2xl h-full"
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.3 }}
         >
