@@ -162,7 +162,7 @@ const Experience = () => {
                 />
 
                 {/* Card with consistent gray border */}
-                <div className={`glass p-4 sm:p-5 md:p-6 rounded-xl transition-all duration-300 group border-2 border-gray-300 dark:border-gray-700 hover:shadow-lg hover:scale-[1.01] hover:border-gray-500 dark:hover:border-gray-400`}>
+                <div className={`highlight-card p-4 sm:p-5 md:p-6 rounded-xl transition-all duration-300 group border-2 border-gray-300 dark:border-gray-700 hover:shadow-lg hover:scale-[1.01] hover:border-gray-500 dark:hover:border-gray-400`}>
                   <div
                     className={`flex flex-wrap items-center gap-2 sm:gap-3 mb-3 ${index % 2 === 0 ? "md:justify-end" : ""}`}
                   >
