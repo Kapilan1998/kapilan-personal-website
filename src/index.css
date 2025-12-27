@@ -185,4 +185,8 @@
   .code-block {
     @apply font-mono text-sm p-4 rounded-lg bg-code-bg border border-border;
   }
+
+  .highlight-card {
+  border: 1px solid #2e2d2d;
+}
 }
