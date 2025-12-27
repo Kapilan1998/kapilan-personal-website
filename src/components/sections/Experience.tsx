@@ -141,8 +141,8 @@ const Experience = () => {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
                 className={`relative ${index % 2 === 0
-                    ? "md:pr-6 md:text-right md:ml-0 md:mr-auto md:w-1/2"
-                    : "md:pl-6 md:ml-auto md:w-1/2"
+                  ? "md:pr-6 md:text-right md:ml-0 md:mr-auto md:w-1/2"
+                  : "md:pl-6 md:ml-auto md:w-1/2"
                   }`}
               >
                 {/* Timeline dot with unique color - hidden on mobile, visible on desktop */}
@@ -162,18 +162,16 @@ const Experience = () => {
                 />
 
                 {/* Card with consistent gray border */}
-                <div className={`glass p-4 sm:p-5 md:p-6 rounded-xl transition-all duration-300 group border-2 border-gray-300 dark:border-gray-700 hover:shadow-lg hover:scale-[1.01] hover:border-gray-400 dark:hover:border-gray-500`}>
-
+                <div className={`glass p-4 sm:p-5 md:p-6 rounded-xl transition-all duration-300 group border-2 border-gray-300 dark:border-gray-700 hover:shadow-lg hover:scale-[1.01] hover:border-gray-500 dark:hover:border-gray-400`}>
                   <div
-                    className={`flex flex-wrap items-center gap-2 sm:gap-3 mb-3 ${index % 2 === 0 ? "md:justify-end" : ""
-                      }`}
+                    className={`flex flex-wrap items-center gap-2 sm:gap-3 mb-3 ${index % 2 === 0 ? "md:justify-end" : ""}`}
                   >
                     <span
                       className={`px-2.5 py-0.5 sm:px-3 sm:py-1 ${exp.badgeColor} rounded-full text-xs sm:text-sm font-medium border`}
                     >
                       {exp.type}
                     </span>
-                    <span className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1">
+                    <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 flex items-center gap-1">
                       <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
                       {exp.period}
                     </span>
