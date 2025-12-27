@@ -163,27 +163,24 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      // Prepare data for Web3Forms
-      const formPayload = {
-        access_key: WEB3FORMS_ACCESS_KEY,
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
-        subject: `New Contact Form Message from ${formData.name}`,
-        from_name: 'Portfolio Contact Form',
-        botcheck: '',
-        'h-captcha-response': hcaptchaToken,
-      };
+      // create FormData 
+    const formDataToSend = new FormData();
+    formDataToSend.append('access_key', WEB3FORMS_ACCESS_KEY);
+    formDataToSend.append('name', formData.name);
+    formDataToSend.append('email', formData.email);
+    formDataToSend.append('message', formData.message);
+    formDataToSend.append('subject', `New Contact Form Message from ${formData.name}`);
+    formDataToSend.append('from_name', 'Portfolio Contact Form');
 
-      // Send data to Web3Forms
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(formPayload)
-      });
+     // Web3Forms expects hCaptcha in these formats
+    formDataToSend.append('h-captcha-response', hcaptchaToken);
+    formDataToSend.append('captcha', 'hcaptcha');
+
+      // Send data to Web3Forms as FormData
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formDataToSend
+    });
 
       const result = await response.json();
 
@@ -198,37 +195,37 @@ const Contact = () => {
         setErrors({ name: '', email: '', message: '' });
         setHcaptchaToken(null);
         
-        // Reset hCaptcha
+        // reset hCaptcha
         if (hcaptchaRef.current) {
           hcaptchaRef.current.resetCaptcha();
         }
       } else {
-        // Error from Web3Forms
+        // error from Web3Forms
         setPopupType('error');
         
-        // Handle different error cases
-        if (result.message?.includes('access_key')) {
-          setPopupMessage('Form configuration error. Please contact the website administrator.');
-        } else if (result.message?.includes('rate limit')) {
-          setPopupMessage('Too many submission attempts. Please try again in a few minutes.');
-        } else if (result.message?.includes('quota')) {
-          setPopupMessage('Form submission quota exceeded. Please try again tomorrow.');
-        } else if (result.message?.includes('spam')) {
-          setPopupMessage('Submission flagged as spam. Please ensure your message is valid.');
-        } else if (result.message?.includes('captcha') || result.message?.includes('hCaptcha')) {
-          setPopupMessage('Security verification failed. Please complete the hCaptcha again.');
-        } else {
-          setPopupMessage(result.message || 'Failed to send message. Please try again.');
-        }
+        // handle different error cases
+        if (result.message?.toLowerCase().includes('access_key')) {
+        setPopupMessage('Form configuration error. Please contact the website administrator.');
+      } else if (result.message?.toLowerCase().includes('rate limit')) {
+        setPopupMessage('Too many submission attempts. Please try again in a few minutes.');
+      } else if (result.message?.toLowerCase().includes('quota')) {
+        setPopupMessage('Form submission quota exceeded. Please try again tomorrow.');
+      } else if (result.message?.toLowerCase().includes('spam')) {
+        setPopupMessage('Submission flagged as spam. Please ensure your message is valid.');
+      } else if (result.message?.toLowerCase().includes('captcha') || result.message?.toLowerCase().includes('hcaptcha')) {
+        setPopupMessage('Security verification failed. Please complete the hCaptcha again.');
+      } else {
+        setPopupMessage(result.message || 'Failed to send message. Please try again.');
+      }
         
-        // Reset hCaptcha on error
+        // reset hCaptcha on error
         setHcaptchaToken(null);
         if (hcaptchaRef.current) {
           hcaptchaRef.current.resetCaptcha();
         }
       }
     } catch (error) {
-      // Network or other error
+      // network or other errors
       console.error('Form submission error:', error);
       setPopupType('error');
       
@@ -238,17 +235,17 @@ const Contact = () => {
         setPopupMessage('An unexpected error occurred. Please try again later.');
       }
       
-      // Reset hCaptcha on error
+      // reset hCaptcha on error
       setHcaptchaToken(null);
       if (hcaptchaRef.current) {
         hcaptchaRef.current.resetCaptcha();
       }
     } finally {
-      // Show popup
+      // show popup
       setShowPopup(true);
       setIsSubmitting(false);
       
-      // Auto-hide popup after 5 seconds
+      // automatically hide popup after 5 seconds
       if (popupTimeoutRef.current) {
         clearTimeout(popupTimeoutRef.current);
       }
