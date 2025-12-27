@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Terminal, Sun, Moon } from 'lucide-react';
+import { Menu, X, Sparkle, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../ThemeProvider';
 
 const navItems = [
@@ -84,7 +84,7 @@ const Navbar = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <Terminal className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+          <Sparkle className="w-5 h-5 md:w-6 md:h-6 text-primary" />
           <span className="gradient-text">Kapilan</span>
         </motion.a>
 
