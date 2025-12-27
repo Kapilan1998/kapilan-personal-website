@@ -97,15 +97,18 @@ const Hero = () => {
           className="max-w-4xl mx-auto text-center"
         >
           {/* profile photo */}
-          <motion.div variants={itemVariants} className="mb-6 md:mt-16 mt-12">
+                    <motion.div variants={itemVariants} className="mb-6 md:mt-16 mt-12">
             <motion.div
-              className="w-44 h-44 md:w-52 md:h-52 lg:w-60 lg:h-60 mx-auto rounded-full overflow-hidden border-4 border-primary/50 glow-primary"
+              className="w-44 h-44 md:w-52 md:h-52 lg:w-60 lg:h-60 mx-auto rounded-full overflow-hidden border-4 border-primary/50 glow-primary relative"
               whileHover={{ scale: 1.05 }}
             >
               <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
+                src="/kapilan.png"
                 alt="Profile"
                 className="w-full h-full object-cover"
+                style={{
+                  transform: 'translateX(-5%) scale(1.1)' // Move left 5% and zoom 10%
+                }}
               />
             </motion.div>
           </motion.div>
