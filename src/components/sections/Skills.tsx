@@ -10,11 +10,13 @@ const technologies = [
   { name: 'Java', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg', url: 'https://www.java.com', category: 'Languages' },
   { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', url: 'https://www.python.org', category: 'Languages' },
   { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript', category: 'Languages' },
-  { name: 'Php', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg', url: 'https://www.php.net/docs.php', category: 'Languages' },
+  // { name: 'Php', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg', url: 'https://www.php.net/docs.php', category: 'Languages' },
+  
   // Backend
   { name: 'Spring Boot', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg', url: 'https://spring.io/projects/spring-boot', category: 'Backend' },
   { name: 'Flask', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg', url: 'https://flask.palletsprojects.com/', category: 'Backend' },
   { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', url: 'https://nodejs.org', category: 'Backend' },
+ 
   // DevOps
   { name: 'Linux', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg', url: 'https://www.linux.org', category: 'DevOps' },
   { name: 'Docker', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg', url: 'https://www.docker.com', category: 'DevOps' },
@@ -28,6 +30,7 @@ const technologies = [
   { name: 'Checkmk', icon: 'checkmk.png', url: 'https://checkmk.com/', category: 'DevOps' },
   { name: 'Proxmox VE', icon: 'proxmox.png', url: 'https://proxmox.com/en/', category: 'DevOps' },
   { name: 'Dokploy', icon: 'dokploy.png', url: 'https://dokploy.com/', category: 'DevOps' },
+  
   // Cloud
   { name: 'AWS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg', url: 'https://aws.amazon.com', category: 'Cloud' },
   { name: 'Hetzner Cloud', icon: 'hetzner.png', url: 'https://www.hetzner.com/cloud', category: 'Cloud' },
@@ -40,7 +43,7 @@ const technologies = [
   { name: 'Postman', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg', url: 'https://postman.com', category: 'Tools' },
   { name: 'Jira', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg', url: 'https://www.atlassian.com/software/jira', category: 'Tools' },
   { name: 'SonarQube', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sonarqube/sonarqube-original.svg', url: 'https://www.sonarsource.com/products/sonarqube/', category: 'Tools' },
-  { name: 'JUnit', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/junit/junit-original.svg', url: 'https://junit.org/junit5/', category: 'Tools' },
+  { name: 'Streamlit', icon: 'streamlit.png', url: 'https://streamlit.io/cloud', category: 'Tools' },
   // Frontend
   { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', url: 'https://react.dev', category: 'Frontend' },
   { name: 'Bootstrap', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg', url: 'https://getbootstrap.com', category: 'Frontend' },
@@ -216,6 +219,8 @@ const Skills = () => {
                   }}
                   transition={{ duration: 0.5 }}
                 >
+
+                  {/* enlarging the icon for better visibility */}
                   <img
                     src={tech.icon}
                     alt={tech.name}
@@ -223,9 +228,11 @@ const Skills = () => {
                     className={`w-full h-full object-contain filter drop-shadow-md ${
                       tech.name === 'Checkmk' ? 'scale-[3.5]' :
                       tech.name === 'Hetzner Cloud' ? 'scale-[1.8]' :
+                      tech.name === 'Streamlit' ? 'scale-[4.0]' :
                       tech.name === 'Dokploy' ? 'scale-[2.5]' : ''
                     }`}
                   />
+
                   {/* Glow effect - only on large screens */}
                   <div className="hidden lg:block absolute inset-0 bg-primary/20 rounded-full blur-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 -z-10" />
                 </motion.div>
