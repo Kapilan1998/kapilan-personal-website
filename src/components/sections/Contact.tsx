@@ -19,10 +19,10 @@ const Contact = () => {
   const [popupType, setPopupType] = useState<'success' | 'error'>('success');
   const [popupMessage, setPopupMessage] = useState('');
 
-  // Environment variable
+  // environment variable
   const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB_ACCESS_TOKEN;
 
-  // Validation function
+  // validation function
   const validateField = useCallback((field: string, value: string) => {
     if (field === 'name') {
       if (!value.trim()) return 'Name is required.';
@@ -39,7 +39,7 @@ const Contact = () => {
     return '';
   }, []);
 
-  // Form validation helper
+  // form validation helper
   const validateForm = useCallback(() => {
     return {
       name: validateField('name', formData.name),
@@ -48,7 +48,7 @@ const Contact = () => {
     };
   }, [formData, validateField]);
 
-  // Event handlers
+  // event handlers
   const handleBlur = useCallback((field: string) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
     setErrors((prev) => ({ 
@@ -66,17 +66,17 @@ const Contact = () => {
   }, [touched, validateField]);
 
   const handleSubmit = useCallback(async (formDataToSubmit: { name: string; email: string; message: string }) => {
-    // Mark all fields as touched
+    // mark all fields as touched
     setTouched({ name: true, email: true, message: true });
     
-    // Validate all fields
+    // validate all fields
     const newErrors = validateForm();
     setErrors(newErrors);
     
-    // Check if there are any errors
+    // check if there are any errors
     if (Object.values(newErrors).some((err) => err)) {
       setPopupType('error');
-      setPopupMessage('Please fix the errors in the form before submitting.');
+      setPopupMessage('Please check the errors in the form before submitting.');
       setShowPopup(true);
       
       if (popupTimeoutRef.current) {
@@ -89,16 +89,16 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      // Create FormData 
+      // create FormData 
       const formDataToSend = new FormData();
       formDataToSend.append('access_key', WEB3FORMS_ACCESS_KEY);
       formDataToSend.append('name', formDataToSubmit.name);
       formDataToSend.append('email', formDataToSubmit.email);
       formDataToSend.append('message', formDataToSubmit.message);
-      formDataToSend.append('subject', `New Contact Form Message from ${formDataToSubmit.name}`);
+      formDataToSend.append('subject', `Portfolio Contact Form Submitted by ${formDataToSubmit.name}`);
       formDataToSend.append('from_name', 'Portfolio Contact Form');
 
-      // Send data to Web3Forms as FormData
+      // send data to Web3Forms as FormData
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         body: formDataToSend
@@ -107,25 +107,25 @@ const Contact = () => {
       const result = await response.json();
 
       if (result.success) {
-        // Successful submission
+        // successful submission
         setPopupType('success');
         setPopupMessage("Thank you for your message! I'll get back to you as soon as possible. 😊");
         
-        // Reset form fields after successful submission
+        // reset form fields after successful submission
         setFormData({ name: '', email: '', message: '' });
         setTouched({ name: false, email: false, message: false });
         setErrors({ name: '', email: '', message: '' });
       } else {
-        // Error from Web3Forms
+        // error from Web3Forms
         setPopupType('error');
         
-        // Handle different error cases
+        // handle different error cases
         if (result.message?.toLowerCase().includes('access_key')) {
           setPopupMessage('Form configuration error. Please contact the website administrator.');
         } else if (result.message?.toLowerCase().includes('rate limit')) {
           setPopupMessage('Too many submission attempts. Please try again in a few minutes.');
         } else if (result.message?.toLowerCase().includes('quota')) {
-          setPopupMessage('Form submission quota exceeded. Please try again tomorrow.');
+          setPopupMessage('We have reached our submission limit. Please try again or contact us directly.');
         } else if (result.message?.toLowerCase().includes('spam')) {
           setPopupMessage('Submission flagged as spam. Please ensure your message is valid.');
         } else {
@@ -133,7 +133,7 @@ const Contact = () => {
         }
       }
     } catch (error) {
-      // Network or other errors
+      // nnetwork or other errors
       console.error('Form submission error:', error);
       setPopupType('error');
       
@@ -143,11 +143,11 @@ const Contact = () => {
         setPopupMessage('An unexpected error occurred. Please try again later.');
       }
     } finally {
-      // Show popup
+      // show popup
       setShowPopup(true);
       setIsSubmitting(false);
       
-      // Automatically hide popup after 5 seconds
+      // automatically hide popup after 5 seconds
       if (popupTimeoutRef.current) {
         clearTimeout(popupTimeoutRef.current);
       }
@@ -157,7 +157,7 @@ const Contact = () => {
     }
   }, [validateForm, WEB3FORMS_ACCESS_KEY]);
 
-  // Cleanup effect for timeouts
+  // cleanup effect for timeouts
   useEffect(() => {
     return () => {
       if (popupTimeoutRef.current) {
@@ -187,7 +187,7 @@ const Contact = () => {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-8 md:gap-12 max-w-5xl mx-auto">
-          {/* Contact Form */}
+          {/* contact Form */}
           <ContactForm
             onSubmit={handleSubmit}
             isSubmitting={isSubmitting}
@@ -198,12 +198,12 @@ const Contact = () => {
             errors={errors}
           />
 
-          {/* Contact Info */}
+          {/* contact info details*/}
           <ContactInfo isInView={isInView} />
         </div>
       </div>
 
-      {/* Lazy loaded popup */}
+      {/* lazy loaded popup */}
       <Suspense fallback={null}>
         <ContactPopup
           showPopup={showPopup}
