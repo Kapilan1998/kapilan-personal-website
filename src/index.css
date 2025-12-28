@@ -135,12 +135,12 @@
 
   .glow-primary {
     box-shadow: 0 0 40px hsl(var(--primary) / 0.3),
-                0 0 80px hsl(var(--primary) / 0.1);
+      0 0 80px hsl(var(--primary) / 0.1);
   }
 
   .glow-accent {
     box-shadow: 0 0 40px hsl(var(--accent) / 0.3),
-                0 0 80px hsl(var(--accent) / 0.1);
+      0 0 80px hsl(var(--accent) / 0.1);
   }
 
   .glass {
@@ -156,8 +156,15 @@
   }
 
   @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
   }
 
   .animate-pulse-glow {
@@ -165,8 +172,15 @@
   }
 
   @keyframes pulse-glow {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.5;
+    }
   }
 
   .noise-bg {
@@ -187,6 +201,7 @@
   }
 
   .highlight-card {
-  border: 1px solid #9ca3af;
-}
+    border: 1px solid #909db4;
+    border-radius: 10px;
+  }
 }
