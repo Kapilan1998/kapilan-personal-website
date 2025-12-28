@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useRef, useState, useMemo, useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 import { Send } from 'lucide-react';
 
 interface ContactFormProps {
@@ -38,7 +38,7 @@ const ContactForm = ({
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.2, duration: 0.6 }}
     >
-      <form onSubmit={handleSubmit} className="glass p-6 md:p-8 rounded-2xl space-y-5 md:space-y-6">
+      <form onSubmit={handleSubmit} className="highlight-card glass p-6 md:p-8 rounded-2xl space-y-5 md:space-y-6">
         <input type="hidden" name="botcheck" value="" />
         
         {fields.map((field) => (

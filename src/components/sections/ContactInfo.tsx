@@ -62,7 +62,7 @@ const ContactInfo = ({ isInView }: ContactInfoProps) => {
       className="space-y-6 md:space-y-8"
     >
       {/* Contact Info Card */}
-      <div className="glass p-6 md:p-8 rounded-2xl">
+      <div className="highlight-card glass p-6 md:p-8 rounded-2xl">
         <h3 className="text-lg md:text-xl font-bold mb-5 md:mb-6">Contact Information</h3>
         <div className="space-y-4">
           {contactInfo.map((item, index) => (
@@ -92,7 +92,7 @@ const ContactInfo = ({ isInView }: ContactInfoProps) => {
       </div>
 
       {/* Social Links Card */}
-      <div className="glass p-6 md:p-8 rounded-2xl">
+      <div className="highlight-card glass p-6 md:p-8 rounded-2xl">
         <h3 className="text-lg md:text-xl font-bold mb-5 md:mb-6">Follow Me</h3>
         <div className="grid grid-cols-2 gap-3 md:gap-4">
           {socialLinks.map((link, index) => (
@@ -101,7 +101,7 @@ const ContactInfo = ({ isInView }: ContactInfoProps) => {
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 px-4 py-3 glass rounded-xl hover:border-primary/50 transition-all group"
+              className="highlight-card flex items-center gap-3 px-4 py-3 glass rounded-xl hover:border-primary/50 transition-all group"
               whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
               initial={{ opacity: 0, y: 20 }}

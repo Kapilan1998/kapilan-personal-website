@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { Send, X } from 'lucide-react';
+import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle, AlertCircle } from "lucide-react";
 
 interface ContactPopupProps {
   showPopup: boolean;
@@ -8,64 +8,110 @@ interface ContactPopupProps {
   onClose: () => void;
 }
 
-const ContactPopup = ({ showPopup, popupType, popupMessage, onClose }: ContactPopupProps) => {
+const ContactPopup = ({
+  showPopup,
+  popupType,
+  popupMessage,
+  onClose,
+}: ContactPopupProps) => {
   return (
     <AnimatePresence>
       {showPopup && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
+          exit={{ opacity: 0, scale: 0.9 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm px-4"
+          className="fixed inset-0 flex items-center justify-center z-50 bg-black/40 px-4"
           onClick={onClose}
         >
-          <div 
-            className={`relative px-6 py-6 md:px-8 md:py-8 rounded-2xl shadow-2xl text-center w-full max-w-sm md:max-w-md mx-auto ${
-              popupType === 'success' 
-                ? 'bg-gradient-to-r from-emerald-200 via-emerald-300 to-emerald-400' 
-                : 'bg-gradient-to-r from-red-200 via-red-300 to-red-400'
-            }`}
+          <div
+            className="relative bg-red-900 rounded-xl shadow-2xl w-full max-w-sm md:max-w-md mx-auto overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              className="absolute top-3 right-3 text-purple-600 hover:text-purple-800 transition-colors z-10"
-              onClick={onClose}
-              aria-label="Close popup"
+            {/* Header Section */}
+            <div
+              className={`px-6 py-8 text-center ${
+                popupType === "success" ? "bg-green-200" : "bg-red-50"
+              }`}
             >
-              <X className="w-5 h-5 md:w-6 md:h-6" />
-            </button>
-            
-            <div className="flex flex-col items-center">
-              <div className={`w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center mb-4 shadow-lg ${
-                popupType === 'success' ? 'bg-emerald-400/30' : 'bg-red-400/30'
-              }`}>
-                {popupType === 'success' ? (
-                  <Send className="w-6 h-6 md:w-7 md:h-7 text-purple-600" />
+              <div
+                className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${
+                  popupType === "success" ? "bg-green-100" : "bg-red-100"
+                }`}
+              >
+                {popupType === "success" ? (
+                  <CheckCircle className="w-8 h-8 text-green-600" />
                 ) : (
-                  <X className="w-6 h-6 md:w-7 md:h-7 text-purple-600" />
+                  <AlertCircle className="w-8 h-8 text-red-600" />
                 )}
               </div>
-              
-              <h3 className="text-xl md:text-2xl font-bold mb-2 text-purple-600 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">
-                {popupType === 'success' ? 'Message Sent!' : 'Error!'}
+
+              <h3
+                className={`text-2xl font-bold mb-3 ${
+                  popupType === "success" ? "text-green-700" : "text-red-700"
+                }`}
+              >
+                {popupType === "success"
+                  ? "We've received your message!"
+                  : "Something went wrong. Please try again."}
               </h3>
-              
-              <p className="text-base md:text-lg font-medium text-purple-600 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)] px-2">
+
+              <p
+                className={`text-base leading-relaxed ${
+                  popupType === "success" ? "text-green-800" : "text-red-800"
+                }`}
+              >
                 {popupMessage}
               </p>
             </div>
-            
+
+            {/* Divider */}
+            <div className="border-t border-gray-200"></div>
+
+            {/* Footer Section */}
+            <div className="px-6 py-4 bg-gray-50">
+              <button
+                className={`w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
+                  popupType === "success"
+                    ? "text-white"
+                    : "bg-red-600 hover:bg-red-700 text-white"
+                }`}
+                onClick={onClose}
+              >
+                {popupType === "success" ? "" : "Try again"}
+              </button>
+            </div>
+
+            {/* Close Button */}
+            <button
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              onClick={onClose}
+              aria-label="Close popup"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+
             {/* Timing progress bar */}
-            <div className="mt-6 h-1.5 w-full bg-white/30 rounded-full overflow-hidden">
+            <div className="h-1.5 w-full bg-gray-200">
               <motion.div
                 initial={{ width: "100%" }}
                 animate={{ width: "0%" }}
                 transition={{ duration: 5, ease: "linear" }}
                 className={`h-full ${
-                  popupType === 'success' 
-                    ? 'bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700' 
-                    : 'bg-gradient-to-r from-red-500 via-red-400 to-red-300'
+                  popupType === "success" ? "bg-green-500" : "bg-red-500"
                 }`}
               />
             </div>
