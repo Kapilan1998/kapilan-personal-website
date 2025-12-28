@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sparkle, Sun, Moon } from 'lucide-react';
+import { Menu, X, Terminal, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../ThemeProvider';
 
 const navItems = [
@@ -26,7 +26,9 @@ const Navbar = () => {
   }, []);
 
   // Track active section using Intersection Observer
-  useEffect(() => {
+// Track active section using Intersection Observer
+useEffect(() => {
+  const observerCallback = () => {
     const sections = navItems.map(item => document.querySelector(item.href));
     
     const observer = new IntersectionObserver(
@@ -48,12 +50,24 @@ const Navbar = () => {
     });
 
     return () => observer.disconnect();
-  }, []);
+  };
+
+  // wait a bit for lazy components to load
+  const timeoutId = setTimeout(observerCallback, 500);
+  
+  // also run on load
+  window.addEventListener('load', observerCallback);
+  
+  return () => {
+    clearTimeout(timeoutId);
+    window.removeEventListener('load', observerCallback);
+  };
+}, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setIsOpen(false);
-    
+
     setTimeout(() => {
       const element = document.querySelector(href);
       if (element) {
@@ -75,7 +89,7 @@ const Navbar = () => {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled ? 'glass py-3 md:py-4' : 'py-4 md:py-6'
-      }`}
+        }`}
     >
       <nav className="container mx-auto px-4 md:px-8 flex items-center justify-between">
         <motion.a
@@ -84,7 +98,7 @@ const Navbar = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <Sparkle className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+          <Terminal className="w-5 h-5 md:w-6 md:h-6 text-primary" />
           <span className="gradient-text">Kapilan</span>
         </motion.a>
 
@@ -103,7 +117,7 @@ const Navbar = () => {
                   isActive(item.href)
                     ? 'text-primary'
                     : 'text-muted-foreground hover:text-foreground'
-                }`}
+                  }`}
               >
                 {item.name}
                 {/* Active indicator */}
@@ -116,11 +130,11 @@ const Navbar = () => {
                 )}
                 <span className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 bg-primary transition-all duration-300 ${
                   isActive(item.href) ? 'w-6' : 'w-0'
-                }`} />
+                  }`} />
               </button>
             </motion.li>
           ))}
-          
+
           {/* Theme Toggle */}
           <motion.li
             initial={{ opacity: 0, y: -20 }}
@@ -137,7 +151,7 @@ const Navbar = () => {
               {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </motion.button>
           </motion.li>
-          
+
           <motion.li
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -165,7 +179,7 @@ const Navbar = () => {
           >
             {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </motion.button>
-          
+
           <motion.button
             className="p-2.5 glass rounded-lg text-foreground"
             onClick={() => setIsOpen(!isOpen)}
@@ -201,7 +215,7 @@ const Navbar = () => {
                       isActive(item.href)
                         ? 'bg-primary/10 text-primary border-l-4 border-primary'
                         : 'text-foreground hover:bg-muted/50 hover:text-primary'
-                    }`}
+                      }`}
                   >
                     {item.name}
                   </button>
