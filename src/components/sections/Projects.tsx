@@ -101,7 +101,7 @@ const allProjects = [
     color: 'primary',
     githubUrl: 'https://github.com/Kapilan1998/Flask-smart-expense-tracker',
     liveDemoUrl: '',
-    documentationUrl: ''
+    documentationUrl: 'https://medium.com/@sriranjankapilan/from-zero-to-flask-building-a-complete-expense-tracker-that-i-actually-use-5ec55d300344'
   },
   {
     title: 'Spring Batch Data Processing System',
