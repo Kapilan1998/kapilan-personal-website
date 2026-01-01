@@ -92,8 +92,8 @@ const ContactInfo = ({ isInView }: ContactInfoProps) => {
       </div>
 
       {/* Social Links Card */}
-      <div className="highlight-card glass p-6 md:p-8 rounded-2xl">
-        <h3 className="text-lg md:text-xl font-bold mb-5 md:mb-6">Follow Me</h3>
+      <div className="highlight-card glass p-6 md:p-6 rounded-2xl">
+        <h3 className="text-lg md:text-xl font-bold mb-5 md:mb-4">Follow Me</h3>
         <div className="grid grid-cols-2 gap-3 md:gap-4">
           {socialLinks.map((link, index) => (
             <motion.a
