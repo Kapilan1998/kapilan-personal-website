@@ -11,12 +11,12 @@ const technologies = [
   { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', url: 'https://www.python.org', category: 'Languages' },
   { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript', category: 'Languages' },
   // { name: 'Php', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg', url: 'https://www.php.net/docs.php', category: 'Languages' },
-  
+
   // Backend
   { name: 'Spring Boot', icon: 'spring-boot.png', url: 'https://spring.io/projects/spring-boot', category: 'Backend' },
   { name: 'Flask', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg', url: 'https://flask.palletsprojects.com/', category: 'Backend' },
   { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', url: 'https://nodejs.org', category: 'Backend' },
- 
+
   // DevOps
   { name: 'Linux', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg', url: 'https://www.linux.org', category: 'DevOps' },
   { name: 'Docker', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg', url: 'https://www.docker.com', category: 'DevOps' },
@@ -30,7 +30,13 @@ const technologies = [
   { name: 'Checkmk', icon: 'checkmk.png', url: 'https://checkmk.com/', category: 'DevOps' },
   { name: 'Proxmox VE', icon: 'proxmox.png', url: 'https://proxmox.com/en/', category: 'DevOps' },
   { name: 'Dokploy', icon: 'dokploy.png', url: 'https://dokploy.com/', category: 'DevOps' },
-  
+  // { name: 'Nexus Repository', icon: 'nexus.png', url: 'https://help.sonatype.com/en/sonatype-nexus-repository.html', category: 'DevOps' },
+  // { name: 'Tailscale', icon: 'tailscale.png', url: 'https://tailscale.com', category: 'DevOps' },
+  // { name: 'GitHub Actions', icon: 'github-actions.png', url: 'https://github.com/features/actions', category: 'DevOps' },
+  // { name: 'Wazuh', icon: 'wazuh.png', url: 'https://wazuh.com', category: 'DevOps' },
+  // { name: 'Crowdsec', icon: 'crowdsec.png', url: 'https://doc.crowdsec.net', category: 'DevOps' },
+  // { name: 'Apache Kafka', icon: 'kafka.png', url: 'https://kafka.apache.org', category: 'DevOps' },
+
   // Cloud
   { name: 'AWS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg', url: 'https://aws.amazon.com', category: 'Cloud' },
   { name: 'Hetzner Cloud', icon: 'hetzner.png', url: 'https://www.hetzner.com/cloud', category: 'Cloud' },
@@ -202,9 +208,9 @@ const Skills = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center justify-center gap-2 group/item cursor-pointer p-2 md:p-3 rounded-xl hover:bg-background/40 transition-all duration-300 relative text-center"
-                whileHover={{ 
-                  scale: 1.1, 
-                  y: -5, 
+                whileHover={{
+                  scale: 1.1,
+                  y: -5,
                   zIndex: 10,
                   rotateY: 8, // small rotation on Y-axis for tech items
                   rotateX: 5, // small rotation on X-axis for tech items
@@ -213,9 +219,9 @@ const Skills = () => {
               >
                 <motion.div
                   className="w-10 h-10 md:w-14 md:h-14 relative flex items-center justify-center"
-                  style={{ transform: 'translateZ(0)' }} 
+                  style={{ transform: 'translateZ(0)' }}
                   whileHover={{
-                    rotateZ: [0, -3, 3, -3, 0], 
+                    rotateZ: [0, -3, 3, -3, 0],
                   }}
                   transition={{ duration: 0.5 }}
                 >
@@ -225,20 +231,22 @@ const Skills = () => {
                     src={tech.icon}
                     alt={tech.name}
                     loading="lazy"
-                    className={`w-full h-full object-contain filter drop-shadow-md ${
-                      tech.name === 'Spring Boot' ? 'scale-[1.5]' :
+                    className={`w-full h-full object-contain filter drop-shadow-md ${tech.name === 'Spring Boot' ? 'scale-[1.5]' :
                       tech.name === 'Checkmk' ? 'scale-[3.5]' :
-                      tech.name === 'Hetzner Cloud' ? 'scale-[1.8]' :
-                      tech.name === 'Streamlit' ? 'scale-[4.0]' :
-                      tech.name === 'Dokploy' ? 'scale-[2.5]' : ''
-                    }`}
+                        tech.name === 'Hetzner Cloud' ? 'scale-[1.8]' :
+                          tech.name === 'Streamlit' ? 'scale-[4.0]' :
+                            // tech.name === 'Tailscale' ? 'scale-[3.0]' :
+                            //   tech.name === 'Crowdsec' ? 'scale-[2.5]' :
+                            //     tech.name === 'Apache Kafka' ? 'scale-[1.2]' :
+                                  tech.name === 'Dokploy' ? 'scale-[2.5]' : ''
+                      }`}
                   />
 
                   {/* Glow effect - only on large screens */}
                   <div className="hidden lg:block absolute inset-0 bg-primary/20 rounded-full blur-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 -z-10" />
                 </motion.div>
-                
-                <motion.span 
+
+                <motion.span
                   className="font-medium text-[10px] sm:text-xs md:text-sm text-center text-foreground/80 group-hover/item:text-primary transition-colors whitespace-nowrap px-1"
                   whileHover={{ scale: 1.05 }}
                 >
