@@ -13,7 +13,7 @@ const technologies = [
   // { name: 'Php', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg', url: 'https://www.php.net/docs.php', category: 'Languages' },
   
   // Backend
-  { name: 'Spring Boot', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg', url: 'https://spring.io/projects/spring-boot', category: 'Backend' },
+  { name: 'Spring Boot', icon: 'spring-boot.png', url: 'https://spring.io/projects/spring-boot', category: 'Backend' },
   { name: 'Flask', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg', url: 'https://flask.palletsprojects.com/', category: 'Backend' },
   { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', url: 'https://nodejs.org', category: 'Backend' },
  
@@ -226,6 +226,7 @@ const Skills = () => {
                     alt={tech.name}
                     loading="lazy"
                     className={`w-full h-full object-contain filter drop-shadow-md ${
+                      tech.name === 'Spring Boot' ? 'scale-[1.5]' :
                       tech.name === 'Checkmk' ? 'scale-[3.5]' :
                       tech.name === 'Hetzner Cloud' ? 'scale-[1.8]' :
                       tech.name === 'Streamlit' ? 'scale-[4.0]' :
