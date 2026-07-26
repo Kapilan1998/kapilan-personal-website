@@ -5,7 +5,9 @@ import { useState, useEffect } from 'react';
 
 const roles = [
   'Software Engineer',
+  'Full Stack Developer',
   'Spring Boot Microservices Developer',
+  'Node.js Backend Developer',
   'DevOps Engineer',
   'Linux System Administrator',
   'Infrastructure Automation Engineer',
@@ -108,7 +110,7 @@ const Hero = () => {
           {/* profile photo */}
                     <motion.div variants={itemVariants} className="mb-6 md:mt-16 mt-12">
             <motion.div
-              className="w-44 h-44 md:w-52 md:h-52 lg:w-60 lg:h-60 mx-auto rounded-full overflow-hidden border-4 border-primary/50 glow-primary relative"
+              className="w-48 h-48 md:w-60 md:h-60 lg:w-72 lg:h-72 mx-auto rounded-full overflow-hidden border-4 border-primary/50 glow-primary relative"
               whileHover={{ scale: 1.05 }}
             >
               <img
@@ -145,7 +147,7 @@ const Hero = () => {
             variants={itemVariants}
             className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 leading-tight"
           >
-            Backend &{' '}
+            Full Stack &{' '}
             <span className="gradient-text">DevOps</span>
             <br />
             Engineer
@@ -155,9 +157,9 @@ const Hero = () => {
             variants={itemVariants}
             className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-4 text-balance px-4 relative"
           >
-            Software Engineer with <span className="text-primary font-semibold">3 years</span> of experience in
+            Software Engineer with <span className="text-primary font-semibold">3.5 years</span> of experience in
             <span className="relative inline-block mx-1">
-              backend development with Spring Boot ,
+              full stack development with React, Node.js and Spring Boot ,
               <svg
                 className="absolute -bottom-1 left-0 w-full h-2 text-primary overflow-visible"
                 viewBox="0 0 100 8"
@@ -195,7 +197,7 @@ const Hero = () => {
                 />
               </svg>
             </span>
-            , and
+             and
             <span className="relative inline-block mx-1">
               cloud technologies
               <svg
@@ -225,7 +227,7 @@ const Hero = () => {
           >
             <div className="flex items-center gap-2">
               <MapPin className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-              <span>Jaffna, Srilanka</span>
+              <span>Colombo, Srilanka</span>
             </div>
             <div className="flex items-center gap-2">
               <Phone className="w-5 h-5 md:w-6 md:h-6 text-primary" />
