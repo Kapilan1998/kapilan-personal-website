@@ -49,7 +49,7 @@ const ContactInfo = ({ isInView }: ContactInfoProps) => {
   const contactInfo = useMemo(() => [
     { icon: Mail, label: 'Email', value: 'sriranjankapilan@gmail.com', href: 'mailto:sriranjankapilan@gmail.com' },
     { icon: Phone, label: 'Phone', value: '+94 774740186', href: 'tel:+94774740186' },
-    { icon: MapPin, label: 'Location', value: 'Jaffna, Sri Lanka', href: null },
+    { icon: MapPin, label: 'Location', value: 'Colombo, Sri Lanka', href: null },
   ], []);
 
   const socialLinks = useMemo(() => socialLinksData, []);

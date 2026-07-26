@@ -23,7 +23,7 @@ const Footer = () => {
             </a>
             <span className="flex items-center gap-2">
               <MapPin className="h-4 w-4" />
-              <span>Jaffna, Sri Lanka</span>
+              <span>Colombo, Sri Lanka</span>
             </span>
           </div>
 
