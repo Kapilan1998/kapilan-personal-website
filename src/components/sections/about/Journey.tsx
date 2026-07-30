@@ -12,35 +12,32 @@ const Journey = () => {
             <div className="space-y-4">
                 <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
                     Holding a <span className="text-foreground font-medium">BSc (Hons) in Computer Science & Technology</span> from
-                    Uva Wellassa University, I've cultivated expertise across the full software delivery lifecycle from
-                    writing clean, maintainable code to orchestrating CI/CD pipelines and managing cloud infrastructure.
+                    Uva Wellassa University, I built my development foundation at <span className="text-purple-500 font-medium">CodeLantic</span>, progressing from Trainee to
+                    Associate Software Engineer over nearly two years — building production RESTful APIs in Java and Spring
+                    Boot microservice architectures, working across relational (MySQL) and non-relational (MongoDB)
+                    databases, and maintaining quality through JUnit5 and Mockito testing.
                 </p>
 
                 <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
-                    Currently, I contribute at{' '}
-                    <a
-                        href="https://homeit-system.com/de"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary font-medium hover:text-primary/80 transition-colors inline-flex items-center gap-1"
-                    >
-                        HomeIt System
-                    </a>
-                    , where I architect and maintain production grade systems with a focus on:
+                    At <span className="text-primary font-medium">HomeIt System</span>, I continue building and
+                    maintaining Spring Boot services while extending into Node.js/Express
+                    backend development, encrypted cloud data pipelines, Redis caching, and event-driven messaging with
+                    Apache Kafka, alongside frontend delivery with Next.js and React. In parallel, I own the cloud and
+                    DevOps side of the stack:
                 </p>
 
                 <ul className="list-disc pl-5 space-y-2 text-sm md:text-base text-muted-foreground">
-                    <li>Developing enterprise Spring Boot applications with PostgreSQL and Hetzner S3</li>
-                    <li>Architecting containerized deployments using Docker and orchestration tools</li>
-                    <li>Automating infrastructure with Ansible across Proxmox VMs and Hetzner Cloud</li>
-                    <li>Implementing CI/CD pipelines for seamless application deployment</li>
-                    <li>Configuring monitoring solutions with Checkmk and Matomo analytics</li>
-                    <li>Managing DNS, security, and networking with Cloudflare and pfSense</li>
+                    <li>Linux administration and core networking across Hetzner Cloud VMs and a clustered Proxmox environment</li>
+                    <li>Infrastructure automation with Ansible and containerized workloads with Docker</li>
+                    <li>CI/CD pipelines through Jenkins, with foundational exposure to AWS and Kubernetes</li>
+                    <li>Routing and load balancing with Nginx, Cloudflare and pfSense/HAProxy</li>
+                    <li>Security tooling including SIEM/intrusion detection, zero trust mesh VPN access and centralized patch management</li>
+                    <li>Production monitoring and alerting with Checkmk and Matomo analytics</li>
                 </ul>
 
                 <p className="text-muted-foreground leading-relaxed text-sm md:text-base pt-2">
-                    I'm passionate about creating efficient, secure, and scalable systems that drive
-                    business value while maintaining operational excellence.
+                    I'm comfortable taking ownership across the full engineering lifecycle from building and shipping
+                    applications to running and securing the infrastructure they live on.
                 </p>
             </div>
         </motion.div>
