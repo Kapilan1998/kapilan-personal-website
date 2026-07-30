@@ -30,12 +30,12 @@ const technologies = [
   { name: 'Checkmk', icon: 'checkmk.png', url: 'https://checkmk.com/', category: 'DevOps' },
   { name: 'Proxmox VE', icon: 'proxmox.png', url: 'https://proxmox.com/en/', category: 'DevOps' },
   { name: 'Dokploy', icon: 'dokploy.png', url: 'https://dokploy.com/', category: 'DevOps' },
-  // { name: 'Nexus Repository', icon: 'nexus.png', url: 'https://help.sonatype.com/en/sonatype-nexus-repository.html', category: 'DevOps' },
-  // { name: 'Tailscale', icon: 'tailscale.png', url: 'https://tailscale.com', category: 'DevOps' },
-  // { name: 'GitHub Actions', icon: 'github-actions.png', url: 'https://github.com/features/actions', category: 'DevOps' },
-  // { name: 'Wazuh', icon: 'wazuh.png', url: 'https://wazuh.com', category: 'DevOps' },
-  // { name: 'Crowdsec', icon: 'crowdsec.png', url: 'https://doc.crowdsec.net', category: 'DevOps' },
-  // { name: 'Apache Kafka', icon: 'kafka.png', url: 'https://kafka.apache.org', category: 'DevOps' },
+  { name: 'Nexus Repository', icon: 'nexus.png', url: 'https://help.sonatype.com/en/sonatype-nexus-repository.html', category: 'DevOps' },
+  { name: 'Tailscale', icon: 'tailscale.png', url: 'https://tailscale.com', category: 'DevOps' },
+  { name: 'GitHub Actions', icon: 'github-actions.png', url: 'https://github.com/features/actions', category: 'DevOps' },
+  { name: 'Wazuh', icon: 'wazuh.png', url: 'https://wazuh.com', category: 'DevOps' },
+  { name: 'Crowdsec', icon: 'crowdsec.png', url: 'https://doc.crowdsec.net', category: 'DevOps' },
+  { name: 'Apache Kafka', icon: 'kafka.png', url: 'https://kafka.apache.org', category: 'DevOps' },
 
   // Cloud
   { name: 'AWS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg', url: 'https://aws.amazon.com', category: 'Cloud' },
@@ -235,11 +235,11 @@ const Skills = () => {
                       tech.name === 'Checkmk' ? 'scale-[3.5]' :
                         tech.name === 'Hetzner Cloud' ? 'scale-[1.8]' :
                           tech.name === 'Streamlit' ? 'scale-[4.0]' :
-                            // tech.name === 'Tailscale' ? 'scale-[3.0]' :
-                            //   tech.name === 'Crowdsec' ? 'scale-[2.5]' :
-                            //     tech.name === 'Apache Kafka' ? 'scale-[1.2]' :
+                            tech.name === 'Tailscale' ? 'scale-[3.0]' :
+                              tech.name === 'Crowdsec' ? 'scale-[2.2]' :
+                                tech.name === 'Apache Kafka' ? 'scale-[1.2]' :
                                   tech.name === 'Dokploy' ? 'scale-[2.5]' : ''
-                      }`}
+                      } ${tech.name === 'Express.js' ? 'dark:invert' : ''}`}
                   />
 
                   {/* Glow effect - only on large screens */}
