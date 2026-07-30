@@ -1,9 +1,43 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, GitBranch, MessageSquareMore, Sparkles, Trophy, ChevronLeft, ChevronRight, Receipt, Webhook, Shield, ShoppingCart, Database, FileCheck, BookOpen } from 'lucide-react';
+import { ExternalLink, Github, GitBranch, MessageSquareMore, Sparkles, Trophy, ChevronLeft, ChevronRight, Receipt, Webhook, Shield, ShoppingCart, Database, FileCheck, BookOpen, Store, CalendarCheck } from 'lucide-react';
 
 // Extend the projects array with more example projects
 const allProjects = [
+  {
+    title: 'Point-of-Sale & E-Commerce Platform',
+    description: [
+      'Designed and built a production grade POS and e-commerce platform for a retail electronics business, now used daily by staff and customers.',
+      'Built two React/TypeScript portals: a role based admin back office for daily operations (sales, inventory, supplier purchasing, expenses and reporting) and a public customer storefront for browsing, ordering and account management.',
+      'Implemented secure authentication and role based access control with Supabase, including password reset.',
+      'Engineered sales and cash flow tracking across multiple payment types, giving the business real time visibility into revenue and outstanding balances.',
+      'Built exportable PDF/Excel reporting and deployed the system to a self managed VPS with Nginx and Cloudflare.',
+    ],
+    icon: Store,
+    technologies: ['React', 'TypeScript', 'Tailwind CSS', 'TanStack Query', 'Express', 'PostgreSQL (Supabase)', 'jsPDF', 'SheetJS (xlsx)', 'Nginx', 'Cloudflare'],
+    category: 'Full Stack',
+    color: 'primary',
+    githubUrl: '',
+    liveDemoUrl: '',
+    documentationUrl: ''
+  },
+  {
+    title: 'Cleaning Services Booking Website',
+    description: [
+      'Built a conversion focused marketing and booking website for a cleaning services business, replacing a static brochure site with an interactive lead generation funnel.',
+      'Designed a multi-step booking wizard with a live pricing engine that adjusts in real time across cleaning types, room counts, add-ons, and recurring-visit discounts.',
+      'Implemented serverless lead capture that logs bookings to a spreadsheet based CRM and hands off to WhatsApp for instant customer follow-up, with no backend required.',
+      'Generated SEO-optimized landing pages for multiple service areas from a single template, improving local search reach without duplicating content.',
+      'Delivered a fully responsive, animated UI with light/dark theming and optimized image loading, deployed as a static site for fast, low-cost hosting.',
+    ],
+    icon: CalendarCheck,
+    technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS','SonarQube'],
+    category: 'Frontend',
+    color: 'accent',
+    githubUrl: '',
+    liveDemoUrl: '',
+    documentationUrl: ''
+  },
   {
     title: 'Ansible GitHub CI/CD Automation',
     description: 'End to end DevOps automation using Ansible to create Java application, generate GitHub repo, push code, create Jenkins job, trigger pipeline, integrate SonarQube analysis, and display results.All automated via Ansible playbooks.',
@@ -257,9 +291,20 @@ const Projects = () => {
                   {project.title}
                 </h3>
 
-                <p className="text-muted-foreground mb-6 text-sm leading-relaxed">
-                  {project.description}
-                </p>
+                {Array.isArray(project.description) ? (
+                  <ul className="text-muted-foreground mb-6 text-sm leading-relaxed space-y-1.5">
+                    {project.description.map((point, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="mt-1 text-primary flex-shrink-0">▸</span>
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-muted-foreground mb-6 text-sm leading-relaxed">
+                    {project.description}
+                  </p>
+                )}
 
                 <div className="flex flex-wrap gap-2 mb-6">
                   {project.technologies.map((tech, techIndex) => (
