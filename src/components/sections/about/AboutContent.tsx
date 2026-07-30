@@ -17,11 +17,11 @@ const Header = memo(() => (
       About Me
     </motion.span>
     <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
-      Engineering <span className="gradient-text">Excellence</span>
+      Full Stack Engineering, Backed by <span className="gradient-text">DevOps</span>
     </h2>
     <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto text-balance px-4">
-      A backend focused Software Engineer with expertise in Spring Boot microservices,
-      DevOps automation, and cloud infrastructure, building scalable enterprise solutions.
+      A Software Engineer with 3.5+ years building full stack applications and the cloud
+      infrastructure that runs them in production.
     </p>
   </motion.div>
 ));
