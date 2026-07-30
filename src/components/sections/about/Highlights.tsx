@@ -5,26 +5,26 @@ import { useRef } from 'react';
 const highlights = [
   {
     icon: Server,
-    title: 'Backend Development',
-    description: 'Building robust Spring Boot microservices with Java, implementing REST APIs, JWT security, and database integrations with MySQL/MongoDB',
+    title: 'Full Stack Development',
+    description: 'Shipping complete products end to end Spring Boot and Node.js/Express APIs, React and Next.js interfaces and event driven pipelines powered by Kafka, caching and relational/non-relational databases.',
     gradient: 'from-blue-500/10 to-cyan-500/10'
   },
   {
     icon: Cloud,
-    title: 'Cloud & DevOps',
-    description: 'Orchestrating containerized deployments with Docker, automating CI/CD pipelines using Jenkins, and managing cloud infrastructure on Hetzner',
+    title: 'Cloud & Infrastructure',
+    description: 'Provisioning and managing Hetzner Cloud VMs and a clustered Proxmox environment, with core networking, routing and load balancing across Nginx, Cloudflare and pfSense/HAProxy.',
     gradient: 'from-purple-500/10 to-pink-500/10'
   },
   {
     icon: Database,
-    title: 'System Architecture',
-    description: 'Designing scalable distributed systems, implementing microservices patterns, and ensuring high availability with load balancing and failover strategies',
+    title: 'DevOps Automation',
+    description: 'Automating infrastructure with Ansible, managing containerized workloads with Docker, running CI/CD pipelines through Jenkins and scheduling automated tasks with Cronicle with foundational exposure to AWS and Kubernetes.',
     gradient: 'from-green-500/10 to-emerald-500/10'
   },
   {
     icon: Workflow,
-    title: 'Automation & Monitoring',
-    description: 'Creating Infrastructure as Code with Ansible, implementing comprehensive monitoring with Checkmk, and automating routine tasks with scheduled jobs',
+    title: 'Security & Observability',
+    description: 'Deploying SIEM and intrusion detection tooling, zero-trust mesh VPN access with Tailscale, centralized patch management with PatchMon and real time production monitoring with alerting.',
     gradient: 'from-orange-500/10 to-red-500/10'
   },
 ];
