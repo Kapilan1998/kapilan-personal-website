@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, GitBranch, MessageSquareMore, Sparkles, Trophy, ChevronLeft, ChevronRight, Receipt, Webhook, Shield, ShoppingCart, Database, FileCheck, BookOpen, Store, CalendarCheck } from 'lucide-react';
+import { ExternalLink, Github, GitBranch, MessageSquareMore, Sparkles, Trophy, ChevronLeft, ChevronRight, Receipt, Webhook, Shield, ShoppingCart, Database, FileCheck, BookOpen, Store, CalendarCheck, QrCode } from 'lucide-react';
 
 // Extend the projects array with more example projects
 const allProjects = [
@@ -33,6 +33,23 @@ const allProjects = [
     icon: CalendarCheck,
     technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS','SonarQube'],
     category: 'Frontend',
+    color: 'accent',
+    githubUrl: '',
+    liveDemoUrl: '',
+    documentationUrl: ''
+  },
+  {
+    title: 'Event Management Platform',
+    description: [
+      'Built a full stack platform for multi day event registration, attendance, logistics and staff management.',
+      'Implemented QR code check in with duplicate scan prevention and partial family attendance.',
+      'Built a bulk spreadsheet import pipeline with validation for fast attendee onboarding.',
+      'Enforced meal and certificate uniqueness at the database level, flagged via an already claimed indicator during scans.',
+      'Cut manual meal/certificate tracking effort & deployed via serverless frontend and self managed Linux server.',
+    ],
+    icon: QrCode,
+    technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Node.js', 'Express', 'PostgreSQL (Supabase)', 'JWT', 'QR Code', 'Nginx', 'PM2'],
+    category: 'Full Stack',
     color: 'accent',
     githubUrl: '',
     liveDemoUrl: '',
@@ -93,17 +110,17 @@ const allProjects = [
     liveDemoUrl: 'https://nextjs-auth-clerk.netlify.app/',
     documentationUrl: 'https://medium.com/@sriranjankapilan/building-a-secure-next-js-app-with-clerk-auth-social-login-and-role-management-26c11d3f3cdb'
   },
-  {
-    title: 'E-Commerce Shopping Cart Backend System',
-    description: 'RESTful API backend for an E-commerce shopping cart system, featuring Spring Security JWT authentication, shopping cart functionality, order management, product categorization, image uploads and role based access control for secure operations.',
-    icon: ShoppingCart,
-    technologies: ['Spring Boot', 'JWT Authentication', 'MySQL'],
-    category: 'Backend',
-    color: 'accent',
-    githubUrl: 'https://github.com/Kapilan1998/simple-shopping-card-project',
-    liveDemoUrl: '',
-    documentationUrl: ''
-  },
+  // {
+  //   title: 'E-Commerce Shopping Cart Backend System',
+  //   description: 'RESTful API backend for an E-commerce shopping cart system, featuring Spring Security JWT authentication, shopping cart functionality, order management, product categorization, image uploads and role based access control for secure operations.',
+  //   icon: ShoppingCart,
+  //   technologies: ['Spring Boot', 'JWT Authentication', 'MySQL'],
+  //   category: 'Backend',
+  //   color: 'accent',
+  //   githubUrl: 'https://github.com/Kapilan1998/simple-shopping-card-project',
+  //   liveDemoUrl: '',
+  //   documentationUrl: ''
+  // },
   {
     title: 'Real Time Tic-Tac-Toe Game with WebSocket',
     description: 'Full stack multiplayer Tic-Tac-Toe game with real time WebSocket communication, MySQL database storage, player management and game result tracking. Features live game updates, player matchmaking and historical result viewing.',
