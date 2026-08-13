@@ -40,6 +40,27 @@ Content refresh of the portfolio to reflect ~6 months of skill/experience growth
 
 **Standing note**: user requires all styling/UI changes to be verified responsive across mobile/tablet/desktop — saved to assistant memory.
 
+### Later same day — additional round
+
+**Skills (`Skills.tsx`)**
+- Added Express.js to the Backend category, with a `dark:invert` filter on its icon since the devicon logo is solid black and would be invisible against this site's dark theme by default.
+
+**Experience (`Experience.tsx`)**
+- HomeIt System location was set to "Remote (Germany)" then changed again to "Remote (Srilanka)" — current state is **"Remote (Srilanka)"**.
+- User directly trimmed/adjusted several bullets and tags further (e.g. dropped the standalone Node.js/Redis/Kafka bullet and its corresponding tags; current tech tags list no longer includes Redis or Kafka).
+
+**Projects (`Projects.tsx`)**
+- Added a third project: **Event Management Platform** (Full Stack — React, TypeScript, Tailwind CSS, Node.js, Express, PostgreSQL/Supabase, JWT, QR Code, Nginx, PM2; `QrCode` icon; no public links, private client work). Went through many rounds of iterative shortening/professionalizing of its description bullets — settled on 6 bullets covering: platform overview (registration/attendance/logistics/staff management), QR check-in with duplicate-scan prevention, bulk spreadsheet import with validation, database-level meal/certificate uniqueness enforcement, and cut manual on-site tracking effort + deployment (serverless frontend + self-managed Linux server).
+- Noted but not yet fixed: two pre-existing TS diagnostics unrelated to this work — `Github` icon import is deprecated, and `ShoppingCart` import is unused (its project entry is commented out).
+
+**SEO / Open Graph (`index.html`)**
+- Full meta tag overhaul to match the new Full Stack & DevOps Engineer positioning and fix real bugs found during review:
+  - Title/description/keywords updated from "DevOps & Backend Developer, 3 years" to "Full Stack & DevOps Engineer, 3.5+ years" (React, Node.js, Spring Boot, cloud, DevOps, security).
+  - Fixed `og:url` and `og:image` — were pointing to a stale `kapilan-portfolio-website.netlify.app` domain instead of the actual live site `kapilan-personal-website.vercel.app`.
+  - Enabled the previously-commented-out Twitter card tags, using the real handle `@skapilan1998`.
+  - Fixed `og:image:width`/`og:image:height` — were declared as 1200×630 (landscape) but the actual image (`kapilan.png`) is 864×1091 (portrait); corrected to match reality so crawlers don't mis-render the share preview.
+  - Flagged for later (not done): the share preview image is still just the portrait profile photo; a dedicated 1200×630 landscape banner (name/title text baked in) would look more polished if the user wants to design one.
+
 ---
 
 ## 2026-07-26
