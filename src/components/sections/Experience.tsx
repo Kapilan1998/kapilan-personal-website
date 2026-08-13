@@ -6,7 +6,7 @@ const experiences = [
   {
     title: "Software Engineer",
     company: "HomeIt System",
-    location: "Remote (Germany)",
+    location: "Remote (Srilanka)",
     period: "Jan 2025 - Present",
     type: "Full-time",
     dotColor: "bg-emerald-500",
