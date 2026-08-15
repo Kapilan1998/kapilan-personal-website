@@ -4,6 +4,41 @@ Running log of work done on this project. Add a new entry at the top for each wo
 
 ---
 
+## 2026-08-15
+
+Performance investigation and optimization of the deployed site (`kapilan-personal-website.vercel.app`), triggered by the user noticing slow page loads and sharing a Chrome DevTools Network tab screenshot + screen recording.
+
+**Diagnosis** (from the Network tab screenshot — the video itself couldn't be processed since binary video files can't be read directly):
+- 49 requests, 4.4 MB uncompressed, DOMContentLoaded/Load at 13.82s, fully finished at 18.90s — roughly 5-6x slower than a healthy target (~2-3s).
+- Biggest issues found: the HTML document itself took 6.49s (TTFB-type issue, flagged as needing separate hosting-side investigation, not a code fix); `kapilan.png` profile photo was 1.55 MB despite displaying at ≤288px; Google Fonts CSS took 6.78s for a 1.4KB file (queued behind the huge image, plus a render-blocking `@import` chain); `favicon.ico` was 163KB (should be a few KB); ~25 separate external requests to `cdn.jsdelivr.net` for tech-stack icons, each adding connection/queuing overhead; main JS bundle was 444KB transferred (matches the earlier build warning about a 1.4MB unsplit bundle, largely from bundling `three.js`/`@react-three` eagerly with everything else).
+
+**Fixes applied:**
+- **Image optimization**: converted `public/kapilan.png` (1.55MB, 864×1091) to `public/kapilan.webp` (52KB) via a temporary local `sharp` install (not added to `package.json`) — a 96.6% size reduction. Updated all 3 references (Hero.tsx `<img>`, `og:image`, `twitter:image` in `index.html`) and corrected the declared `og:image:width/height` to the new 700×884 dimensions. Deleted the original oversized PNG. Added `fetchPriority="high"` to the Hero image tag since it's the LCP element.
+- **Favicon**: regenerated a proper small favicon set from the source photo (`favicon.ico` 4.3KB via a temporary `png-to-ico` install, plus `favicon-32x32.png`, `favicon-192x192.png`, `apple-touch-icon.png`) replacing the old 245KB `favicon.ico`. Added explicit `<link rel="icon">`/`<link rel="apple-touch-icon">` tags to `index.html` (previously relied on the browser's implicit `/favicon.ico` request with no `<link>` tag at all).
+- **Font loading**: moved Google Fonts loading out of `src/index.css`'s render-blocking `@import` into `index.html` `<link rel="preconnect">` + `<link rel="stylesheet">` tags, so the browser discovers and fetches fonts in parallel from the start of HTML parsing instead of nested inside another CSS file.
+- **Code-splitting the 3D scene**: converted the `FloatingGeometry` (Three.js/`@react-three/fiber`/`@react-three/drei`) import in `Hero.tsx` to `React.lazy()` wrapped in `<Suspense fallback={null}>`. Build output confirms this split the ~1.4MB unified bundle into a 618KB (208KB gzip) main bundle + an 824KB (222KB gzip) separate `FloatingGeometry` chunk that loads non-blocking after first render — roughly a 51% cut in critical-path JS.
+- **Self-hosted tech-stack icons**: downloaded all 25 active devicon SVGs referenced in `Skills.tsx` from `cdn.jsdelivr.net` into `public/icons/` and updated every reference to local paths (`/icons/java.svg`, etc.), removing ~25 external third-party requests in favor of same-origin assets served alongside the rest of the build.
+- Verified `npm run lint` (same 12 pre-existing issues, no new ones), `npm run build` (succeeds, bundle split confirmed), and `npm run preview` (spot-checked `index.html`, `kapilan.webp`, `favicon.ico`, and a sample icon all return HTTP 200).
+
+**Not fixed / follow-up needed:**
+- The 6.49s document TTFB and general Vercel response time — this needs investigation from the hosting/infra side (e.g. Vercel deployment region, cold starts), not a code change.
+- Main JS bundle is still 618KB (208KB gzip) — further splitting (e.g. gsap, recharts) was considered but not pursued this round; diminishing returns relative to the fixes already made.
+- A dedicated 1200×630 landscape OG banner (with name/title text) would look more polished for social shares than the current portrait profile photo, but wasn't requested/designed this round.
+
+### Later same day — second optimization round
+
+**Skills icon images**: the 12 remaining local PNG logos (`checkmk`, `proxmox`, `dokploy`, `nexus`, `tailscale`, `github-actions`, `wazuh`, `crowdsec`, `kafka`, `spring-boot`, `hetzner`, `streamlit`) were self-hosted and lazy-loaded already (so they weren't hurting initial load), but were 300-700px source images displayed at only ~40-56px — wasted bandwidth whenever a visitor scrolled to Skills. Resized each (preserving aspect ratio, sized ~2x the effective on-screen size incl. any CSS zoom already applied per-icon) and converted to WebP via a temporary local `sharp` install (not persisted to `package.json`). Combined size dropped from 683KB → 101KB (85% reduction). Updated all 12 references in `Skills.tsx`, deleted the old PNGs.
+
+**Lazy-loaded remaining below-the-fold sections**: `Skills`, `Experience`, `Projects`, and `Contact` were all imported eagerly at the top of `pages/Index.tsx`, bundling their code (notably `gsap` for Skills' scroll animations, `react-hook-form`/`zod` for the Contact form) into the same critical-path chunk as Hero/Navbar — even though none of them are visible without scrolling. Converted all four to `React.lazy()` + `Suspense` (matching the `Loader2` spinner pattern already used by the existing `About`/`LazyAbout` code). Result: main bundle dropped from 618KB (208KB gzip) to **452.62KB (146.60KB gzip)**, with Skills/Experience/Projects/Contact now loading as their own small independent chunks (9-124KB each).
+
+**Cumulative bundle result this whole optimization effort**: original single bundle was 1,441.60KB (429.40KB gzip) → main critical-path bundle now 452.62KB (146.60KB gzip), a **~66% reduction**, with the 3D scene, all section code, and about a dozen images either deferred to lazy chunks or shrunk by 85-97%.
+
+Verified `npm run lint` (same 12 pre-existing issues), `npm run build` (bundle split confirmed via output sizes), and `npm run preview` (spot-checked new `.webp` assets return HTTP 200). Could not visually browser-test this round (Chrome extension declined) — relied on code review to confirm no Tailwind/JSX responsive classes were touched by any of today's changes, only asset paths and import/lazy-loading structure.
+
+**Not fixed / follow-up needed** (still applies from earlier in the day): the 6.49s document TTFB needs hosting-side investigation, not a code fix. User should manually re-verify mobile responsiveness with `npm run dev` before redeploying, since no browser tool was available this session to confirm visually.
+
+---
+
 ## 2026-07-28
 
 Content refresh of the portfolio to reflect ~6 months of skill/experience growth since the last update (project was last touched mid-Jan 2026), ahead of new job applications. Also added `.env.example`.
