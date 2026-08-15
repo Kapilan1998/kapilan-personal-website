@@ -7,53 +7,53 @@ gsap.registerPlugin(ScrollTrigger);
 
 const technologies = [
   // Languages
-  { name: 'Java', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg', url: 'https://www.java.com', category: 'Languages' },
-  { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', url: 'https://www.python.org', category: 'Languages' },
-  { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript', category: 'Languages' },
+  { name: 'Java', icon: '/icons/java.svg', url: 'https://www.java.com', category: 'Languages' },
+  { name: 'Python', icon: '/icons/python.svg', url: 'https://www.python.org', category: 'Languages' },
+  { name: 'JavaScript', icon: '/icons/javascript.svg', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript', category: 'Languages' },
   // { name: 'Php', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg', url: 'https://www.php.net/docs.php', category: 'Languages' },
 
   // Backend
-  { name: 'Spring Boot', icon: 'spring-boot.png', url: 'https://spring.io/projects/spring-boot', category: 'Backend' },
-  { name: 'Flask', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg', url: 'https://flask.palletsprojects.com/', category: 'Backend' },
-  { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', url: 'https://nodejs.org', category: 'Backend' },
+  { name: 'Spring Boot', icon: 'spring-boot.webp', url: 'https://spring.io/projects/spring-boot', category: 'Backend' },
+  { name: 'Flask', icon: '/icons/flask.svg', url: 'https://flask.palletsprojects.com/', category: 'Backend' },
+  { name: 'Node.js', icon: '/icons/nodejs.svg', url: 'https://nodejs.org', category: 'Backend' },
 
   // DevOps
-  { name: 'Linux', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg', url: 'https://www.linux.org', category: 'DevOps' },
-  { name: 'Docker', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg', url: 'https://www.docker.com', category: 'DevOps' },
-  { name: 'Jenkins', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg', url: 'https://www.jenkins.io', category: 'DevOps' },
-  { name: 'Nginx', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg', url: 'https://nginx.org', category: 'DevOps' },
-  { name: 'Ansible', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ansible/ansible-original.svg', url: 'https://www.ansible.com', category: 'DevOps' },
-  { name: 'Cloudflare', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cloudflare/cloudflare-original.svg', url: 'https://www.cloudflare.com', category: 'DevOps' },
-  { name: 'Kubernetes', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg', url: 'https://kubernetes.io', category: 'DevOps' },
-  { name: 'Prometheus', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg', url: 'https://prometheus.io', category: 'DevOps' },
-  { name: 'Grafana', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg', url: 'https://grafana.com', category: 'DevOps' },
-  { name: 'Checkmk', icon: 'checkmk.png', url: 'https://checkmk.com/', category: 'DevOps' },
-  { name: 'Proxmox VE', icon: 'proxmox.png', url: 'https://proxmox.com/en/', category: 'DevOps' },
-  { name: 'Dokploy', icon: 'dokploy.png', url: 'https://dokploy.com/', category: 'DevOps' },
-  { name: 'Nexus Repository', icon: 'nexus.png', url: 'https://help.sonatype.com/en/sonatype-nexus-repository.html', category: 'DevOps' },
-  { name: 'Tailscale', icon: 'tailscale.png', url: 'https://tailscale.com', category: 'DevOps' },
-  { name: 'GitHub Actions', icon: 'github-actions.png', url: 'https://github.com/features/actions', category: 'DevOps' },
-  { name: 'Wazuh', icon: 'wazuh.png', url: 'https://wazuh.com', category: 'DevOps' },
-  { name: 'Crowdsec', icon: 'crowdsec.png', url: 'https://doc.crowdsec.net', category: 'DevOps' },
-  { name: 'Apache Kafka', icon: 'kafka.png', url: 'https://kafka.apache.org', category: 'DevOps' },
+  { name: 'Linux', icon: '/icons/linux.svg', url: 'https://www.linux.org', category: 'DevOps' },
+  { name: 'Docker', icon: '/icons/docker.svg', url: 'https://www.docker.com', category: 'DevOps' },
+  { name: 'Jenkins', icon: '/icons/jenkins.svg', url: 'https://www.jenkins.io', category: 'DevOps' },
+  { name: 'Nginx', icon: '/icons/nginx.svg', url: 'https://nginx.org', category: 'DevOps' },
+  { name: 'Ansible', icon: '/icons/ansible.svg', url: 'https://www.ansible.com', category: 'DevOps' },
+  { name: 'Cloudflare', icon: '/icons/cloudflare.svg', url: 'https://www.cloudflare.com', category: 'DevOps' },
+  { name: 'Kubernetes', icon: '/icons/kubernetes.svg', url: 'https://kubernetes.io', category: 'DevOps' },
+  { name: 'Prometheus', icon: '/icons/prometheus.svg', url: 'https://prometheus.io', category: 'DevOps' },
+  { name: 'Grafana', icon: '/icons/grafana.svg', url: 'https://grafana.com', category: 'DevOps' },
+  { name: 'Checkmk', icon: 'checkmk.webp', url: 'https://checkmk.com/', category: 'DevOps' },
+  { name: 'Proxmox VE', icon: 'proxmox.webp', url: 'https://proxmox.com/en/', category: 'DevOps' },
+  { name: 'Dokploy', icon: 'dokploy.webp', url: 'https://dokploy.com/', category: 'DevOps' },
+  { name: 'Nexus Repository', icon: 'nexus.webp', url: 'https://help.sonatype.com/en/sonatype-nexus-repository.html', category: 'DevOps' },
+  { name: 'Tailscale', icon: 'tailscale.webp', url: 'https://tailscale.com', category: 'DevOps' },
+  { name: 'GitHub Actions', icon: 'github-actions.webp', url: 'https://github.com/features/actions', category: 'DevOps' },
+  { name: 'Wazuh', icon: 'wazuh.webp', url: 'https://wazuh.com', category: 'DevOps' },
+  { name: 'Crowdsec', icon: 'crowdsec.webp', url: 'https://doc.crowdsec.net', category: 'DevOps' },
+  { name: 'Apache Kafka', icon: 'kafka.webp', url: 'https://kafka.apache.org', category: 'DevOps' },
 
   // Cloud
-  { name: 'AWS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg', url: 'https://aws.amazon.com', category: 'Cloud' },
-  { name: 'Hetzner Cloud', icon: 'hetzner.png', url: 'https://www.hetzner.com/cloud', category: 'Cloud' },
+  { name: 'AWS', icon: '/icons/aws.svg', url: 'https://aws.amazon.com', category: 'Cloud' },
+  { name: 'Hetzner Cloud', icon: 'hetzner.webp', url: 'https://www.hetzner.com/cloud', category: 'Cloud' },
   // Databases
-  { name: 'PostgreSQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg', url: 'https://www.postgresql.org', category: 'Databases' },
-  { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg', url: 'https://www.mysql.com', category: 'Databases' },
-  { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg', url: 'https://www.mongodb.com', category: 'Databases' },
+  { name: 'PostgreSQL', icon: '/icons/postgresql.svg', url: 'https://www.postgresql.org', category: 'Databases' },
+  { name: 'MySQL', icon: '/icons/mysql.svg', url: 'https://www.mysql.com', category: 'Databases' },
+  { name: 'MongoDB', icon: '/icons/mongodb.svg', url: 'https://www.mongodb.com', category: 'Databases' },
   // Tools
-  { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', url: 'https://git-scm.com', category: 'Tools' },
-  { name: 'Postman', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg', url: 'https://postman.com', category: 'Tools' },
-  { name: 'Jira', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg', url: 'https://www.atlassian.com/software/jira', category: 'Tools' },
-  { name: 'SonarQube', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sonarqube/sonarqube-original.svg', url: 'https://www.sonarsource.com/products/sonarqube/', category: 'Tools' },
-  { name: 'Streamlit', icon: 'streamlit.png', url: 'https://streamlit.io/cloud', category: 'Tools' },
+  { name: 'Git', icon: '/icons/git.svg', url: 'https://git-scm.com', category: 'Tools' },
+  { name: 'Postman', icon: '/icons/postman.svg', url: 'https://postman.com', category: 'Tools' },
+  { name: 'Jira', icon: '/icons/jira.svg', url: 'https://www.atlassian.com/software/jira', category: 'Tools' },
+  { name: 'SonarQube', icon: '/icons/sonarqube.svg', url: 'https://www.sonarsource.com/products/sonarqube/', category: 'Tools' },
+  { name: 'Streamlit', icon: 'streamlit.webp', url: 'https://streamlit.io/cloud', category: 'Tools' },
   // Frontend
-  { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', url: 'https://react.dev', category: 'Frontend' },
-  { name: 'Bootstrap', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg', url: 'https://getbootstrap.com', category: 'Frontend' },
-  { name: 'Tailwind CSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg', url: 'https://tailwindcss.com', category: 'Frontend' }
+  { name: 'React', icon: '/icons/react.svg', url: 'https://react.dev', category: 'Frontend' },
+  { name: 'Bootstrap', icon: '/icons/bootstrap.svg', url: 'https://getbootstrap.com', category: 'Frontend' },
+  { name: 'Tailwind CSS', icon: '/icons/tailwindcss.svg', url: 'https://tailwindcss.com', category: 'Frontend' }
 ];
 
 const categoryConfig: Record<string, { title: string; gradient: string; iconColor: string }> = {
