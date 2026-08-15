@@ -1,7 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDown, Download, MapPin, Phone } from 'lucide-react';
-import FloatingGeometry from '../3d/FloatingGeometry';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
+
+// Lazy load the 3D scene since three.js/@react-three are heavy and purely decorative
+const FloatingGeometry = lazy(() => import('../3d/FloatingGeometry'));
 
 const roles = [
   'Software Engineer',
@@ -93,7 +95,9 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden noise-bg pt-16 md:pt-8">
-      <FloatingGeometry />
+      <Suspense fallback={null}>
+        <FloatingGeometry />
+      </Suspense>
 
       {/* gradient overlays */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
@@ -114,8 +118,9 @@ const Hero = () => {
               whileHover={{ scale: 1.05 }}
             >
               <img
-                src="/kapilan.png"
+                src="/kapilan.webp"
                 alt="Profile"
+                fetchPriority="high"
                 className="w-full h-full object-cover"
                 style={{
                   transform: 'translateX(-5%) scale(1.1)' // Move left 5% and zoom 10%
