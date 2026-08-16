@@ -4,6 +4,29 @@ Running log of work done on this project. Add a new entry at the top for each wo
 
 ---
 
+## 2026-08-15 (continued) — post-deploy verification + third optimization round
+
+User redeployed to Vercel and re-tested in an incognito window, sharing a new Network tab screenshot (`release-1.png`). Confirmed real-world results from the prior optimization work:
+
+| Metric | Before | After redeploy |
+|---|---|---|
+| DOMContentLoaded/Load | 13.82s | **2.04s** (-85%) |
+| Finish | 18.90s | **3.07s** (-84%) |
+| Requests | 49 | **20** |
+| Transferred | 3.1 MB | **583 KB** (-81%) |
+
+**Further round of optimization** based on the new trace:
+- Found via grep that **`Toaster`, `Sonner` (both toast systems), `TooltipProvider`, and `QueryClientProvider`** were all wrapped unconditionally in `App.tsx` (non-lazy, so always in the critical bundle) but had **zero call sites anywhere in the actual app** — pure unused scaffolding left over from the original shadcn/Vite template. Removed all four from `App.tsx`. Left the now-orphaned `ui/toaster.tsx`, `ui/sonner.tsx`, `ui/tooltip.tsx`, `hooks/use-toast.ts` files in place (zero bundle cost either way since Vite only bundles reachable imports; treated as an optional future hygiene cleanup, not a performance one).
+- Result: main bundle dropped from 452.62KB (146.60KB gzip) → **300.23KB (98.12KB gzip)**.
+- Skip loading the decorative 3D scene (`FloatingGeometry`, 824KB/222KB gzip chunk) entirely on screens narrower than 768px, via a `matchMedia('(min-width: 768px)')` check in `Hero.tsx` — saves mobile visitors that whole chunk's bandwidth/parse cost for a purely decorative background effect.
+- Verified `npm run lint` (same 12 pre-existing issues), `npm run build`, and `npm run preview` (title/HTTP 200 spot check) all pass after these changes.
+
+**Cumulative result across the whole optimization effort**: original single bundle 1,441.60KB (429.40KB gzip) → main critical-path bundle now 300.23KB (98.12KB gzip), roughly **77% smaller**, plus the 3D chunk no longer loads at all on mobile.
+
+**Still outstanding**: document TTFB/hosting-side investigation (Vercel region/cold start) not yet done — was ~6.49s pre-optimization, dropped to ~897ms post-redeploy already, likely mostly resolved by the other fixes reducing contention, but worth keeping an eye on.
+
+---
+
 ## 2026-08-15
 
 Performance investigation and optimization of the deployed site (`kapilan-personal-website.vercel.app`), triggered by the user noticing slow page loads and sharing a Chrome DevTools Network tab screenshot + screen recording.
