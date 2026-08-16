@@ -65,12 +65,22 @@ const socialLinks = [
 
 const Hero = () => {
   const [currentRole, setCurrentRole] = useState(0);
+  // Skip the decorative 3D scene on small screens to save mobile bandwidth/battery
+  const [showFloatingGeometry, setShowFloatingGeometry] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentRole((prev) => (prev + 1) % roles.length);
     }, 2500);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const mql = window.matchMedia('(min-width: 768px)');
+    setShowFloatingGeometry(mql.matches);
+    const handleChange = (e: MediaQueryListEvent) => setShowFloatingGeometry(e.matches);
+    mql.addEventListener('change', handleChange);
+    return () => mql.removeEventListener('change', handleChange);
   }, []);
 
   const containerVariants = {
@@ -95,9 +105,11 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden noise-bg pt-16 md:pt-8">
-      <Suspense fallback={null}>
-        <FloatingGeometry />
-      </Suspense>
+      {showFloatingGeometry && (
+        <Suspense fallback={null}>
+          <FloatingGeometry />
+        </Suspense>
+      )}
 
       {/* gradient overlays */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
