@@ -256,7 +256,7 @@ const Hero = () => {
           {/* buttons */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 mb-6 px-4"
+            className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 md:gap-4 mb-6 px-4"
           >
             <motion.a
               href="#projects"
@@ -269,8 +269,8 @@ const Hero = () => {
             </motion.a>
 
             <motion.a
-              href="/pdf/Sriranjan Kapilan.pdf"
-              download="Sriranjan Kapilan.pdf"
+              href="/pdf/Sriranjan_Kapilan_FullStack_Resume.pdf"
+              download="Sriranjan_Kapilan_FullStack_Resume.pdf"
               className="group w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg relative overflow-hidden transition-all duration-300 bg-gradient-to-br from-background/50 to-background/30 backdrop-blur-sm border border-white/10 hover:border-primary/30"
               whileHover={{
                 scale: 1.05,
@@ -281,10 +281,31 @@ const Hero = () => {
               {/* gradient overlay on hover */}
               <span className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/0 to-accent/0 group-hover:from-primary/5 group-hover:via-primary/3 group-hover:to-accent/5 transition-all duration-500 -z-10"></span>
 
-              <span className="flex items-center justify-center gap-2">
+              <span className="flex items-center justify-center gap-2 whitespace-nowrap">
                 <Download className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
                 <span className="text-foreground group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
-                  Download CV
+                  Download Resume (Full Stack)
+                </span>
+              </span>
+            </motion.a>
+
+            <motion.a
+              href="/pdf/Sriranjan_Kapilan_DevOps_Resume.pdf"
+              download="Sriranjan_Kapilan_DevOps_Resume.pdf"
+              className="group w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg relative overflow-hidden transition-all duration-300 bg-gradient-to-br from-background/50 to-background/30 backdrop-blur-sm border border-white/10 hover:border-primary/30"
+              whileHover={{
+                scale: 1.05,
+                boxShadow: '0 10px 30px -10px rgba(var(--primary), 0.2)'
+              }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {/* gradient overlay on hover */}
+              <span className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/0 to-accent/0 group-hover:from-primary/5 group-hover:via-primary/3 group-hover:to-accent/5 transition-all duration-500 -z-10"></span>
+
+              <span className="flex items-center justify-center gap-2 whitespace-nowrap">
+                <Download className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
+                <span className="text-foreground group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                  Download Resume (DevOps)
                 </span>
               </span>
             </motion.a>
