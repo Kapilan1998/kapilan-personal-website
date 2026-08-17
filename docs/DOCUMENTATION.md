@@ -4,6 +4,21 @@ Running log of work done on this project. Add a new entry at the top for each wo
 
 ---
 
+## 2026-08-16
+
+**Dual resume downloads (`Hero.tsx`)**
+- User is now maintaining two separate tailored resumes (a Full Stack Software Engineer version and a DevOps & Platform Engineer version) for job applications, discussed as standard/recommended practice given the genuinely dual skill profile the portfolio already reflects. Replaced the single "Download CV" button with two: **"Download CV (Full Stack)"** → `/pdf/Sriranjan_Kapilan_FullStack_Resume.pdf`, and **"Download CV (DevOps)"** → `/pdf/Sriranjan_Kapilan_DevOps_Resume.pdf` (both files added to `public/pdf/` by the user; old space-containing filename `Sriranjan Kapilan.pdf` retired).
+- Added `flex-wrap` to the button row container so the now-3-button row (View My Work + 2 resume downloads) wraps gracefully on medium-width screens instead of squeezing/overflowing, while mobile still stacks all three full-width as before.
+- Verified zero performance impact: main bundle went from 300.23KB → 301.52KB (~1KB, just extra label text/markup); the PDFs are only fetched on click, never preloaded.
+
+**Light theme border/contrast fix (`index.css`, `Hero.tsx`)**
+- User reported that in light theme, the 2 resume-download buttons and the 5 social icon circles had no visible border (looked fine in dark theme). Root cause: the shared `--border`/`--input` CSS variables for light theme were `220 13% 91%` — nearly the same lightness as the light theme's near-white background/card colors, so the `.glass` utility class (used by the social icons and ~20 other spots sitewide: About/Skills/Experience badges, form inputs, Navbar, etc.) rendered an effectively invisible border in light mode despite looking fine in dark mode.
+- Fixed by darkening `.light`'s `--border`/`--input` to `220 13% 80%` — improves contrast for every `.glass` usage sitewide in light theme, not just the reported spots.
+- Separately, the two resume-download buttons had a hardcoded `border-white/10` (only visible against dark backgrounds) rather than using the semantic `--border` variable. Changed to `border-black/15 dark:border-white/10` so it's visible in both themes; dark mode rendering is unchanged.
+- Verified lint clean and build succeeds (pure CSS/class change, no bundle size impact). Could not visually confirm in a real browser this session (no browser tool available) — user should double check both themes render correctly after next deploy.
+
+---
+
 ## 2026-08-15 (continued) — post-deploy verification + third optimization round
 
 User redeployed to Vercel and re-tested in an incognito window, sharing a new Network tab screenshot (`release-1.png`). Confirmed real-world results from the prior optimization work:
