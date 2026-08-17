@@ -271,7 +271,7 @@ const Hero = () => {
             <motion.a
               href="/pdf/Sriranjan_Kapilan_FullStack_Resume.pdf"
               download="Sriranjan_Kapilan_FullStack_Resume.pdf"
-              className="group w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg relative overflow-hidden transition-all duration-300 bg-gradient-to-br from-background/50 to-background/30 backdrop-blur-sm border border-white/10 hover:border-primary/30"
+              className="group w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg relative overflow-hidden transition-all duration-300 bg-gradient-to-br from-background/50 to-background/30 backdrop-blur-sm border border-black/15 dark:border-white/10 hover:border-primary/30"
               whileHover={{
                 scale: 1.05,
                 boxShadow: '0 10px 30px -10px rgba(var(--primary), 0.2)'
@@ -292,7 +292,7 @@ const Hero = () => {
             <motion.a
               href="/pdf/Sriranjan_Kapilan_DevOps_Resume.pdf"
               download="Sriranjan_Kapilan_DevOps_Resume.pdf"
-              className="group w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg relative overflow-hidden transition-all duration-300 bg-gradient-to-br from-background/50 to-background/30 backdrop-blur-sm border border-white/10 hover:border-primary/30"
+              className="group w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg relative overflow-hidden transition-all duration-300 bg-gradient-to-br from-background/50 to-background/30 backdrop-blur-sm border border-black/15 dark:border-white/10 hover:border-primary/30"
               whileHover={{
                 scale: 1.05,
                 boxShadow: '0 10px 30px -10px rgba(var(--primary), 0.2)'
