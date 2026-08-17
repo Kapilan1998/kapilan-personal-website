@@ -289,7 +289,7 @@ const Skills = () => {
             Tools & <span className="gradient-text">Technologies</span>
           </h2>
           <p className="text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-            A comprehensive toolkit spanning backend development, DevOps practices, and cloud technologies.
+            A comprehensive toolkit spanning fullstack development, DevOps practices and cloud technologies.
           </p>
         </motion.div>
 

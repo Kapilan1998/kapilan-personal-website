@@ -244,8 +244,8 @@ const Projects = () => {
             My <span className="gradient-text">Projects</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A selection of projects showcasing my expertise in backend development,
-            DevOps practices, and cloud infrastructure.
+            A selection of projects showcasing my expertise in fullstack development,
+            DevOps practices and cloud infrastructure.
           </p>
         </motion.div>
 
