@@ -11,13 +11,13 @@ const Footer = () => {
           {/* Contact Details */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-y-4 gap-x-8 text-base text-muted-foreground">
             <a
-              href="mailto:bahubali@example.com"
+              href="mailto:sriranjankapilan@gmail.com"
               className="flex items-center gap-2 hover:text-primary transition-colors"
             >
               <Mail className="h-4 w-4" />
               <span>sriranjankapilan@gmail.com</span>
             </a>
-            <a href="tel:+94771234567" className="flex items-center gap-2 hover:text-primary transition-colors">
+            <a href="tel:+94774740186" className="flex items-center gap-2 hover:text-primary transition-colors">
               <Phone className="h-4 w-4" />
               <span>+94 77 474 0186</span>
             </a>
