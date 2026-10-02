@@ -4,6 +4,17 @@ Running log of work done on this project. Add a new entry at the top for each wo
 
 ---
 
+## 2026-10-02
+
+**New project added (`Projects.tsx`)**
+- Added **Team Weekly Reporting & Review Platform** as the first entry in `allProjects` so it lands on page 1 of the paginated grid. Uses the existing `string[]` description format (6 bullets), 17 tech tags, `ClipboardCheck` icon (verified present and not one of lucide's deprecated brand icons), category "Full Stack, DevOps", `color: 'primary'`. No public links supplied — treated as private/internal work, so the View Code / Live Demo / Documentation buttons stay conditionally hidden like the other three client projects.
+- Project count 12 → 13. At `projectsPerPage = 4` this grew pagination from 3 to 4 pages, and page 4 now holds a single card occupying the left half of the 2-column desktop grid. Flagged to the user — moving `projectsPerPage` to 5 would give 5/5/3 and remove the lone trailing card.
+- Pure data addition: no markup or CSS touched, so the card inherits the existing responsive card shell. Verified in a real browser against `vite preview` at 375px, 390px (light theme), 768px and 1440px — no horizontal overflow at any width, all 17 tech tags wrap inside the card bounds, the "Full Stack, DevOps" badge stays on one line, the title wraps to 2 lines without clipping, tablet/desktop siblings keep equal grid-stretch heights, and in light theme the card border (`rgb(144,157,180)`) and tag contrast both render correctly.
+- `npx tsc --noEmit` clean. Lint on the file reports only the pre-existing `ref.current` cleanup warning (unrelated, line number shifted by the insert). `npm run build` succeeds with the critical-path bundle unchanged at 301.52KB (98.18KB gzip) — the new entry lands only in the lazy `Projects` chunk (21.81KB).
+- Kept the user's wording verbatim, including the British "Containerised"; note `Experience.tsx` uses American "containerization" if consistency is wanted later.
+
+---
+
 ## 2026-08-16
 
 **Dual resume downloads (`Hero.tsx`)**
