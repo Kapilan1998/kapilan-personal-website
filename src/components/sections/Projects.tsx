@@ -1,9 +1,27 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, GitBranch, MessageSquareMore, Sparkles, Trophy, ChevronLeft, ChevronRight, Receipt, Webhook, Shield, ShoppingCart, Database, FileCheck, BookOpen, Store, CalendarCheck, QrCode } from 'lucide-react';
+import { ExternalLink, Github, GitBranch, MessageSquareMore, Sparkles, Trophy, ChevronLeft, ChevronRight, Receipt, Webhook, Shield, ShoppingCart, Database, FileCheck, BookOpen, Store, CalendarCheck, QrCode, ClipboardCheck } from 'lucide-react';
 
 // Extend the projects array with more example projects
 const allProjects = [
+  {
+    title: 'Team Weekly Reporting & Review Platform',
+    description: [
+      'Built a full stack weekly reporting and review platform that replaced scattered email and document status updates with a structured, auditable submit review approve workflow.',
+      'Engineered immutable report versioning so every correction preserves the original submission and reviewer comment as a permanent audit trail.',
+      "Implemented role based access control enforced across independent server side layers, with per record ownership checks that prevent users from discovering resources they don't own.",
+      'Delivered a manager analytics dashboard covering submission compliance, open blockers, workload distribution and time allocation, with shareable filtered views.',
+      "Integrated an AI chat assistant using LLM function calling whose read only tools wrap existing services, inheriting the application's access rules by design.",
+      'Containerised the application and automated build, static analysis and image publishing through a Jenkins pipeline with a SonarQube quality gate.',
+    ],
+    icon: ClipboardCheck,
+    technologies: ['Java 21', 'Spring Boot 4', 'Spring Security (JWT)', 'Hibernate/JPA', 'MySQL 8', 'Flyway', 'Maven', 'React 19', 'TypeScript', 'Vite', 'Tailwind CSS 4', 'React Router', 'Google Gemini API', 'JUnit 5', 'Docker', 'Jenkins', 'SonarQube'],
+    category: 'Full Stack, DevOps',
+    color: 'primary',
+    githubUrl: '',
+    liveDemoUrl: '',
+    documentationUrl: ''
+  },
   {
     title: 'Point-of-Sale & E-Commerce Platform',
     description: [
