@@ -18,7 +18,7 @@ const allProjects = [
     technologies: ['Java 21', 'Spring Boot 4', 'Spring Security (JWT)', 'Hibernate/JPA', 'MySQL 8', 'Flyway', 'Maven', 'React 19', 'TypeScript', 'Vite', 'Tailwind CSS 4', 'React Router', 'Google Gemini API', 'JUnit 5', 'Docker', 'Jenkins', 'SonarQube'],
     category: 'Full Stack, DevOps',
     color: 'primary',
-    githubUrl: '',
+    githubUrl: 'https://github.com/Kapilan1998/weekly-report-generator-dashboard',
     liveDemoUrl: '',
     documentationUrl: ''
   },
@@ -52,8 +52,8 @@ const allProjects = [
     technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS','SonarQube'],
     category: 'Frontend',
     color: 'accent',
-    githubUrl: '',
-    liveDemoUrl: '',
+    githubUrl: 'https://github.com/Kapilan1998/suddha-cleaning-services',
+    liveDemoUrl: 'https://sparkle-clean-website.netlify.app/',
     documentationUrl: ''
   },
   {
@@ -69,7 +69,7 @@ const allProjects = [
     technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Node.js', 'Express', 'PostgreSQL (Supabase)', 'JWT', 'QR Code', 'Nginx', 'PM2'],
     category: 'Full Stack',
     color: 'accent',
-    githubUrl: '',
+    githubUrl: 'https://github.com/Kapilan1998/sigiriya2026-event-portal',
     liveDemoUrl: '',
     documentationUrl: ''
   },
