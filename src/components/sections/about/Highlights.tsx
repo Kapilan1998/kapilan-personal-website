@@ -6,25 +6,25 @@ const highlights = [
   {
     icon: Server,
     title: 'Full Stack Development',
-    description: 'Shipping complete products end to end Spring Boot and Node.js/Express APIs, React and Next.js interfaces and event driven pipelines powered by Kafka, caching and relational/non-relational databases.',
+    description: 'Shipping complete products end to end Spring Boot and Node.js/Express APIs, React, Next.js and TypeScript interfaces, event driven pipelines with Kafka and Redis and LLM powered features built on function calling.',
     gradient: 'from-blue-500/10 to-cyan-500/10'
   },
   {
     icon: Cloud,
     title: 'Cloud & Infrastructure',
-    description: 'Provisioning and managing Hetzner Cloud VMs and a clustered Proxmox environment, with core networking, routing and load balancing across Nginx, Cloudflare and pfSense/HAProxy.',
+    description: 'Running a two node Proxmox HA cluster with off-site backups using Backup Server, alongside Hetzner Cloud and AWS (EC2, VPC, RDS, S3, IAM), with routing and load balancing across Nginx, HAProxy, Traefik, pfSense and Cloudflare.',
     gradient: 'from-purple-500/10 to-pink-500/10'
   },
   {
     icon: Database,
     title: 'DevOps Automation',
-    description: 'Automating infrastructure with Ansible, managing containerized workloads with Docker, running CI/CD pipelines through Jenkins and scheduling automated tasks with Cronicle with foundational exposure to AWS and Kubernetes.',
+    description: 'Automating provisioning and weekly patching with Ansible, containerising workloads with Docker and shipping through Jenkins pipelines that publish to Nexus and deploy via Dokploy, with SonarQube quality gates.',
     gradient: 'from-green-500/10 to-emerald-500/10'
   },
   {
     icon: Workflow,
     title: 'Security & Observability',
-    description: 'Deploying SIEM and intrusion detection tooling, zero-trust mesh VPN access with Tailscale, centralized patch management with PatchMon and real time production monitoring with alerting.',
+    description: 'Hardening production hosts with Wazuh SIEM, CrowdSec and PatchMon, zero trust access via Cloudflare and Headscale/Tailscale with per user ACLs and monitoring through Checkmk, Prometheus, Grafana and Sentry.',
     gradient: 'from-orange-500/10 to-red-500/10'
   },
 ];
