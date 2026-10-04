@@ -117,17 +117,17 @@ const allProjects = [
     liveDemoUrl: 'https://asia-cup-2025-python-dashboard.streamlit.app/',
     documentationUrl: 'https://medium.com/@sriranjankapilan/interactive-cricket-analytics-building-the-asia-cup-2025-dashboard-with-python-streamlit-plotly-4aba1d02e04f'
   },
-  {
-    title: 'Secure Role Based Authentication with Next.js & Clerk',
-    description: 'Full stack authentication system implementing role based access control with Clerk. Features social login integration, middleware-protected routes for admin/moderator roles, TypeScript type safety and comprehensive user session management.',
-    icon: Shield,
-    technologies: ['Next.js', 'Clerk Authentication', 'TypeScript', 'Tailwind CSS'],
-    category: 'Frontend',
-    color: 'primary',
-    githubUrl: 'https://github.com/Kapilan1998/nextjs-role-based-auth-clerk',
-    liveDemoUrl: 'https://nextjs-auth-clerk.netlify.app/',
-    documentationUrl: 'https://medium.com/@sriranjankapilan/building-a-secure-next-js-app-with-clerk-auth-social-login-and-role-management-26c11d3f3cdb'
-  },
+  // {
+  //   title: 'Secure Role Based Authentication with Next.js & Clerk',
+  //   description: 'Full stack authentication system implementing role based access control with Clerk. Features social login integration, middleware-protected routes for admin/moderator roles, TypeScript type safety and comprehensive user session management.',
+  //   icon: Shield,
+  //   technologies: ['Next.js', 'Clerk Authentication', 'TypeScript', 'Tailwind CSS'],
+  //   category: 'Frontend',
+  //   color: 'primary',
+  //   githubUrl: 'https://github.com/Kapilan1998/nextjs-role-based-auth-clerk',
+  //   liveDemoUrl: 'https://nextjs-auth-clerk.netlify.app/',
+  //   documentationUrl: 'https://medium.com/@sriranjankapilan/building-a-secure-next-js-app-with-clerk-auth-social-login-and-role-management-26c11d3f3cdb'
+  // },
   // {
   //   title: 'E-Commerce Shopping Cart Backend System',
   //   description: 'RESTful API backend for an E-commerce shopping cart system, featuring Spring Security JWT authentication, shopping cart functionality, order management, product categorization, image uploads and role based access control for secure operations.',
