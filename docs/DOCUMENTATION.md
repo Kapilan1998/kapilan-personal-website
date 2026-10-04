@@ -15,7 +15,7 @@ User supplied their current Full Stack and DevOps resumes and asked what in Abou
 - `Journey.tsx` para 2 (HomeIt): added RSA-encrypted transfer to Hetzner S3, PostgreSQL + Flyway, Sentry monitoring, TypeScript, and LLM-powered features via function calling over access-scoped read-only tools (previously absent entirely, and now relevant given the Team Weekly Reporting project added 2026-10-02).
 - `Journey.tsx` bullets rewritten 6 → 6, now carrying the quantified outcomes the resumes added: 25+ VMs/LXC with setup cut ~2h → 15min; two-node Proxmox HA cluster with Proxmox Backup Server at 65% lower spend / 99% uptime; Jenkins + Nexus + Dokploy taking deployments 30–40min → 5–10min; 10+ production hosts under Wazuh/CrowdSec/PatchMon/Checkmk/Prometheus/Grafana/Sentry. Added Traefik, Cloudflare Zero Trust and Headscale/Tailscale per-user ACLs.
 - `Highlights.tsx` all 4 card descriptions rewritten. **Dropped Cronicle** — it appears in neither resume, so it looks retired. Moved AWS out of the DevOps card into Cloud & Infrastructure where it now belongs, and added Nexus/Dokploy/SonarQube to the DevOps card.
-- Side effect worth noting: the 4 descriptions are now 214/206/210/207 chars (previously ~195–235), so the 2×2 card grid sits more evenly at every breakpoint — a responsive improvement with no CSS change.
+- Side effect worth noting: the 4 descriptions were rebalanced to 206–214 chars (previously ~195–235), tightening the 2×2 card grid's height variance with no CSS change. (Corrected: after the user's later wording edits the spread is 213/226/209/206 — card 2 gained "using Backup Server" and now runs slightly long, though still tighter than the original spread.)
 - Removed a dead `ExternalLink` import from `Journey.tsx`, orphaned since the HomeIt hyperlink was dropped on 2026-07-28.
 - **Deliberately not changed:** the header tagline ("Full Stack Engineering, Backed by DevOps") and subtitle — both still accurate at 3.5+ years. **Deliberately dropped:** Matomo from the About bullets (still present in `Experience.tsx`, and Prometheus/Grafana/Sentry are the stronger observability signal for a summary).
 - Not added, to avoid bloating a summary section — available if wanted: Kata Containers/VLANs/AdGuard (medical-practice security work), the Lighthouse 85+ SEO / 80+ performance figures, the 5-minute Google Chat outage alerting, and the AI-assisted-development angle (Claude/Gemini/OpenCode as tools, distinct from the LLM-feature work that was added).
@@ -30,10 +30,9 @@ User supplied their current Full Stack and DevOps resumes and asked what in Abou
 **`Experience.tsx` HomeIt System entry brought in line with the two latest resumes**
 
 - **Same undersell as the About section had: AWS.** The bullet "Gained hands on exposure to AWS and foundational experience with Kubernetes deployments" was replaced with the actual work both resumes describe — Ansible-automated AWS provisioning (EC2 inside a VPC, RDS, S3, IAM least-privilege). Kubernetes kept honestly scoped as "working knowledge".
-- Bullets 11 → 14. Expanded existing ones and added genuinely missing work:
+- Bullets 11 → 13 (as committed; a 14th was drafted and removed by the user — see the refinements entry below). Expanded existing ones and added genuinely missing work:
   - Spring Boot API bullet now carries PostgreSQL + Flyway migrations, Redis caching and Apache Kafka async processing (previously only RSA/S3).
   - Next.js site bullet now carries the Lighthouse 85+ SEO / 80+ performance figures and Sentry error/performance monitoring.
-  - **New:** Node.js operations dashboard for security alerts and patch status.
   - **New:** medical practice security work — isolated VLANs, default-deny firewall rules, Ansible-automated Wazuh behind Traefik, internet-facing services in Kata Containers microVMs.
   - **New:** two-node Proxmox HA cluster on Hetzner dedicated hardware, encrypted incremental off-site backups via Proxmox Backup Server to NAS — 65% lower spend vs managed cloud at 99% uptime.
   - **New:** self-hosted open-source business apps as Docker containers via Dokploy, each on its own subdomain behind HAProxy with TLS termination and Cloudflare Zero Trust.
@@ -41,12 +40,34 @@ User supplied their current Full Stack and DevOps resumes and asked what in Abou
   - CI/CD bullet gained Nexus, Docker Compose, Jenkins agents and the 30-40min → 5-10min deployment figure.
   - Monitoring bullet gained the 10+ production hosts scale and the HTTP health checks pushing Google Chat alerts within 5 minutes of a non-200.
   - Matomo bullet sharpened from "user tracking for websites" to self-hosted first-party analytics covering traffic, page engagement, scroll depth and click paths.
-- Tech tags 22 → 32: added Flyway, Redis, Apache Kafka, Sentry, Nexus, Dokploy, HAProxy, Traefik, pfSense, Matomo, and reordered into dev → data → CI/CD → infra → security groups.
+- Tech tags 22 → 30: added Redis, Apache Kafka, Sentry, Nexus, HAProxy, Traefik, pfSense, Matomo, and reordered into dev → data → CI/CD → infra → security groups. (Flyway and Dokploy were also proposed but dropped by the user — see the refinements entry below.)
 - **Note for the user:** Redis and Apache Kafka tags were deliberately removed from this entry back on 2026-07-28. Re-added because both resumes now name them explicitly in the HomeIt role. Flagged rather than assumed.
-- Card is now materially taller (14 bullets, 32 tags). Structure/CSS untouched, so it inherits the existing responsive card — bullets use `flex items-start` and tags `flex flex-wrap`, both of which wrap cleanly. No browser verification run this session; offered to the user.
-- `npx tsc --noEmit` clean, `npx eslint src/components/sections/Experience.tsx` zero issues, `npm run build` succeeds — `Experience` chunk 9.14KB → 10.77KB (text only), critical-path bundle unchanged at 301.52KB.
+- Card is now materially taller (13 bullets, 30 tags). Structure/CSS untouched, so it inherits the existing responsive card — bullets use `flex items-start` and tags `flex flex-wrap`, both of which wrap cleanly. No browser verification run this session; offered to the user.
+- `npx tsc --noEmit` clean, `npx eslint src/components/sections/Experience.tsx` zero issues, `npm run build` succeeds — `Experience` chunk 9.14KB → 10.64KB (text only), critical-path bundle unchanged at 301.52KB.
 
 **Still outstanding:** the two CodeLantic entries have the same kind of drift — the Associate role is missing the monolith → microservices decomposition narrative, the 3-project scope (retail operations, real estate transactions with 2FA/KPI dashboards) and Flyway; the Trainee role is missing Hibernate Validator, Mockito and the 80%+ coverage figure. Also `Skills.tsx` still lacks TypeScript, Next.js, Express.js, Redis, Supabase, Flyway, Sentry, Traefik, HAProxy and pfSense.
+
+---
+
+## 2026-10-04 (continued) — user refinements + Clerk project retired
+
+Changes the user applied directly on top of the two entries above, recorded here so the log matches the committed file state rather than the drafts.
+
+**`Experience.tsx` (HomeIt entry)**
+- Dropped the drafted "Built a Node.js operations dashboard surfacing security alerts and patch status across managed hosts" bullet — 14 → 13 bullets.
+- Dropped the `Flyway` and `Dokploy` tags from the proposed tag additions — 32 → 30 tags. Note both tools are still named in the bullet text (Flyway in the Spring Boot API bullet, Dokploy in the CI/CD and self-hosted-apps bullets), so they are the only tools mentioned without a matching tag. Left as-is per the user's edit; flagged, not reverted.
+- Reworded the Matomo bullet from "Rolled out self hosted Matomo…" to "Deployed self hosted Matomo…" and moved it up from last to third position, grouping it with the other application/delivery work ahead of the infrastructure bullets.
+
+**`about/Journey.tsx` and `about/Highlights.tsx`**
+- Removed the em dashes from several of the rewritten bullets and sentences, replacing them with plain connectives (e.g. "A two node Proxmox HA cluster … **which is** 65% lower infrastructure spend at 99% uptime", and "Spring Boot services **including** RSA encrypted file transfer…"). One artefact of this: the first Journey bullet now reads "…Proxmox, Hetzner Cloud and AWS  25+ VMs…" with no connective where the em dash was. Renders fine (HTML collapses the double space) but reads slightly abruptly — optional tidy-up.
+- Added "using Backup Server" to the Cloud & Infrastructure highlight card, which pushed that description to 226 chars against ~206–213 for the other three.
+
+**`Projects.tsx`**
+- Commented out the **Secure Role Based Authentication with Next.js & Clerk** entry, taking the active project count from 13 back to 12. This incidentally resolves the pagination issue flagged on 2026-10-02 — 12 projects at 4 per page is exactly 3 full pages, with no lone trailing card. `Projects` chunk 21.81KB → 20.89KB. `ShoppingCart` and `Shield` icon imports are now both unused (their only entries are commented out), joining the pre-existing deprecated `Github` import.
+
+**Verification after all refinements:** `npx tsc --noEmit` clean, `npm run build` succeeds — `AboutContent` 8.12KB, `Experience` 10.64KB, `Projects` 20.89KB, critical-path bundle unchanged at 301.52KB (98.18KB gzip).
+
+**Also this session (no code change):** reviewed the five uncommitted files and supplied a per-file commit message for the user to apply manually; nothing was committed or staged by the assistant.
 
 ---
 
@@ -54,7 +75,7 @@ User supplied their current Full Stack and DevOps resumes and asked what in Abou
 
 **New project added (`Projects.tsx`)**
 - Added **Team Weekly Reporting & Review Platform** as the first entry in `allProjects` so it lands on page 1 of the paginated grid. Uses the existing `string[]` description format (6 bullets), 17 tech tags, `ClipboardCheck` icon (verified present and not one of lucide's deprecated brand icons), category "Full Stack, DevOps", `color: 'primary'`. No public links supplied — treated as private/internal work, so the View Code / Live Demo / Documentation buttons stay conditionally hidden like the other three client projects.
-- Project count 12 → 13. At `projectsPerPage = 4` this grew pagination from 3 to 4 pages, and page 4 now holds a single card occupying the left half of the 2-column desktop grid. Flagged to the user — moving `projectsPerPage` to 5 would give 5/5/3 and remove the lone trailing card.
+- Project count 12 → 13. At `projectsPerPage = 4` this grew pagination from 3 to 4 pages, and page 4 now holds a single card occupying the left half of the 2-column desktop grid. Flagged to the user — moving `projectsPerPage` to 5 would give 5/5/3 and remove the lone trailing card. **Resolved 2026-10-04:** the user commented out the Clerk project, returning the count to 12 (exactly 3 pages), so `projectsPerPage` stays at 4 and no change is needed.
 - Pure data addition: no markup or CSS touched, so the card inherits the existing responsive card shell. Verified in a real browser against `vite preview` at 375px, 390px (light theme), 768px and 1440px — no horizontal overflow at any width, all 17 tech tags wrap inside the card bounds, the "Full Stack, DevOps" badge stays on one line, the title wraps to 2 lines without clipping, tablet/desktop siblings keep equal grid-stretch heights, and in light theme the card border (`rgb(144,157,180)`) and tag contrast both render correctly.
 - `npx tsc --noEmit` clean. Lint on the file reports only the pre-existing `ref.current` cleanup warning (unrelated, line number shifted by the insert). `npm run build` succeeds with the critical-path bundle unchanged at 301.52KB (98.18KB gzip) — the new entry lands only in the lazy `Projects` chunk (21.81KB).
 - Kept the user's wording verbatim, including the British "Containerised"; note `Experience.tsx` uses American "containerization" if consistency is wanted later.
