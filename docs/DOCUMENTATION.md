@@ -4,6 +4,52 @@ Running log of work done on this project. Add a new entry at the top for each wo
 
 ---
 
+## 2026-10-04
+
+**About section refreshed against the two latest resumes (`about/Journey.tsx`, `about/Highlights.tsx`)**
+
+User supplied their current Full Stack and DevOps resumes and asked what in About was stale. Reviewed both against the section and applied the gaps.
+
+- **Biggest factual correction: AWS is no longer "foundational exposure."** Both resumes now describe Ansible-automated AWS provisioning — EC2 inside a VPC, RDS, S3, IAM least-privilege. The old bullet ("CI/CD pipelines through Jenkins, with foundational exposure to AWS and Kubernetes") was actively undershooting. AWS now has its own bullet; Kubernetes stays accurately scoped as "working knowledge".
+- `Journey.tsx` para 1 (CodeLantic): added the monolith → independently deployable microservices decomposition (Feign Client, WebClient, API Gateway), the fintech domain, Flyway-managed MySQL migrations and the 80%+ test coverage figure.
+- `Journey.tsx` para 2 (HomeIt): added RSA-encrypted transfer to Hetzner S3, PostgreSQL + Flyway, Sentry monitoring, TypeScript, and LLM-powered features via function calling over access-scoped read-only tools (previously absent entirely, and now relevant given the Team Weekly Reporting project added 2026-10-02).
+- `Journey.tsx` bullets rewritten 6 → 6, now carrying the quantified outcomes the resumes added: 25+ VMs/LXC with setup cut ~2h → 15min; two-node Proxmox HA cluster with Proxmox Backup Server at 65% lower spend / 99% uptime; Jenkins + Nexus + Dokploy taking deployments 30–40min → 5–10min; 10+ production hosts under Wazuh/CrowdSec/PatchMon/Checkmk/Prometheus/Grafana/Sentry. Added Traefik, Cloudflare Zero Trust and Headscale/Tailscale per-user ACLs.
+- `Highlights.tsx` all 4 card descriptions rewritten. **Dropped Cronicle** — it appears in neither resume, so it looks retired. Moved AWS out of the DevOps card into Cloud & Infrastructure where it now belongs, and added Nexus/Dokploy/SonarQube to the DevOps card.
+- Side effect worth noting: the 4 descriptions are now 214/206/210/207 chars (previously ~195–235), so the 2×2 card grid sits more evenly at every breakpoint — a responsive improvement with no CSS change.
+- Removed a dead `ExternalLink` import from `Journey.tsx`, orphaned since the HomeIt hyperlink was dropped on 2026-07-28.
+- **Deliberately not changed:** the header tagline ("Full Stack Engineering, Backed by DevOps") and subtitle — both still accurate at 3.5+ years. **Deliberately dropped:** Matomo from the About bullets (still present in `Experience.tsx`, and Prometheus/Grafana/Sentry are the stronger observability signal for a summary).
+- Not added, to avoid bloating a summary section — available if wanted: Kata Containers/VLANs/AdGuard (medical-practice security work), the Lighthouse 85+ SEO / 80+ performance figures, the 5-minute Google Chat outage alerting, and the AI-assisted-development angle (Claude/Gemini/OpenCode as tools, distinct from the LLM-feature work that was added).
+- Per user instruction, no browser verification this session. `npx tsc --noEmit` clean, `npx eslint src/components/sections/about/` reports zero issues, `npm run build` succeeds — `AboutContent` chunk 7.46KB → 8.11KB (text only), critical-path bundle unchanged at 301.52KB.
+
+**Follow-up flagged (not actioned):** `Skills.tsx` is now out of step with both resumes — missing TypeScript, Next.js, Express.js, Redis, Supabase, Flyway, Sentry, Traefik, HAProxy and pfSense, several of which About and Projects now reference by name.
+
+---
+
+## 2026-10-04 (continued) — HomeIt System experience entry
+
+**`Experience.tsx` HomeIt System entry brought in line with the two latest resumes**
+
+- **Same undersell as the About section had: AWS.** The bullet "Gained hands on exposure to AWS and foundational experience with Kubernetes deployments" was replaced with the actual work both resumes describe — Ansible-automated AWS provisioning (EC2 inside a VPC, RDS, S3, IAM least-privilege). Kubernetes kept honestly scoped as "working knowledge".
+- Bullets 11 → 14. Expanded existing ones and added genuinely missing work:
+  - Spring Boot API bullet now carries PostgreSQL + Flyway migrations, Redis caching and Apache Kafka async processing (previously only RSA/S3).
+  - Next.js site bullet now carries the Lighthouse 85+ SEO / 80+ performance figures and Sentry error/performance monitoring.
+  - **New:** Node.js operations dashboard for security alerts and patch status.
+  - **New:** medical practice security work — isolated VLANs, default-deny firewall rules, Ansible-automated Wazuh behind Traefik, internet-facing services in Kata Containers microVMs.
+  - **New:** two-node Proxmox HA cluster on Hetzner dedicated hardware, encrypted incremental off-site backups via Proxmox Backup Server to NAS — 65% lower spend vs managed cloud at 99% uptime.
+  - **New:** self-hosted open-source business apps as Docker containers via Dokploy, each on its own subdomain behind HAProxy with TLS termination and Cloudflare Zero Trust.
+  - Ansible bullet gained scale and outcome: 25+ VMs/LXC, setup ~2h → 15min, weekly patch cycles.
+  - CI/CD bullet gained Nexus, Docker Compose, Jenkins agents and the 30-40min → 5-10min deployment figure.
+  - Monitoring bullet gained the 10+ production hosts scale and the HTTP health checks pushing Google Chat alerts within 5 minutes of a non-200.
+  - Matomo bullet sharpened from "user tracking for websites" to self-hosted first-party analytics covering traffic, page engagement, scroll depth and click paths.
+- Tech tags 22 → 32: added Flyway, Redis, Apache Kafka, Sentry, Nexus, Dokploy, HAProxy, Traefik, pfSense, Matomo, and reordered into dev → data → CI/CD → infra → security groups.
+- **Note for the user:** Redis and Apache Kafka tags were deliberately removed from this entry back on 2026-07-28. Re-added because both resumes now name them explicitly in the HomeIt role. Flagged rather than assumed.
+- Card is now materially taller (14 bullets, 32 tags). Structure/CSS untouched, so it inherits the existing responsive card — bullets use `flex items-start` and tags `flex flex-wrap`, both of which wrap cleanly. No browser verification run this session; offered to the user.
+- `npx tsc --noEmit` clean, `npx eslint src/components/sections/Experience.tsx` zero issues, `npm run build` succeeds — `Experience` chunk 9.14KB → 10.77KB (text only), critical-path bundle unchanged at 301.52KB.
+
+**Still outstanding:** the two CodeLantic entries have the same kind of drift — the Associate role is missing the monolith → microservices decomposition narrative, the 3-project scope (retail operations, real estate transactions with 2FA/KPI dashboards) and Flyway; the Trainee role is missing Hibernate Validator, Mockito and the 80%+ coverage figure. Also `Skills.tsx` still lacks TypeScript, Next.js, Express.js, Redis, Supabase, Flyway, Sentry, Traefik, HAProxy and pfSense.
+
+---
+
 ## 2026-10-02
 
 **New project added (`Projects.tsx`)**
